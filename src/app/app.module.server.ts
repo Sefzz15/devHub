@@ -10,4 +10,4 @@ import { serverRoutes } from './app.routes.server';
   providers: [provideServerRoutesConfig(serverRoutes)],
   bootstrap: [AppComponent],
 })
-export class AppServerModule {}
+export class AppServerModule { }
