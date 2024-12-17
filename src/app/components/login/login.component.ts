@@ -1,8 +1,7 @@
-import { NgModule } from '@angular/core';
 import { Component } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http'; 
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -19,31 +18,47 @@ export class LoginComponent {
    *
    */
   constructor(private _router: Router,
-    private authService: AuthService,
+    private _http: HttpClient,
+    private _authService: AuthService,
   ) {
 
   }
 
+  // onSubmit() {
+  //   if (this.username === 'admin' && this.password === 'admin') {
+  //     this._router.navigate(['/dashboard']);
+  //     console.log('You successfully logged in...');
+  //   }
+  //   else {
+  //     alert('Invalid Username and/or password!');
+  //     console.log('Invalid Username and/or password...');
+  //   }
+  // }
+
   onSubmit() {
-    if (this.username === 'admin' && this.password === 'admin') {
-      this._router.navigate(['/dashboard']);
-      console.log('You successfully logged in...');
-    }
-    else {
-      alert('Invalid Username and/or password!');
-      console.log('Invalid Username and/or password...');
-    }
-  }
-
-
-  /*onSubmit() {
-    this.authService.authenticate(this.username, this.password).subscribe((isAuthenticated) => {
+    this._authService.authenticate(this.username, this.password).subscribe((isAuthenticated) => {
       if (isAuthenticated) {
         this._router.navigate(['/dashboard']);
+        console.log('You successfully logged in...');
       } else {
-        alert('Invalid username or password');
+        alert('Invalid Username and/or password!');
+        console.log('Invalid Username and/or password...');
       }
     });
-  }*/
+  }
+
+  mynameisjeff() {
+    this._http.get('/assets/data.json').subscribe(
+      data => {
+        // Parse and display the data in an alert
+        alert(JSON.stringify(data, null, 2)); // Pretty print JSON
+        console.log('Print JSON objects');
+      },
+      error => {
+        alert('Error fetching the JSON file:\n\n ' + error.message);
+        console.log('Error printing JSON objects');
+      }
+    );
+  }
 }
 

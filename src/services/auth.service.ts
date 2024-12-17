@@ -1,13 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private _url = 'src\app\assets\data.json';
+  private _url = '/assets/data.json'
   constructor(private _http: HttpClient) {
 
   }
