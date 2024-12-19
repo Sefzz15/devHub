@@ -10,9 +10,6 @@ import { HttpClientModule } from '@angular/common/http';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { FirstpageComponent } from './components/firstpage/firstpage.component';
 import { SecondpageComponent } from './components/secondpage/secondpage.component';
-import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
-import { FourthpageComponent } from './components/fourthpage/fourthpage.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -22,8 +19,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DashboardComponent,
     FirstpageComponent,
     SecondpageComponent,
-    ThirdpageComponent,
-    FourthpageComponent,
   ],
   imports: [
     RouterModule,
@@ -32,7 +27,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     HttpClientModule,
     MatToolbarModule,
-    BrowserAnimationsModule
   ],
   providers: [
     provideClientHydration(withEventReplay())
