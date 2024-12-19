@@ -1,13 +1,11 @@
 .body {
-    margin: 0;
+    margin: -10px;
     user-select: none;
-    overflow-y: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background-color: #b6ebfc;
-    box-sizing: border-box;
 }
 
 h2 {
@@ -26,7 +24,7 @@ h2 {
     padding-right: 75px;
 }
 
-.login-container .usernametab {
+.usernametab {
     background: white;
     box-shadow: 0 0 2em #e6e9f9;
     padding: 10px;
@@ -37,12 +35,12 @@ h2 {
     margin-top: -3em;
 }
 
-.login-container .usernametab input {
+.usernametab input {
     outline: none;
     border: none;
 }
 
-.login-container .passwordtab {
+.passwordtab {
     background: white;
     box-shadow: 0 0 2em #e6e9f9;
     padding: 10px;
@@ -54,12 +52,12 @@ h2 {
 
 }
 
-.login-container .passwordtab input {
+.passwordtab input {
     outline: none;
     border: none;
 }
 
-.login-container .loginButton {
+.loginButton {
     padding: 1em;
     background: #3e4684;
     color: white;

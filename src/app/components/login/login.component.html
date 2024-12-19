@@ -1,27 +1,27 @@
-<body>
-  <!-- <div class="body"> -->
-    <div class="login-container">
-      <h2>Login</h2>
-      <form (ngSubmit)="onSubmit()">
+<!-- <body> -->
+<div class="body">
+  <div class="login-container">
+    <h2>Login</h2>
+    <form (ngSubmit)="onSubmit()">
 
-        <div class="usernametab">
-          <label class="username" for="username">Username:</label>
-          <input class="unTf" type="text" id="username" [(ngModel)]="username" name="username" required>
-        </div>
+      <div class="usernametab">
+        <label class="username" for="username">Username:</label>
+        <input class="unTf" type="text" id="username" [(ngModel)]="username" name="username" required>
+      </div>
 
-        <div class="passwordtab">
-          <label class="password" for="password">Password:</label>
-          <input class="passTF" id="password" type="password" [(ngModel)]="password" name="password" required>
-        </div>
+      <div class="passwordtab">
+        <label class="password" for="password">Password:</label>
+        <input class="passTF" id="password" type="password" [(ngModel)]="password" name="password" required>
+      </div>
 
-        <div class="loginbuttontab">
-          <button class="loginButton" type="submit">Login</button>
-        </div>
+      <div class="loginbuttontab">
+        <button class="loginButton" type="submit">Login</button>
+      </div>
 
-      </form>
+    </form>
 
-    </div>
-    <button (click)="mynameisjeff()" type="button">alert</button>
+  </div>
+  <button (click)="mynameisjeff()" type="button">alert</button>
 
-  <!-- </div> -->
-</body>
+</div>
+<!-- </body> -->

@@ -7,14 +7,23 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { FirstpageComponent } from './components/firstpage/firstpage.component';
+import { SecondpageComponent } from './components/secondpage/secondpage.component';
+import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
+import { FourthpageComponent } from './components/fourthpage/fourthpage.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    FirstpageComponent,
+    SecondpageComponent,
+    ThirdpageComponent,
+    FourthpageComponent,
   ],
   imports: [
     RouterModule,
@@ -22,6 +31,8 @@ import { Component } from '@angular/core';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    MatToolbarModule,
+    BrowserAnimationsModule
   ],
   providers: [
     provideClientHydration(withEventReplay())
