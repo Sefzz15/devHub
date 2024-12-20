@@ -1,36 +1,42 @@
-.body {
-    margin: -10px;
-    user-select: none;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #b6ebfc;
+.navbar {
+  top: 0;
+  background-color: #3e4684;
+  padding: 10px 20px;
+  z-index: 1000;
+  align-items: center;
+
 }
 
-.horizontal-toolbar {
-    display: flex;
-    gap: 10px;
-    background-color: lightblue;
+.navbar-links {
+  display: flex;
+  display: grid;
+  align-items: center;
+
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 8px;
 }
 
-.mat-toolbar-row {
-    justify-content: center;
+.navbar-links li {
+  margin: 0 15px;
 }
 
-.mat-toolbar-multiple-rows {
-    width: 100%;
-    flex-direction: row;
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
 }
 
-.logoutButton {
-    display: flex;
-        padding: 1em;
-        background: #3e4684;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        margin-left: 1.5em;
-    
+.navbar-links a:hover {
+  text-decoration: underline;
+}
+
+.navbar-actions button {
+  background-color: #555;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
 }

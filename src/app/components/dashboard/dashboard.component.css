@@ -1,36 +1,21 @@
-.body {
-    margin: -10px;
-    user-select: none;
-    justify-content: center;
-    align-items: center;
+.dashboard-container {
     height: 100vh;
     background-color: #b6ebfc;
-}
-
-.horizontal-toolbar {
     display: flex;
-    gap: 10px;
-    background-color: lightblue;
-}
-
-.mat-toolbar-row {
     justify-content: center;
-}
-
-.mat-toolbar-multiple-rows {
-    width: 100%;
-    flex-direction: row;
+    align-items: center;
+    flex-direction: column;
 }
 
 .logoutButton {
     display: flex;
-        padding: 1em;
-        background: #3e4684;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        margin-left: 1.5em;
-    
+    padding: 1em;
+    background: #3e4684;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 1.5em;
+
 }

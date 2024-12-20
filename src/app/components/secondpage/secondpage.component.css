@@ -1,0 +1,6 @@
+.secondpage-container {
+    display: flex;
+    height: 100vh;
+    background-color: #b6ebfc;
+    flex-direction: column;
+}

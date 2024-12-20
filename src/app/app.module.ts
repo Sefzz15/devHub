@@ -7,9 +7,10 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HttpClientModule } from '@angular/common/http';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { FirstpageComponent } from './components/firstpage/firstpage.component';
 import { SecondpageComponent } from './components/secondpage/secondpage.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { SecondpageComponent } from './components/secondpage/secondpage.componen
     DashboardComponent,
     FirstpageComponent,
     SecondpageComponent,
+    NavbarComponent
   ],
   imports: [
     RouterModule,

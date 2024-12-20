@@ -4,6 +4,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { FirstpageComponent } from './components/firstpage/firstpage.component';
 import { SecondpageComponent } from './components/secondpage/secondpage.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'firstpage', component: FirstpageComponent },
   { path: 'secondpage', component: SecondpageComponent },
+  { path: 'navbar', component: NavbarComponent },
 ];
 
 @NgModule({
