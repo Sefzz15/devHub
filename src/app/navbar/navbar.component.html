@@ -1,11 +1,11 @@
 <nav class="navbar">
     <ul class="navbar-links">
-        <li><a routerLink="/login">Login</a></li>
-        <li><a routerLink="/dashboard">Dashboard</a></li>
-        <li><a routerLink="/firstpage">First Page</a></li>
-        <li><a routerLink="/secondpage">Second Page</a></li>
-        <li><a routerLink="/">not working yet</a></li>
-        <li><a routerLink="/">not working yet</a></li>
+        <li><a routerLink="/login" (click)="onLinkClick($event)">Login</a></li>
+        <li><a routerLink="/dashboard" (click)="onLinkClick($event)">Dashboard</a></li>
+        <li><a routerLink="/firstpage" (click)="onLinkClick($event)">First Page</a></li>
+        <li><a routerLink="/secondpage" (click)="onLinkClick($event)">Second Page</a></li>
+        <li><a routerLink="/" (click)="onLinkClick($event)">not working yet</a></li>
+        <li><a routerLink="/" (click)="onLinkClick($event)">not working yet</a></li>
     </ul>
     <div class="navbar-actions">
         <!-- Add login/logout buttons or user-related actions here -->
