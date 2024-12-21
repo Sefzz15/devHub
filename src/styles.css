@@ -1,4 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
 body {
 margin: 0;
+}
+
+@media screen and (max-width: 600px) {
+body {
+    margin: 0; /* Remove default margin */
+    padding-left: 200px; /* Add space on the left side to account for the navbar width */
+  }
 }
