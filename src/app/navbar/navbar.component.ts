@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: false,
@@ -11,6 +12,8 @@ export class NavbarComponent implements OnInit {
   isAuthenticated: boolean = false;
 
   constructor(private _authService: AuthService,
+    private _router: Router,
+
   ) {
 
   }
@@ -31,7 +34,9 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-  logout(): void {
-    this._authService.logout(); // Clear the auth state
+  LogOut() {
+    this._router.navigate(['/login']);
+    console.log('you successfully logged out...');
+    this._authService.logout();
   }
 }

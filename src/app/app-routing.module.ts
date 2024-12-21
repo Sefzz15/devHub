@@ -5,15 +5,17 @@ import { LoginComponent } from './components/login/login.component';
 import { FirstpageComponent } from './components/firstpage/firstpage.component';
 import { SecondpageComponent } from './components/secondpage/secondpage.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { AuthGuard } from '../services/auth.guard';
 
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'firstpage', component: FirstpageComponent },
-  { path: 'secondpage', component: SecondpageComponent },
-  { path: 'navbar', component: NavbarComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+
+  { path: 'firstpage', component: FirstpageComponent, canActivate: [AuthGuard]  },
+  { path: 'secondpage', component: SecondpageComponent, canActivate: [AuthGuard]  },
+  { path: 'navbar', component: NavbarComponent, canActivate: [AuthGuard]  },
 ];
 
 @NgModule({

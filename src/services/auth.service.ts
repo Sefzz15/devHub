@@ -8,7 +8,8 @@ import { map, Observable, BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
   private _url = '/assets/data.json'
-  private isAuthenticatedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+
   constructor(private _http: HttpClient) {
 
   }
@@ -58,6 +59,14 @@ export class AuthService {
   // Get the current authentication status
   get isAuthenticated(): Observable<boolean> {
     return this.isAuthenticatedSubject.asObservable();
+  }
+  login(username: string, password: string): boolean {
+    if (username === 'test' && password === 'password') {
+      this.isAuthenticatedSubject.next(true);
+      return true;
+    }
+    this.isAuthenticatedSubject.next(false);
+    return false;
   }
 
   logout(): void {

@@ -5,6 +5,9 @@
   z-index: 1000;
   align-items: center;
 
+  display: flex; /* Flexbox for layout */
+  justify-content: space-between; /* Space between links and the logout button */
+
 }
 
 .navbar-links {
@@ -32,11 +35,8 @@
   text-decoration: underline;
 }
 
-.navbar-actions button {
-  background-color: #555;
+.logout-button {
+  margin-left: auto;
+  text-decoration: none;
   color: white;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  border-radius: 5px;
 }
