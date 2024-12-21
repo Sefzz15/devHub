@@ -12,10 +12,9 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-
-  { path: 'firstpage', component: FirstpageComponent, canActivate: [AuthGuard]  },
-  { path: 'secondpage', component: SecondpageComponent, canActivate: [AuthGuard]  },
-  { path: 'navbar', component: NavbarComponent, canActivate: [AuthGuard]  },
+  { path: 'firstpage', component: FirstpageComponent, canActivate: [AuthGuard] },
+  { path: 'secondpage', component: SecondpageComponent, canActivate: [AuthGuard] },
+  { path: 'navbar', component: NavbarComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

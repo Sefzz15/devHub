@@ -18,24 +18,21 @@ export class NavbarComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    // Subscribe to the authentication state
     this._authService.isAuthenticated.subscribe(status => {
       this.isAuthenticated = status;
     });
   }
 
   onLinkClick(event: MouseEvent): void {
-    // Prevent default behavior (if needed)
     event.preventDefault();
 
-    // Fetch and log the current authentication state
     this._authService.isAuthenticated.subscribe(token => {
+      // if (token == false) { alert("you have to sign in first"); }
       console.log('Current Token:', token);
     });
   }
 
   LogOut() {
-    this._router.navigate(['/login']);
     console.log('you successfully logged out...');
     this._authService.logout();
   }

@@ -24,17 +24,6 @@ export class LoginComponent {
 
   }
 
-  // onSubmit() {
-  //   if (this.username === 'admin' && this.password === 'admin') {
-  //     this._router.navigate(['/dashboard']);
-  //     console.log('You successfully logged in...');
-  //   }
-  //   else {
-  //     alert('Invalid Username and/or password!');
-  //     console.log('Invalid Username and/or password...');
-  //   }
-  // }
-
   onSubmit() {
     this._authService.authenticate(this.username, this.password).subscribe((isAuthenticated) => {
       if (isAuthenticated) {
