@@ -14,28 +14,6 @@ export class AuthService {
 
   }
 
-  // authenticate(username: string, password: string): Observable<boolean> {
-  //   return this._http.get<{ username: string; password: string }[]>(this._url).pipe(
-  //     map(users => users.some(user => user.username === username && user.password === password))
-  //   );
-  // }
-
-  // authenticate(username: string, password: string): Observable<boolean> {
-  //   return this._http.get<{ username: string; password: string }[]>(this._url).pipe(
-  //     map(users => {
-  //       const user = users.some(u => u.username === username && u.password === password);
-  //       if (user) {
-  //         console.log("truee");
-  //         return true;
-  //       }
-  //       else {
-  //         console.log("falsee");
-  //         return false;
-  //       }
-  //     })
-  //   );
-  // }
-
   authenticate(username: string, password: string): Observable<boolean> {
     return this._http.get<{ username: string; password: string }[]>(this._url).pipe(
       map(users => {
@@ -56,10 +34,10 @@ export class AuthService {
     );
   }
 
-  // Get the current authentication status
   get isAuthenticated(): Observable<boolean> {
     return this.isAuthenticatedSubject.asObservable();
   }
+
   login(username: string, password: string): boolean {
     if (username === 'test' && password === 'password') {
       this.isAuthenticatedSubject.next(true);
@@ -69,7 +47,8 @@ export class AuthService {
     return false;
   }
 
-  logout(): void {
+  logout(): boolean {
     this.isAuthenticatedSubject.next(false);
+    return false;
   }
 }

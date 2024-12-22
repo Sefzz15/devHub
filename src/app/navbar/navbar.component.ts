@@ -18,22 +18,22 @@ export class NavbarComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    this._authService.isAuthenticated.subscribe(status => {
-      this.isAuthenticated = status;
+    this._authService.isAuthenticated.subscribe(token => {
+      this.isAuthenticated = token; // Update local state
     });
   }
 
   onLinkClick(event: MouseEvent): void {
     event.preventDefault();
-
-    this._authService.isAuthenticated.subscribe(token => {
-      // if (token == false) { alert("you have to sign in first"); }
-      console.log('Current Token:', token);
-    });
+    if (!this.isAuthenticated) {
+      alert("You have to sign in first");
+    }
+    console.log('Current Token:', this.isAuthenticated);
   }
 
-  LogOut() {
-    console.log('you successfully logged out...');
+  LogOut(): void {
+    console.log('You successfully logged out...');
+    alert("ekanes log out");
     this._authService.logout();
   }
 }
