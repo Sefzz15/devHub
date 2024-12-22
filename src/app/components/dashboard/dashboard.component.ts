@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-dashboard',
