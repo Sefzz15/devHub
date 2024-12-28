@@ -2,34 +2,29 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, BehaviorSubject } from 'rxjs';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private _url = '/assets/data.json'
+  private _url = 'https://localhost:5000/api/users';
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  private token: string | null = null;
 
-  constructor(private _http: HttpClient) {
-
-  }
+  constructor(private _http: HttpClient) {}
 
   authenticate(username: string, password: string): Observable<boolean> {
-    return this._http.get<{ username: string; password: string }[]>(this._url).pipe(
-      map(users => {
-        const user = users.some(u => u.username === username && u.password === password);
-        if (user) {
-          console.log("truee");
-          const token = user;
-          this.isAuthenticatedSubject.next(token);
-          console.log("Generated Token:", token);
-          return token;
+    return this._http.post<{ token: string }>(this._url, { username, password }).pipe(
+      map(response => {
+        if (response.token) {
+          this.token = response.token;
+          this.isAuthenticatedSubject.next(true);
+          console.log("Authenticated successfully, Token:", this.token);
+          return true;
+        } else {
+          console.log("Authentication failed");
+          this.isAuthenticatedSubject.next(false);
+          return false;
         }
-        console.log("falsee");
-        const token = user;
-        this.isAuthenticatedSubject.next(token);
-        console.log("Generated Token:", token);
-        return token;
       })
     );
   }
@@ -39,16 +34,11 @@ export class AuthService {
   }
 
   login(username: string, password: string): boolean {
-    if (username === 'test' && password === 'password') {
-      this.isAuthenticatedSubject.next(true);
-      return true;
-    }
-    this.isAuthenticatedSubject.next(false);
     return false;
   }
 
-  logout(): boolean {
+  logout(): void {
     this.isAuthenticatedSubject.next(false);
-    return false;
+    this.token = null;
   }
 }
