@@ -13,24 +13,46 @@ export class LoginComponent {
   password: string = '';
   usernameError: string = '';
   passwordError: string = '';
-  generalError: string = ''; // New variable for general error message
+  generalError: string = '';
 
   constructor(
     private _router: Router,
     private _authService: AuthService
-  ) {}
+  ) { }
 
   onSubmit() {
-    this._authService.authenticate(this.username, this.password).subscribe((isAuthenticated) => {
-      console.log('Authentication response:', isAuthenticated); // Log the response for debugging
-      if (isAuthenticated) {
-        this._router.navigate(['/dashboard']);
-        console.log('You successfully logged in...');
-      } else {
-        alert('Invalid Username and/or password!');
-        console.log('Invalid Username and/or password...');
+    // Clear any previous error messages
+    this.usernameError = '';
+    this.passwordError = '';
+    this.generalError = '';
+
+    // Check if username and password are provided
+    if (!this.username) {
+      this.usernameError = 'Please insert username';
+    }
+
+    if (!this.password) {
+      this.passwordError = 'Please insert password';
+      return;
+    }
+
+    // Proceed with authentication
+    this._authService.authenticate(this.username, this.password).subscribe(
+      (isAuthenticated) => {
+        if (isAuthenticated) {
+          this._router.navigate(['/dashboard']);
+          console.log('You successfully logged in...');
+        } else {
+          // Set general error message if authentication fails
+          this.generalError = this._authService.generalError;  // Use the general error from the service
+          console.log('Invalid Username and/or password...');
+        }
+      },
+      (error) => {
+        // In case of network or server error
+        this.generalError = this._authService.generalError;  // Use the general error from the service
+        console.error('Authentication failed due to an error:', error);
       }
-    });
+    );
   }
-  
 }
