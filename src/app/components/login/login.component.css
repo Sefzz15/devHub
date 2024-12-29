@@ -56,3 +56,10 @@
 .username {
     display: block;
 }
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 10px;
+    font-style: italic;
+}

@@ -1,27 +1,28 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private _url = 'https://localhost:5000/api/users';
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  private token: string | null = null;
+  private _url = 'https://localhost:5000/api/users/login'; // Backend URL
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false); // Tracks authentication status
+  private token: string | null = null; // You can add token handling later if needed
 
-  constructor(private _http: HttpClient) {}
+  constructor(private _http: HttpClient) { }
 
   authenticate(username: string, password: string): Observable<boolean> {
-    return this._http.post<{ token: string }>(this._url, { username, password }).pipe(
+    // Send POST request to backend with username and password
+    return this._http.post<{ message: string }>(this._url, { username, password }).pipe(
       map(response => {
-        if (response.token) {
-          this.token = response.token;
+        if (response.message === 'Login successful!') {
           this.isAuthenticatedSubject.next(true);
-          console.log("Authenticated successfully, Token:", this.token);
+          console.log('Authenticated successfully');
           return true;
         } else {
-          console.log("Authentication failed");
+          console.log('Authentication failed');
           this.isAuthenticatedSubject.next(false);
           return false;
         }
@@ -29,16 +30,14 @@ export class AuthService {
     );
   }
 
+  // Observable for tracking the authentication state
   get isAuthenticated(): Observable<boolean> {
     return this.isAuthenticatedSubject.asObservable();
   }
 
-  login(username: string, password: string): boolean {
-    return false;
-  }
-
+  // Method to log out the user
   logout(): void {
     this.isAuthenticatedSubject.next(false);
-    this.token = null;
+    this.token = null; // Clear token if you're using it
   }
 }
