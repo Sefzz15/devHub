@@ -17,38 +17,39 @@ export class AuthService {
   constructor(private _http: HttpClient) { }
 
   authenticate(username: string, password: string): Observable<boolean> {
-    return this._http.post<{ message: string }>(this._url, { username, password }).pipe(
+    return this._http.post<{ message: string; token?: string }>(this._url, { username, password }).pipe(
       map(response => {
-        if (response.message === 'Login successful!') {
+        console.log('Server response:', response); // Log the full server response
+        if (response.message === 'Login successful!' && response.token) {
+          const token = response.token;
           this.isAuthenticatedSubject.next(true);
           console.log('Authenticated successfully');
+          console.log('Generated Token:', token);
           return true;
         } else {
-          console.log('Authentication failed');
+          console.log('Authentication failed a');
           this.isAuthenticatedSubject.next(false);
           return false;
         }
       }),
       catchError(error => {
         console.error('Error during authentication:', error);
+        console.error('General Error:', this.generalError);
 
         // Handle errors based on the response status or message
         if (error.status === 401 && error.error?.message) {
-          // If status 401 (Unauthorized), and the response contains the message (Invalid credentials)
           this.generalError = 'Invalid credentials';
         } else if (error.status >= 500) {
-          // Server-side error handling
           this.generalError = 'An error occurred. Please try again later.';
         } else {
-          // Handle any other errors (e.g., network issues)
           this.generalError = 'An unexpected error occurred. Please check your network or try again later.';
         }
 
-        // Return the error to be handled by the component
         return throwError(error);
       })
     );
   }
+
 
   get isAuthenticated(): Observable<boolean> {
     return this.isAuthenticatedSubject.asObservable();

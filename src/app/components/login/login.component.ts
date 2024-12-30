@@ -44,13 +44,13 @@ export class LoginComponent {
           console.log('You successfully logged in...');
         } else {
           // Set general error message if authentication fails
-          this.generalError = this._authService.generalError;  // Use the general error from the service
+          this.generalError = this._authService.generalError;
           console.log('Invalid Username and/or password...');
         }
       },
       (error) => {
         // In case of network or server error
-        this.generalError = this._authService.generalError;  // Use the general error from the service
+        this.generalError = this._authService.generalError;
         console.error('Authentication failed due to an error:', error);
       }
     );
