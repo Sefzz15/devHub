@@ -11,6 +11,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { FirstpageComponent } from './components/firstpage/firstpage.component';
 import { SecondpageComponent } from './components/secondpage/secondpage.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { CreateUserComponent } from './components/firstpage/create-user/create-user.component';
+import { UpdateUserComponent } from './components/firstpage/update-user/update-user.component';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import { NavbarComponent } from './navbar/navbar.component';
     DashboardComponent,
     FirstpageComponent,
     SecondpageComponent,
-    NavbarComponent
+    NavbarComponent,
+    CreateUserComponent,
+    UpdateUserComponent
   ],
   imports: [
     RouterModule,

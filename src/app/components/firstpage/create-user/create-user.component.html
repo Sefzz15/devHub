@@ -1,0 +1,39 @@
+<div class="firstpage-container">
+  <div class="form-container">
+    <h1 class="form-header">Create User</h1>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage.length > 0" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>{{ errorMessage }}</strong>
+      <button type="button" class="btn-close" aria-label="Close" (click)="clearErrorMessage()"></button>
+    </div>
+
+    <form (ngSubmit)="createUser()">
+      <!-- User ID Field -->
+      <div class="form-group">
+        <label for="uid">User ID</label>
+        <input id="uid" class="form-control-plaintext" readonly [(ngModel)]="user.uid" name="uid" />
+      </div>
+
+      <!-- Username Field -->
+      <div class="form-group">
+        <label for="uname">Username</label>
+        <input id="uname" class="form-control" [(ngModel)]="user.uname" name="uname" required />
+        <span *ngIf="usernameError" class="text-danger">{{ usernameError }}</span>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="upass">Password</label>
+        <input id="upass" type="password" class="form-control" [(ngModel)]="user.upass" name="upass" required />
+        <span *ngIf="passwordError" class="text-danger">{{ passwordError }}</span>
+      </div>
+
+      <!-- Buttons -->
+      <div class="button-group">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a class="btn btn-outline-primary" routerLink="/firstpage" role="button">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>

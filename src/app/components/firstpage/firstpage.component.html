@@ -1,35 +1,25 @@
-<div class="firstpage-container">
-    <!-- insert the page content here -->
-    <p>
-        I love pressing F5. It's so refreshing.
-    </p><br/>
-    <p>
-        I'd tell you a joke about UDP, but you probably wouldn't get it.
-    </p><br/><br/>
-    <p>
-        Q: Why did the web designer drown?<br/>
-        A: She didn’t know if she should float:left or float:right.<br/>
-        Also, she had too many anchors. 
-    </p><br/><br/>
-    <p>
-        A TCP packet walks into a bar and says, "I'd like a beer."<br/>
-        The bartender replies, "You want a beer?"<br/>
-        The TCP packet replies, "Yes, I'd like a beer."
-    </p><br/><br/>
-    <p>
-        Q: Why was the JavaScript reality show cancelled after only one episode?<br/>
-        A: People thought it seemed scripted.
-    </p><br/><br/>
-    <p>
-        There are only 10 types of people in the world: those who understand binary, and those who don't.<br/>
-    </p><br/><br/>
-    <p>
-        Q: How many programmers does it take to change a light bulb?<br/>
-        A: None, that's a hardware problem.<br/>
-    </p><br/><br/>
-    <p>
-        A programmer's wife asks him to pick up some groceries on his way home from work.<br/>
-         He asks what she needs, and she says to pick up a gallon of milk, and if they have eggs, get a	dozen.<br/>
-         When he returns home, his wife asks why he brought home 12 gallons of milk, and he responded that they did indeed have eggs.
-    </p><br/>
-  </div>
+<nav class="firstpage-container">
+  <h1>User List</h1>
+  <a class="btn btn-primary mb-3" routerLink="/firstpage/create-user">New User</a>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Password</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.uid }}</td>
+        <td>{{ user.uname }}</td>
+        <td>{{ user.upass }}</td>
+        <td>
+          <a class="btn btn-primary btn-sm" [routerLink]="['/firstpage/update-user', user.uid]">Update</a>
+          <a class="btn btn-danger btn-sm" (click)="deleteUser(user.uid)">Delete</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</nav>
