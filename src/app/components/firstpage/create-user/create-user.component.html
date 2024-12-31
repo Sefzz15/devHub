@@ -3,9 +3,9 @@
     <h1 class="form-header">Create User</h1>
 
     <!-- Error Message -->
-    <div *ngIf="errorMessage.length > 0" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <div *ngIf="errorMessage.length > 0">
       <strong>{{ errorMessage }}</strong>
-      <button type="button" class="btn-close" aria-label="Close" (click)="clearErrorMessage()"></button>
+      <button type="button" aria-label="Close" (click)="clearErrorMessage()"></button>
     </div>
 
     <form (ngSubmit)="createUser()">
@@ -19,14 +19,14 @@
       <div class="form-group">
         <label for="uname">Username</label>
         <input id="uname" class="form-control" [(ngModel)]="user.uname" name="uname" required />
-        <span *ngIf="usernameError" class="text-danger">{{ usernameError }}</span>
+        <span *ngIf="usernameError">{{ usernameError }}</span>
       </div>
 
       <!-- Password Field -->
       <div class="form-group">
         <label for="upass">Password</label>
         <input id="upass" type="password" class="form-control" [(ngModel)]="user.upass" name="upass" required />
-        <span *ngIf="passwordError" class="text-danger">{{ passwordError }}</span>
+        <span *ngIf="passwordError">{{ passwordError }}</span>
       </div>
 
       <!-- Buttons -->

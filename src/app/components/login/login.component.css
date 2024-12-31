@@ -1,65 +1,59 @@
 .login-container {
-    user-select: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #b6ebfc;
-    flex-direction: column;
-    gap: 1em;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #b6ebfc;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .usernametab {
-    background: white;
-    box-shadow: 0 0 2em #e6e9f9;
-    padding: 10px;
-    gap: 0.5em;
-    border-radius: 15px;
-    color: #4d4d4d;
-    margin-bottom: 2em;
-}
-
-.usernametab input {
-    outline: none;
-    border: none;
+  background: white;
+  box-shadow: 0 0 2em #e6e9f9;
+  padding: 10px;
+  gap: 0.5em;
+  border-radius: 15px;
+  color: #4d4d4d;
+  margin-bottom: 2em;
 }
 
 .passwordtab {
-    background: white;
-    box-shadow: 0 0 2em #e6e9f9;
-    padding: 10px;
-    border-radius: 15px;
-    color: #4d4d4d;
-    margin-bottom: 2em;
-
+  background: white;
+  box-shadow: 0 0 2em #e6e9f9;
+  padding: 10px;
+  border-radius: 15px;
+  color: #4d4d4d;
+  margin-bottom: 2em;
 }
 
+.usernametab input,
 .passwordtab input {
-    outline: none;
-    border: none;
+  outline: none;
+  border: none;
 }
 
 .loginButton {
-    padding: 1em;
-    background: #3e4684;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-left: 1.5em;
+  padding: 1em;
+  background: #3e4684;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .passTF,
-.password,
 .unTf,
-.username {
-    display: block;
+.username,
+.password {
+  display: block;
 }
 
 .error {
-    color: red;
-    font-size: 12px;
-    margin-top: 10px;
-    font-style: italic;
+  color: red;
+  font-size: 12px;
+  margin-top: 10px;
+  font-style: italic;
 }

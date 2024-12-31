@@ -9,8 +9,7 @@
 }
 
 .form-container {
-  width: 100%;
-  max-width: 500px;
+  min-width: 350px;
   background: white;
   box-shadow: 0 0 2em #e6e9f9;
   border-radius: 15px;
@@ -37,7 +36,6 @@
 }
 
 .form-group input {
-  width: 100%;
   padding: 0.8em;
   font-size: 1em;
   border: 1px solid #ccc;
@@ -65,11 +63,15 @@
   cursor: pointer;
 }
 
+.btn-primary,
+.btn-outline-primary {
+  transition: background-color 0.3s ease, all 0.3s ease;
+}
+
 .btn-primary {
   background-color: #3e4684;
   color: white;
   border: none;
-  transition: background-color 0.3s ease;
 }
 
 .btn-primary:hover {
@@ -80,7 +82,6 @@
   background-color: transparent;
   color: #3e4684;
   border: 2px solid #3e4684;
-  transition: all 0.3s ease;
 }
 
 .btn-outline-primary:hover {

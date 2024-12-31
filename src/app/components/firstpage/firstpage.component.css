@@ -3,15 +3,8 @@
   height: 100vh;
   background-color: #b6ebfc;
   flex-direction: column;
-}
-
-.firstpage-container {
   user-select: none;
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  background-color: #b6ebfc;
-  padding: 2em;
   min-height: 100vh;
   gap: 1.5em;
 }
@@ -43,23 +36,23 @@
 }
 
 .firstpage-container .btn-danger {
-  background-color: #ff5f5f;
+  background-color: #c23535;
   color: white;
   border: none;
   transition: background-color 0.3s ease;
 }
 
 .firstpage-container .btn-danger:hover {
-  background-color: #cc4a4a;
+  background-color: #b92e2e;
 }
 
 .table {
-  width: 100%;
-  max-width: 900px;
+  min-width: 600px;
   background: white;
   box-shadow: 0 0 2em #e6e9f9;
   border-radius: 15px;
   overflow: hidden;
+  gap: 15px;
 }
 
 .table thead {
@@ -74,7 +67,7 @@
 }
 
 .table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: #f0f0f0;
 }
 
 .table tbody tr:hover {

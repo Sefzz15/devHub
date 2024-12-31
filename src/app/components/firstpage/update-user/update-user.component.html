@@ -2,12 +2,6 @@
   <div class="form-container">
     <h1 class="form-header">Update User</h1>
 
-    <!-- Error Message -->
-    <div *ngIf="errorMessage.length > 0" class="alert alert-danger alert-dismissible fade show" role="alert">
-      <strong>{{ errorMessage }}</strong>
-      <button type="button" class="btn-close" aria-label="Close" (click)="clearErrorMessage()"></button>
-    </div>
-
     <form (ngSubmit)="updateUser()">
       <!-- User ID Field -->
       <div class="form-group">

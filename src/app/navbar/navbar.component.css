@@ -2,20 +2,9 @@
   top: 0;
   background-color: #3e4684;
   padding: 10px 20px;
-  z-index: 1000;
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  position: fixed;
-  left: 0;
-  width: 100%;
-  flex-wrap: wrap;
-  box-sizing: border-box;
 }
 
 .navbar-links {
-  display: flex;
-  display: grid;
   align-items: center;
   list-style: none;
   display: flex;

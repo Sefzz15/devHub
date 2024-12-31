@@ -21,9 +21,13 @@
     <div *ngIf="generalError" class="error">{{ generalError }}</div>
 
     <!-- Submit Button -->
-    <div class="loginbuttontab">
+    <div>
       <button class="loginButton" type="submit">Login</button>
     </div>
-  </form>
 
-  <!-- <button (click)="mynameisjeff()" type="button">alert</button> -->
+    <!-- Link to Create User Page -->
+    <div>
+      <a class="btn btn-primary mb-3" routerLink="/firstpage/create-user">New User</a>
+    </div>
+  </form>
+</div>

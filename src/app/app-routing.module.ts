@@ -16,9 +16,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'firstpage', component: FirstpageComponent, canActivate: [AuthGuard] },
-  { path: 'secondpage', component: SecondpageComponent, canActivate: [AuthGuard] },
-  { path: 'firstpage/create-user', component: CreateUserComponent, canActivate: [AuthGuard] },
+  { path: 'firstpage/create-user', component: CreateUserComponent},
   { path: 'firstpage/update-user/:id', component: UpdateUserComponent, canActivate: [AuthGuard] },
+  { path: 'secondpage', component: SecondpageComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
