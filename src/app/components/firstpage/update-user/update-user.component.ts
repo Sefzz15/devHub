@@ -6,13 +6,14 @@ import { UserService } from '../../../../services/user.service';
   standalone: false,
   selector: 'app-update-user',
   templateUrl: './update-user.component.html',
-  styleUrls: ['./update-user.component.css'],
+  styleUrls: ['../create-user/create-user.component.css'],
 })
 export class UpdateUserComponent implements OnInit {
   user = { uid: 0, uname: '', upass: '' };
   errorMessage: string = '';
   usernameError: string = '';
   passwordError: string = '';
+  successMessage: string = '';
 
   constructor(private userService: UserService, private route: ActivatedRoute, private router: Router) { }
 
@@ -41,10 +42,10 @@ export class UpdateUserComponent implements OnInit {
     );
   }
 
-
   updateUser(): void {
     this.usernameError = '';
     this.passwordError = '';
+    this.successMessage = '';
 
     if (!this.user.uname) {
       this.usernameError = 'Username is required.';
@@ -60,7 +61,14 @@ export class UpdateUserComponent implements OnInit {
 
     this.userService.updateUser(this.user.uid, this.user).subscribe(
       () => {
-        this.router.navigate(['/firstpage']);
+        // Show success message
+        this.successMessage = 'User updated successfully. Redirecting...';
+
+        // Set a delay before redirecting
+        setTimeout(() => {
+          // After the delay, navigate to the first page
+          this.router.navigate(['/firstpage']);
+        }, 2000); // 2-second delay (2000ms)
       },
       (error: any) => {
         this.errorMessage = 'Failed to update the user.';

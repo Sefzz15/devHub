@@ -13,6 +13,8 @@ import { SecondpageComponent } from './components/secondpage/secondpage.componen
 import { NavbarComponent } from './navbar/navbar.component';
 import { CreateUserComponent } from './components/firstpage/create-user/create-user.component';
 import { UpdateUserComponent } from './components/firstpage/update-user/update-user.component';
+import { CreateCustomerComponent } from './components/secondpage/create-customer/create-customer.component';
+import { UpdateCustomerComponent } from './components/secondpage/update-customer/update-customer.component';
 
 
 @NgModule({
@@ -24,7 +26,9 @@ import { UpdateUserComponent } from './components/firstpage/update-user/update-u
     SecondpageComponent,
     NavbarComponent,
     CreateUserComponent,
-    UpdateUserComponent
+    UpdateUserComponent,
+    CreateCustomerComponent,
+    UpdateCustomerComponent
   ],
   imports: [
     RouterModule,

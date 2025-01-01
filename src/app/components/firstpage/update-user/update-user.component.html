@@ -29,5 +29,10 @@
         <a class="btn btn-outline-primary" routerLink="/firstpage" role="button">Cancel</a>
       </div>
     </form>
+    <!-- Success Message -->
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
   </div>
 </div>

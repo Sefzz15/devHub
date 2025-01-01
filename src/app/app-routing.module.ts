@@ -8,6 +8,8 @@ import { FirstpageComponent } from './components/firstpage/firstpage.component';
 import { SecondpageComponent } from './components/secondpage/secondpage.component';
 import { CreateUserComponent } from './components/firstpage/create-user/create-user.component';
 import { UpdateUserComponent } from './components/firstpage/update-user/update-user.component';
+import { CreateCustomerComponent } from './components/secondpage/create-customer/create-customer.component';
+import { UpdateCustomerComponent } from './components/secondpage/update-customer/update-customer.component';
 
 
 const routes: Routes = [
@@ -19,6 +21,8 @@ const routes: Routes = [
   { path: 'firstpage/create-user', component: CreateUserComponent},
   { path: 'firstpage/update-user/:id', component: UpdateUserComponent, canActivate: [AuthGuard] },
   { path: 'secondpage', component: SecondpageComponent, canActivate: [AuthGuard] },
+  { path: 'secondpage/create-customer', component: CreateCustomerComponent},
+  { path: 'secondpage/update-customer/:id', component: UpdateCustomerComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

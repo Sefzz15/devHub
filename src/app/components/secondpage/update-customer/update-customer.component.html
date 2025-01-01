@@ -1,0 +1,71 @@
+<div class="firstpage-container">
+  <div class="form-container">
+    <h1 class="form-header">Update Customer</h1>
+
+    <form (ngSubmit)="updateCustomer()">
+      <!-- Customer ID Field -->
+      <div class="form-group">
+        <label for="cid">Customer ID</label>
+        <input id="cid" class="form-control-plaintext" readonly [(ngModel)]="customer.cid" name="cid" />
+      </div>
+
+      <!-- First Name Field -->
+      <div class="form-group">
+        <label for="first_name">First Name</label>
+        <input id="first_name" class="form-control" [(ngModel)]="customer.first_name" name="first_name" required
+          minlength="2" />
+        <span *ngIf="firstnameError" class="text-danger">{{ firstnameError }}</span>
+      </div>
+
+      <!-- Last Name Field -->
+      <div class="form-group">
+        <label for="last_name">Last Name</label>
+        <input id="last_name" class="form-control" [(ngModel)]="customer.last_name" name="last_name" required
+          minlength="2" />
+        <span *ngIf="lastnameError" class="text-danger">{{ lastnameError }}</span>
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" class="form-control" type="email" [(ngModel)]="customer.email" name="email" required />
+        <span *ngIf="emailError" class="text-danger">{{ emailError }}</span>
+      </div>
+
+      <!-- Phone Field (Optional) -->
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input id="phone" class="form-control" [(ngModel)]="customer.phone" name="phone" />
+      </div>
+
+      <!-- Address Field (Optional) -->
+      <div class="form-group">
+        <label for="address">Address</label>
+        <input id="address" class="form-control" [(ngModel)]="customer.address" name="address" />
+      </div>
+
+      <!-- City Field -->
+      <div class="form-group">
+        <label for="city">City</label>
+        <input id="city" class="form-control" [(ngModel)]="customer.city" name="city" required />
+        <span *ngIf="cityError" class="text-danger">{{ cityError }}</span>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Success Message -->
+      <div *ngIf="successMessage" class="alert alert-success">
+        {{ successMessage }}
+      </div>
+
+      <!-- Buttons -->
+      <div class="button-group">
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a class="btn btn-outline-primary" routerLink="/secondpage" role="button">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
