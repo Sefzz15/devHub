@@ -9,7 +9,7 @@ import { CustomerService } from '../../../../services/customer.service';
   styleUrls: ['../../firstpage/create-user/create-user.component.css'],
 })
 export class UpdateCustomerComponent implements OnInit {
-  customer = { cid: 0, first_name: '', last_name: '', email: '', phone: '', address: '', city: '' };
+  customer = { c_id: 0, first_name: '', last_name: '', email: '', phone: '', address: '', city: '' };
   errorMessage: string = '';
   successMessage: string = '';
   firstnameError: string = '';
@@ -20,13 +20,13 @@ export class UpdateCustomerComponent implements OnInit {
   constructor(private customerService: CustomerService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-    const cid = this.route.snapshot.paramMap.get('id');
-    if (!cid) {
+    const c_id = this.route.snapshot.paramMap.get('id');
+    if (!c_id) {
       this.errorMessage = 'Route parameter "id" is missing or invalid.';
       return;
     }
 
-    const customerId = Number(cid);
+    const customerId = Number(c_id);
 
     this.customerService.getCustomer(customerId).subscribe(
       (data: any) => {
@@ -45,7 +45,7 @@ export class UpdateCustomerComponent implements OnInit {
       return;
     }
 
-    this.customerService.updateCustomer(this.customer.cid, this.customer).subscribe(
+    this.customerService.updateCustomer(this.customer.c_id, this.customer).subscribe(
       () => {
         this.successMessage = 'Customer updated successfully.';
         // Redirect after a short delay to show the success message
