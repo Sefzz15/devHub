@@ -15,6 +15,7 @@ import { CreateUserComponent } from './components/firstpage/create-user/create-u
 import { UpdateUserComponent } from './components/firstpage/update-user/update-user.component';
 import { CreateCustomerComponent } from './components/secondpage/create-customer/create-customer.component';
 import { UpdateCustomerComponent } from './components/secondpage/update-customer/update-customer.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { UpdateCustomerComponent } from './components/secondpage/update-customer
     UpdateUserComponent,
     CreateCustomerComponent,
     UpdateCustomerComponent,
+    ChatComponent,
   ],
   imports: [
     RouterModule,

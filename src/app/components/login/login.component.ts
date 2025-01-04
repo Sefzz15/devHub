@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
+import { SessionService } from '../../../services/session.service';
+
 
 @Component({
   standalone: false,
@@ -17,7 +19,8 @@ export class LoginComponent {
 
   constructor(
     private _router: Router,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _sessionService: SessionService
   ) { }
 
   onSubmit() {
@@ -42,6 +45,7 @@ export class LoginComponent {
         if (isAuthenticated) {
           this._router.navigate(['/dashboard']);
           console.log('You successfully logged in...');
+          this._sessionService.username = this.username;
         } else {
           // Set general error message if authentication fails
           this.generalError = this._authService.generalError;

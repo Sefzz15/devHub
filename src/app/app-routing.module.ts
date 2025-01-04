@@ -10,6 +10,7 @@ import { CreateUserComponent } from './components/firstpage/create-user/create-u
 import { UpdateUserComponent } from './components/firstpage/update-user/update-user.component';
 import { CreateCustomerComponent } from './components/secondpage/create-customer/create-customer.component';
 import { UpdateCustomerComponent } from './components/secondpage/update-customer/update-customer.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 
 const routes: Routes = [
@@ -19,10 +20,11 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'firstpage', component: FirstpageComponent, canActivate: [AuthGuard] },
   { path: 'firstpage/create-user', component: CreateUserComponent },
-  { path: 'firstpage/update-user/:id', component: UpdateUserComponent, canActivate: [AuthGuard] },  // Match dynamic route here
+  { path: 'firstpage/update-user/:id', component: UpdateUserComponent, canActivate: [AuthGuard] },
   { path: 'secondpage', component: SecondpageComponent, canActivate: [AuthGuard] },
   { path: 'secondpage/create-customer', component: CreateCustomerComponent },
-  { path: 'secondpage/update-customer/:id', component: UpdateCustomerComponent, canActivate: [AuthGuard] },  // Match dynamic route here
+  { path: 'secondpage/update-customer/:id', component: UpdateCustomerComponent, canActivate: [AuthGuard] },
+  { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
 ];
 
 
