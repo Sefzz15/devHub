@@ -1,21 +1,18 @@
 .dashboard-container {
-    height: 100vh;
-    background-color: #b6ebfc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  height: 100vh;
+  background-color: #b6ebfc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .logoutButton {
-    display: flex;
-    padding: 1em;
-    background: #3e4684;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-left: 1.5em;
-
+  padding: 1em;
+  background: #3e4684;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
 }

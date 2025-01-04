@@ -10,10 +10,11 @@ import { UserService } from '../../../../services/user.service';
 })
 export class CreateUserComponent implements OnInit {
   user = { uname: '', upass: '' };
-  errorMessage: string = '';
   usernameError: string = '';
   passwordError: string = '';
   successMessage: string = '';
+  errorMessage: string = '';
+  generalError: string = '';
 
   constructor(private userService: UserService, private router: Router) { }
 
@@ -23,24 +24,18 @@ export class CreateUserComponent implements OnInit {
 
   createUser(): void {
     // Clear previous error messages
-    this.usernameError = '';
-    this.passwordError = '';
-    this.successMessage = '';
+    this.clearErrorMessages();
 
-    // Basic validation for required fields
-    if (!this.user.uname) {
-      this.usernameError = 'Username is required.';
-    }
-
-    if (!this.user.upass) {
-      this.passwordError = 'Password is required.';
-      return; // Stop the form submission if there are validation errors
+    // Validate user inputs
+    if (!this.validateInputs()) {
+      return; // If validation fails, stop the form submission
     }
 
     // Call the service to create the user
     this.userService.createUser(this.user).subscribe(
       (response: any) => {
         // Show success message
+        this.errorMessage = '';
         this.successMessage = 'User created successfully. Redirecting...';
 
         // Set a delay before redirecting
@@ -55,7 +50,27 @@ export class CreateUserComponent implements OnInit {
     );
   }
 
-  clearErrorMessage(): void {
-    this.errorMessage = '';
+  clearErrorMessages(): void {
+    this.usernameError = '';
+    this.passwordError = '';
+    this.successMessage = '';
+  }
+
+  validateInputs(): boolean {
+    let isValid = true;
+
+    // Username validation
+    if (!this.user.uname) {
+      this.usernameError = 'Username is required.';
+      isValid = false;
+    }
+
+    // Password validation
+    if (!this.user.upass) {
+      this.passwordError = 'Password is required.';
+      isValid = false;
+    }
+
+    return isValid;
   }
 }

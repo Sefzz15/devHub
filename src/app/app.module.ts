@@ -16,7 +16,6 @@ import { UpdateUserComponent } from './components/firstpage/update-user/update-u
 import { CreateCustomerComponent } from './components/secondpage/create-customer/create-customer.component';
 import { UpdateCustomerComponent } from './components/secondpage/update-customer/update-customer.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +27,7 @@ import { UpdateCustomerComponent } from './components/secondpage/update-customer
     CreateUserComponent,
     UpdateUserComponent,
     CreateCustomerComponent,
-    UpdateCustomerComponent
+    UpdateCustomerComponent,
   ],
   imports: [
     RouterModule,
@@ -39,7 +38,7 @@ import { UpdateCustomerComponent } from './components/secondpage/update-customer
     MatToolbarModule,
   ],
   providers: [
-    provideClientHydration(withEventReplay())
+    provideClientHydration(withEventReplay()),
   ],
   bootstrap: [AppComponent]
 })

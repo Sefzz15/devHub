@@ -11,11 +11,10 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
   isAuthenticated: boolean = false;
 
-  constructor(private _authService: AuthService,
-    private _router: Router,
-  ) {
+  constructor(private _authService: AuthService, private _router: Router,) {
 
   }
+
   ngOnInit(): void {
     this._authService.isAuthenticated.subscribe(token => {
       this.isAuthenticated = token; // Update local state
@@ -31,8 +30,8 @@ export class NavbarComponent implements OnInit {
   }
 
   LogOut(): void {
-    console.log('You successfully logged out...');
-    alert("ekanes log out");
+    alert("You successfully logged out...");
     this._authService.logout();
+    this._router.navigate(['/']);
   }
 }

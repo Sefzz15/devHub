@@ -10,15 +10,14 @@ import { AuthService } from '../../../services/auth.service';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-  constructor(private _router: Router,
-    private _authService: AuthService,
-
-  ) {
+  constructor(private _router: Router, private _authService: AuthService,) {
 
   }
-  LogOut() {
-    this._router.navigate(['/login']);
-    console.log('you successfully logged out...');
+
+  LogOut(): void {
+    alert("You successfully logged out...");
     this._authService.logout();
+    this._router.navigate(['/']);
+
   }
 }

@@ -2,12 +2,6 @@
   <div class="form-container">
     <h1 class="form-header">Create User</h1>
 
-    <!-- Error Message -->
-    <div *ngIf="errorMessage.length > 0" class="alert alert-danger">
-      <strong>{{ errorMessage }}</strong>
-      <button type="button" aria-label="Close" (click)="clearErrorMessage()" class="close">&times;</button>
-    </div>
-
     <form (ngSubmit)="createUser()">
       <!-- Username Field -->
       <div class="form-group">
@@ -26,13 +20,18 @@
       <!-- Buttons -->
       <div class="button-group">
         <button type="submit" class="btn btn-primary">Create</button>
-        <a class="btn btn-outline-primary" routerLink="/firstpage" role="button">Cancel</a>
+        <a class="btn btn-outline-primary" routerLink="/firstpage">Cancel</a>
       </div>
     </form>
+
     <!-- Success Message -->
     <div *ngIf="successMessage" class="alert alert-success">
       {{ successMessage }}
     </div>
 
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" >
+      <div class="error">{{ errorMessage }}</div>
+    </div>
   </div>
 </div>

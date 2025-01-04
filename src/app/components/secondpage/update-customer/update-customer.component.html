@@ -6,8 +6,7 @@
       <!-- Customer ID Field -->
       <div class="form-group">
         <label for="c_id">Customer ID</label>
-        <input id="c_id" class="form-control-plaintext" r
-        eadonly [(ngModel)]="customer.c_id" name="c_id" />
+        <input id="c_id" class="form-control-plaintext" readonly [(ngModel)]="customer.c_id" name="c_id" />
       </div>
 
       <!-- First Name Field -->
@@ -53,12 +52,12 @@
       </div>
 
       <!-- Error Message -->
-      <div *ngIf="errorMessage" class="alert alert-danger">
+      <div *ngIf="errorMessage">
         {{ errorMessage }}
       </div>
 
       <!-- Success Message -->
-      <div *ngIf="successMessage" class="alert alert-success">
+      <div *ngIf="successMessage">
         {{ successMessage }}
       </div>
 

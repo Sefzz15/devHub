@@ -23,7 +23,6 @@ export class AuthService {
         if (response.message === 'Login successful!' && response.token) {
           const token = response.token;
           this.isAuthenticatedSubject.next(true);
-          console.log('Authenticated successfully');
           console.log('Generated Token:', token);
           return true;
         } else {
@@ -50,13 +49,11 @@ export class AuthService {
     );
   }
 
-
   get isAuthenticated(): Observable<boolean> {
     return this.isAuthenticatedSubject.asObservable();
   }
 
   logout(): void {
     this.isAuthenticatedSubject.next(false);
-    this.token = null;
   }
 }

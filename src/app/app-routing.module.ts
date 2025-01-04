@@ -18,12 +18,13 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'firstpage', component: FirstpageComponent, canActivate: [AuthGuard] },
-  { path: 'firstpage/create-user', component: CreateUserComponent},
-  { path: 'firstpage/update-user/:id', component: UpdateUserComponent, canActivate: [AuthGuard] },
+  { path: 'firstpage/create-user', component: CreateUserComponent },
+  { path: 'firstpage/update-user/:id', component: UpdateUserComponent, canActivate: [AuthGuard] },  // Match dynamic route here
   { path: 'secondpage', component: SecondpageComponent, canActivate: [AuthGuard] },
-  { path: 'secondpage/create-customer', component: CreateCustomerComponent},
-  { path: 'secondpage/update-customer/:id', component: UpdateCustomerComponent, canActivate: [AuthGuard] },
+  { path: 'secondpage/create-customer', component: CreateCustomerComponent },
+  { path: 'secondpage/update-customer/:id', component: UpdateCustomerComponent, canActivate: [AuthGuard] },  // Match dynamic route here
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

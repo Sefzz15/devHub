@@ -46,19 +46,19 @@
       </div>
 
       <!-- Error Message -->
-      <div *ngIf="errorMessage" class="alert alert-danger">
+      <div *ngIf="errorMessage">
         {{ errorMessage }}
       </div>
 
       <!-- Success Message -->
-      <div *ngIf="successMessage" class="alert alert-success">
+      <div *ngIf="successMessage">
         {{ successMessage }}
       </div>
 
       <!-- Buttons -->
       <div class="button-group">
         <button type="submit" class="btn btn-primary">Create</button>
-        <a class="btn btn-outline-primary" routerLink="/secondpage" role="button">Cancel</a>
+        <a class="btn btn-outline-primary" routerLink="/secondpage">Cancel</a>
       </div>
     </form>
   </div>

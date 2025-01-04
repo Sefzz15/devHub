@@ -62,6 +62,7 @@ export class UpdateUserComponent implements OnInit {
     this.userService.updateUser(this.user.uid, this.user).subscribe(
       () => {
         // Show success message
+        this.errorMessage = '';
         this.successMessage = 'User updated successfully. Redirecting...';
 
         // Set a delay before redirecting
@@ -71,7 +72,7 @@ export class UpdateUserComponent implements OnInit {
         }, 2000); // 2-second delay (2000ms)
       },
       (error: any) => {
-        this.errorMessage = 'Failed to update the user.';
+        this.errorMessage = 'Failed to update the user. Please try again later.';
       }
     );
   }

@@ -5,7 +5,7 @@ import { CustomerService } from '../../../services/customer.service';
   standalone: false,
   selector: 'app-secondpage',
   templateUrl: './secondpage.component.html',
-  styleUrl: './secondpage.component.css'
+  styleUrls: ['../firstpage/firstpage.component.css'],
 })
 export class SecondpageComponent implements OnInit {
   customers: any[] = [];

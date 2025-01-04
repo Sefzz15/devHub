@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerService } from '../../../../services/customer.service';
 
+
 @Component({
   standalone: false,
   selector: 'app-update-customer',
@@ -47,12 +48,13 @@ export class UpdateCustomerComponent implements OnInit {
 
     this.customerService.updateCustomer(this.customer.c_id, this.customer).subscribe(
       () => {
+        this.errorMessage = '';
         this.successMessage = 'Customer updated successfully.';
         // Redirect after a short delay to show the success message
         setTimeout(() => this.router.navigate(['/secondpage']), 1500);
       },
       (error: any) => {
-        this.errorMessage = `Failed to update the customer. Error: ${error.message}`;
+        this.errorMessage = `Failed to update the customer. Customer with that e-mail already exists.`;
       }
     );
   }

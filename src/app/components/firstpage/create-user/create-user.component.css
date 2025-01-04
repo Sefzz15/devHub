@@ -63,11 +63,6 @@
   cursor: pointer;
 }
 
-.btn-primary,
-.btn-outline-primary {
-  transition: background-color 0.3s ease, all 0.3s ease;
-}
-
 .btn-primary {
   background-color: #3e4684;
   color: white;
@@ -87,4 +82,11 @@
 .btn-outline-primary:hover {
   background-color: #3e4684;
   color: white;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 10px;
+  font-style: italic;
 }

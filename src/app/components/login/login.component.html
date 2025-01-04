@@ -2,17 +2,17 @@
   <h2>Login</h2>
   <form (ngSubmit)="onSubmit()">
     <!-- Username Field -->
-    <div class="usernametab">
-      <label class="username" for="username">Username:</label>
-      <input class="unTf" type="text" id="username" [(ngModel)]="username" name="username" required>
+    <div class="input-container">
+      <label for="username">Username:</label>
+      <input class="input-field" type="text" id="username" [(ngModel)]="username" name="username" required>
       <!-- Error Message for Username -->
       <div *ngIf="usernameError" class="error">{{ usernameError }}</div>
     </div>
 
     <!-- Password Field -->
-    <div class="passwordtab">
-      <label class="password" for="password">Password:</label>
-      <input class="passTF" id="password" type="password" [(ngModel)]="password" name="password" required>
+    <div class="input-container">
+      <label for="password">Password:</label>
+      <input class="input-field" id="password" type="password" [(ngModel)]="password" name="password" required>
       <!-- Error Message for Password -->
       <div *ngIf="passwordError" class="error">{{ passwordError }}</div>
     </div>

@@ -6,7 +6,7 @@
       <!-- User ID Field -->
       <div class="form-group">
         <label for="uid">User ID</label>
-        <input id="uid" class="form-control-plaintext" readonly [(ngModel)]="user.uid" name="uid" />
+        <input id="uid" class="form-control" readonly [(ngModel)]="user.uid" name="uid" />
       </div>
 
       <!-- Username Field -->
@@ -26,12 +26,18 @@
       <!-- Buttons -->
       <div class="button-group">
         <button type="submit" class="btn btn-primary">Update</button>
-        <a class="btn btn-outline-primary" routerLink="/firstpage" role="button">Cancel</a>
+        <a class="btn btn-outline-primary" routerLink="/firstpage">Cancel</a>
       </div>
     </form>
+
     <!-- Success Message -->
-    <div *ngIf="successMessage" class="alert alert-success">
+    <div *ngIf="successMessage">
       {{ successMessage }}
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage">
+      <div class="error">{{ errorMessage }}</div>
     </div>
 
   </div>

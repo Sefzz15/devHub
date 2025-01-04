@@ -26,42 +26,59 @@ export class CreateCustomerComponent implements OnInit {
   createCustomer(): void {
     this.clearMessages();
 
+    // Ensure that validation errors prevent form submission
     if (!this.validateInputs()) {
-      return;
+      return;  // If validation fails, stop further execution
     }
 
+    // If validation passes, proceed with customer creation
     this.customerService.createCustomer(this.customer).subscribe(
       () => {
+        this.errorMessage = '';
         this.successMessage = 'Customer created successfully.';
         // Redirect after a short delay to show the success message
         setTimeout(() => this.router.navigate(['/secondpage']), 1500);
       },
       (error: any) => {
-        this.errorMessage = `Failed to create the customer. Error: ${error.message}`;
+        this.errorMessage = `Failed to create the customer. Customer with that e-mail already exists.`;
       }
     );
   }
 
   validateInputs(): boolean {
+    let isValid = true;
+
+    // Clear previous error messages
+    this.firstnameError = '';
+    this.lastnameError = '';
+    this.emailError = '';
+    this.cityError = '';
+
+    // Validate fields and set errors if any
     if (!this.customer.first_name) {
       this.firstnameError = 'First name is required.';
+      isValid = false;
     }
 
     if (!this.customer.last_name) {
       this.lastnameError = 'Last name is required.';
+      isValid = false;
     }
 
     if (!this.customer.email) {
       this.emailError = 'Email is required.';
+      isValid = false;
     } else if (!this.isValidEmail(this.customer.email)) {
       this.emailError = 'Invalid email format.';
+      isValid = false;
     }
 
     if (!this.customer.city) {
       this.cityError = 'City is required.';
+      isValid = false;
     }
 
-    return !this.firstnameError && !this.lastnameError && !this.emailError && !this.cityError;
+    return isValid; // Return false if any field is invalid
   }
 
   isValidEmail(email: string): boolean {
