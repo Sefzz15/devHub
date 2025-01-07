@@ -2,12 +2,12 @@ html,
 body {
   height: 100%;
   margin: 0;
-  overflow: hidden;  /* Hides both horizontal and vertical scrollbars */
+  overflow: hidden;
 }
 
 @media screen and (max-width: 600px) {
   body {
     margin: 0;
-    padding-left: 200px;
+    padding-left: 180px;
   }
 }

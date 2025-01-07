@@ -16,6 +16,13 @@ import { UpdateUserComponent } from './components/firstpage/update-user/update-u
 import { CreateCustomerComponent } from './components/secondpage/create-customer/create-customer.component';
 import { UpdateCustomerComponent } from './components/secondpage/update-customer/update-customer.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
+import { CreateProductComponent } from './components/thirdpage/create-product/create-product.component';
+import { UpdateProductComponent } from './components/thirdpage/update-product/update-product.component';
+import { CreateOrderComponent } from './components/thirdpage/create-order/create-order.component';
+import { UpdateOrderComponent } from './components/thirdpage/update-order/update-order.component';
+import { CreateOrderdetailComponent } from './components/thirdpage/create-orderdetail/create-orderdetail.component';
+import { UpdateOrderdetailComponent } from './components/thirdpage/update-orderdetail/update-orderdetail.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +37,13 @@ import { ChatComponent } from './components/chat/chat.component';
     CreateCustomerComponent,
     UpdateCustomerComponent,
     ChatComponent,
+    ThirdpageComponent,
+    CreateProductComponent,
+    UpdateProductComponent,
+    CreateOrderComponent,
+    UpdateOrderComponent,
+    CreateOrderdetailComponent,
+    UpdateOrderdetailComponent,
   ],
   imports: [
     RouterModule,

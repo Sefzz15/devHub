@@ -16,11 +16,6 @@ export class CustomerService {
     return this.http.get<any>(`${this._url}`);
   }
 
-  // // Get a customer
-  // getCustomer(id: number): Observable<any> {
-  //   return this.http.get<any>(`${this._url}`);
-  // }
-
   // Get a specific customer by ID
   getCustomer(id: number): Observable<any> {
     return this.http.get<any>(`${this._url}/${id}`);
