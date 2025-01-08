@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { SessionService } from '../../../services/session.service';
 
@@ -9,6 +9,7 @@ import { SessionService } from '../../../services/session.service';
   styleUrls: ['./chat.component.css'],
 })
 export class ChatComponent implements OnInit, OnDestroy {
+  @ViewChild('chatWindow') private chatWindowRef!: ElementRef; // ViewChild reference to the chat window
 
   messages: { text: string; isSender: boolean }[] = [];
   messageInput: string = '';
@@ -27,13 +28,14 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
 
     this.connection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:5001/chathub")
+      .withUrl('http://localhost:5001/chathub')
       // .withUrl("http://192.168.1.180:5001/chathub")
       .withAutomaticReconnect()
       .build();
 
     // Start the connection
-    this.connection.start()
+    this.connection
+      .start()
       .then(() => {
         console.log('SignalR Connected.');
       })
@@ -43,6 +45,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.connection.on('ReceiveMessage', (user: string, message: string) => {
       if (user !== this.username) {
         this.messages.push({ text: `${user}: ${message}`, isSender: false });
+        this.scrollToBottom(); // Scroll to bottom when a new message is received
       }
     });
   }
@@ -52,13 +55,23 @@ export class ChatComponent implements OnInit, OnDestroy {
       const user = this.username;
 
       // Send message to the backend
-      this.connection.invoke('SendMessage', user, this.messageInput)
+      this.connection
+        .invoke('SendMessage', user, this.messageInput)
         .then(() => {
           this.messages.push({ text: `${user}: ${this.messageInput}`, isSender: true });
           this.messageInput = '';
+          this.scrollToBottom(); // Scroll to bottom after sending a message
         })
         .catch((err) => console.error('Error while sending message: ', err));
     }
+  }
+
+  // Scrolls the chat window to the bottom
+  private scrollToBottom(): void {
+    setTimeout(() => {
+      const chatWindow = this.chatWindowRef.nativeElement;
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }, 100); // Slight delay to ensure the DOM updates before scrolling
   }
 
   ngOnDestroy() {

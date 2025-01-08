@@ -1,1 +1,51 @@
-<p>create-product works!</p>
+<div class="firstpage-container">
+  <div class="form-container">
+    <h1 class="form-header">Create Product</h1>
+
+    <form (ngSubmit)="createProduct()">
+      <!-- Product Name Field -->
+      <div class="form-group">
+        <label for="p_name">Product Name</label>
+        <input id="p_name" class="form-control" [(ngModel)]="product.p_name" name="p_name" required />
+        <span *ngIf="productnameError" class="text-danger">{{ productnameError }}</span>
+      </div>
+
+      <!-- Description Field -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input id="description" class="form-control" [(ngModel)]="product.description" name="description" required />
+      </div>
+
+      <!-- Price Field -->
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input id="price" class="form-control" [(ngModel)]="product.price" name="price" required />
+        <span *ngIf="productpriceError" class="text-danger">{{ productpriceError }}</span>
+      </div>
+
+      <!-- Quantity Field -->
+      <div class="form-group">
+        <label for="stock_quantity">Stock Quantity</label>
+        <input id="stock_quantity" class="form-control" [(ngModel)]="product.stock_quantity" name="stock_quantity" required />
+        <span *ngIf="productquantityError" class="text-danger">{{ productquantityError }}</span>
+      </div>
+
+
+      <!-- Buttons -->
+      <div class="button-group">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a class="btn btn-outline-primary" routerLink="/thirdpage">Cancel</a>
+      </div>
+    </form>
+
+    <!-- Success Message -->
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage">
+      <div class="error">{{ errorMessage }}</div>
+    </div>
+  </div>
+</div>

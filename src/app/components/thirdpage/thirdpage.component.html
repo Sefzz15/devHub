@@ -1,5 +1,4 @@
 <nav class="container">
-  <!-- ******************* OLA TA LINK 8ELOUN DIORTHOSI -->
 
   <h1>Product List</h1>
   <a class="btn btn-primary" routerLink="/thirdpage/create-product">New Product</a>
@@ -22,13 +21,12 @@
         <td>{{ product.price }}</td>
         <td>{{ product.stock_quantity }}</td>
         <td>
-          <a class="btn btn-primary btn-sm" [routerLink]="['/thirdpage/update-product', product.c_id]">Update</a>
-          <a class="btn btn-danger btn-sm" (click)="deleteProduct(product.c_id)">Delete</a>
+          <a class="btn btn-primary btn-sm" [routerLink]="['/thirdpage/update-product', product.p_id]">Update</a>
+          <a class="btn btn-danger btn-sm" (click)="deleteProduct(product.p_id)">Delete</a>
         </td>
       </tr>
     </tbody>
   </table>
-
 
 
   <h1>Order List</h1>
@@ -53,12 +51,11 @@
         <td>{{ order.status }}</td>
         <td>
           <a class="btn btn-primary btn-sm" [routerLink]="['/thirdpage/update-order', order.c_id]">Update</a>
-          <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.c_id)">Delete</a>
+          <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.o_id)">Delete</a>
         </td>
       </tr>
     </tbody>
   </table>
-
 
 
   <h1>OrderDetails List</h1>
@@ -84,9 +81,35 @@
         <td>
           <a class="btn btn-primary btn-sm"
             [routerLink]="['/thirdpage/update-orderdetail', orderdetail.c_id]">Update</a>
-          <a class="btn btn-danger btn-sm" (click)="deleteOrderDetail(orderdetail.c_id)">Delete</a>
+          <a class="btn btn-danger btn-sm" (click)="deleteOrderDetail(orderdetail.o_details_id)">Delete</a>
         </td>
       </tr>
     </tbody>
   </table>
+
+
+  <h1>Joined Tables List</h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Customer Name</th>
+        <th>Order ID</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of datas">
+        <td>{{ data.CustomerName }}</td>
+        <td>{{ data.OrderID }}</td>
+        <td>{{ data.ProductName }}</td>
+        <td>{{ data.Quantity }}</td>
+        <td>{{ data.PricePerUnit }}</td>
+        <td>{{ data.TotalPriceForProduct }}</td>
+      </tr>
+    </tbody>
+  </table>
+
 </nav>

@@ -1,6 +1,6 @@
 <div class="container">
   <h1>Chat Application</h1>
-  <div class="chat-window">
+  <div class="chat-window" #chatWindow>
     <div *ngFor="let message of messages" [class]="message.isSender ? 'bubble sender' : 'bubble receiver'">
       <p>{{ message.text }}</p>
     </div>
