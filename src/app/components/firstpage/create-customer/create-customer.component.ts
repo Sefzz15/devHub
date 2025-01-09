@@ -37,10 +37,10 @@ export class CreateCustomerComponent implements OnInit {
         this.errorMessage = '';
         this.successMessage = 'Customer created successfully.';
         // Redirect after a short delay to show the success message
-        setTimeout(() => this.router.navigate(['/secondpage']), 1500);
+        setTimeout(() => this.router.navigate(['/firstpage']), 1500);
       },
       (error: any) => {
-        this.errorMessage = `Failed to create the customer. Customer with that e-mail already exists.`;
+        this.errorMessage = `Failed to create the customer. Please try again later.`;
       }
     );
   }

@@ -9,20 +9,19 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FirstpageComponent } from './components/firstpage/firstpage.component';
-import { SecondpageComponent } from './components/secondpage/secondpage.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { CreateUserComponent } from './components/firstpage/create-user/create-user.component';
 import { UpdateUserComponent } from './components/firstpage/update-user/update-user.component';
-import { CreateCustomerComponent } from './components/secondpage/create-customer/create-customer.component';
-import { UpdateCustomerComponent } from './components/secondpage/update-customer/update-customer.component';
+import { CreateCustomerComponent } from './components/firstpage/create-customer/create-customer.component';
+import { UpdateCustomerComponent } from './components/firstpage/update-customer/update-customer.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
-import { CreateProductComponent } from './components/thirdpage/create-product/create-product.component';
-import { UpdateProductComponent } from './components/thirdpage/update-product/update-product.component';
-import { CreateOrderComponent } from './components/thirdpage/create-order/create-order.component';
-import { UpdateOrderComponent } from './components/thirdpage/update-order/update-order.component';
-import { CreateOrderdetailComponent } from './components/thirdpage/create-orderdetail/create-orderdetail.component';
-import { UpdateOrderdetailComponent } from './components/thirdpage/update-orderdetail/update-orderdetail.component';
+import { CreateProductComponent } from './components/firstpage/create-product/create-product.component';
+import { UpdateProductComponent } from './components/firstpage/update-product/update-product.component';
+import { CreateOrderComponent } from './components/firstpage/create-order/create-order.component';
+import { UpdateOrderComponent } from './components/firstpage/update-order/update-order.component';
+import { CreateOrderdetailComponent } from './components/firstpage/create-orderdetail/create-orderdetail.component';
+import { UpdateOrderdetailComponent } from './components/firstpage/update-orderdetail/update-orderdetail.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +29,6 @@ import { UpdateOrderdetailComponent } from './components/thirdpage/update-orderd
     LoginComponent,
     DashboardComponent,
     FirstpageComponent,
-    SecondpageComponent,
     NavbarComponent,
     CreateUserComponent,
     UpdateUserComponent,

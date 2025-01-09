@@ -1,4 +1,30 @@
-<div class="dashboard-container">
+<div class="container">
   <h1>You have successfully logged in!</h1>
-  <button class="logoutButton" (click)="LogOut()">Log out.</button>
+
+  <div class="products-container">
+    <h2>Product List</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{ product.name }}</td>
+          <td>{{ product.quantity }}</td>
+          <td>
+            <button class="btn btn-sm btn-danger" (click)="decreaseQuantity(product)">-</button>
+            <span class="mx-2">{{ product.quantity }}</span>
+            <button class="btn btn-sm btn-success" (click)="increaseQuantity(product)">+</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-primary" (click)="buyProducts()">Buy</button>
+  </div>
+
+  <button class="btn btn-danger logoutButton" (click)="LogOut()">Log out</button>
 </div>

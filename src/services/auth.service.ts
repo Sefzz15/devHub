@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { SessionService } from './session.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,19 +16,26 @@ export class AuthService {
 
   public generalError: string = '';
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient, private _sessionService: SessionService) { }
 
   authenticate(username: string, password: string): Observable<boolean> {
-    return this._http.post<{ message: string; token?: string }>(this._url, { username, password }).pipe(
+    return this._http.post<{ message: string; token?: string; userID?: number }>(this._url, { username, password }).pipe(
       map(response => {
         console.log('Server response:', response); // Log the full server response
         if (response.message === 'Login successful!' && response.token) {
           const token = response.token;
+          const userID = response.userID; // Extract userID
           this.isAuthenticatedSubject.next(true);
+
+          // Update SessionService with the username and userID
+          this._sessionService.username = username;  // Set the username
+          this._sessionService.userID = userID || 0;  // Set the userID (default to 0 if not available)
+
           console.log('Generated Token:', token);
+          console.log('User ID:', userID);  // Log userID to the console
           return true;
         } else {
-          console.log('Authentication failed a');
+          console.log('Authentication failed');
           this.isAuthenticatedSubject.next(false);
           return false;
         }

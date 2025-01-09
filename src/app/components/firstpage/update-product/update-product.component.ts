@@ -74,8 +74,8 @@ export class UpdateProductComponent implements OnInit {
 
         // Set a delay before redirecting
         setTimeout(() => {
-          // After the delay, navigate to the third page
-          this.router.navigate(['/thirdpage']);
+          // After the delay, navigate to the first page
+          this.router.navigate(['/firstpage']);
         }, 2000); // 2-second delay (2000ms)
       },
       (error: any) => {

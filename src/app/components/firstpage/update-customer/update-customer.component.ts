@@ -51,10 +51,10 @@ export class UpdateCustomerComponent implements OnInit {
         this.errorMessage = '';
         this.successMessage = 'Customer updated successfully.';
         // Redirect after a short delay to show the success message
-        setTimeout(() => this.router.navigate(['/secondpage']), 1500);
+        setTimeout(() => this.router.navigate(['/firstpage']), 1500);
       },
       (error: any) => {
-        this.errorMessage = `Failed to update the customer. Customer with that e-mail already exists.`;
+        this.errorMessage = `Failed to update the customer. Please try again.`;
       }
     );
   }

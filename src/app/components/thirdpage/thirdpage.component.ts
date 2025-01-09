@@ -9,7 +9,7 @@ import { forkJoin } from 'rxjs';
   standalone: false,
   selector: 'app-thirdpage',
   templateUrl: './thirdpage.component.html',
-  styleUrls: ['../firstpage/firstpage.component.css', './thirdpage.component.css'],
+  styleUrls: ['../firstpage/firstpage.component.css'],
 })
 export class ThirdpageComponent implements OnInit {
   customers: any[] = [];
@@ -26,6 +26,7 @@ export class ThirdpageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // Fetch all necessary data in parallel
     forkJoin({
       products: this.productService.getProducts(),
       orders: this.orderService.getOrders(),
@@ -38,6 +39,7 @@ export class ThirdpageComponent implements OnInit {
         this.orderdetails = data.orderdetails;
         this.customers = data.customers;
 
+        // Get combined order details directly without maps
         this.getCompleteOrderDetails();
       },
       error: (error) => {
@@ -47,18 +49,18 @@ export class ThirdpageComponent implements OnInit {
   }
 
   // Utility function to get customer name by ID
-  getCustomerName(c_id: number): string {
+  private getCustomerName(c_id: number): string {
     const customer = this.customers.find(c => c.c_id === c_id);
     return customer ? customer.first_name : 'Unknown';
   }
 
   // Utility function to get product by ID
-  getProductById(p_id: number): any {
+  private getProductById(p_id: number): any {
     return this.products.find(product => product.p_id === p_id) || null;
   }
 
   // Process and combine orders with relevant details
-  getCompleteOrderDetails(): void {
+  private getCompleteOrderDetails(): void {
     if (this.customers.length && this.products.length && this.orders.length && this.orderdetails.length) {
       console.log('All data is loaded, processing...');
 
@@ -84,69 +86,5 @@ export class ThirdpageComponent implements OnInit {
     } else {
       console.log('Not all data is loaded');
     }
-  }
-
-  // Delete a product
-  deleteProduct(id: number): void {
-    if (confirm('Are you sure you want to delete this product?')) {
-      this.productService.deleteProduct(id).subscribe(() => {
-        this.getProducts();  // Refresh the product list
-      });
-    }
-  }
-
-  // Delete an order
-  deleteOrder(id: number): void {
-    if (confirm('Are you sure you want to delete this order?')) {
-      this.orderService.deleteOrder(id).subscribe(() => {
-        this.getOrders();  // Refresh the orders list
-        this.getOrderDetails();  // Refresh the order detail list because on delete cascade is implemented
-      });
-    }
-  }
-
-  // Delete an order detail
-  deleteOrderDetail(id: number): void {
-    if (confirm('Are you sure you want to delete this order detail entry?')) {
-      this.orderdetailService.deleteOrderDetail(id).subscribe(() => {
-        this.getOrderDetails();  // Refresh the order detail list
-      });
-    }
-  }
-
-  // Fetch products after deletion
-  getProducts(): void {
-    this.productService.getProducts().subscribe(
-      (data: any) => {
-        this.products = data;
-      },
-      (error: any) => {
-        console.error('Error fetching products:', error);
-      }
-    );
-  }
-
-  // Fetch orders after deletion
-  getOrders(): void {
-    this.orderService.getOrders().subscribe(
-      (data: any) => {
-        this.orders = data;
-      },
-      (error: any) => {
-        console.error('Error fetching orders:', error);
-      }
-    );
-  }
-
-  // Fetch order details after deletion
-  getOrderDetails(): void {
-    this.orderdetailService.getOrderDetails().subscribe(
-      (data: any) => {
-        this.orderdetails = data;
-      },
-      (error: any) => {
-        console.error('Error fetching order details:', error);
-      }
-    );
   }
 }
