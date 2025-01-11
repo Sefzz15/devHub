@@ -15,10 +15,6 @@ import { UpdateCustomerComponent } from './components/firstpage/update-customer/
 import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
 import { CreateProductComponent } from './components/firstpage/create-product/create-product.component';
 import { UpdateProductComponent } from './components/firstpage/update-product/update-product.component';
-import { CreateOrderComponent } from './components/firstpage/create-order/create-order.component';
-import { UpdateOrderComponent } from './components/firstpage/update-order/update-order.component';
-import { CreateOrderdetailComponent } from './components/firstpage/create-orderdetail/create-orderdetail.component';
-import { UpdateOrderdetailComponent } from './components/firstpage/update-orderdetail/update-orderdetail.component';
 
 import { ChatComponent } from './components/chat/chat.component';
 
@@ -35,10 +31,6 @@ const routes: Routes = [
   { path: 'firstpage/update-customer/:id', component: UpdateCustomerComponent, canActivate: [AuthGuard] },
   { path: 'firstpage/create-product', component: CreateProductComponent, canActivate: [AuthGuard] },
   { path: 'firstpage/update-product/:id', component: UpdateProductComponent, canActivate: [AuthGuard] },
-  { path: 'firstpage/create-order', component: CreateOrderComponent, canActivate: [AuthGuard] },
-  { path: 'firstpage/update-order/:id', component: UpdateOrderComponent, canActivate: [AuthGuard] },
-  { path: 'firstpage/create-orderdetail', component: CreateOrderdetailComponent, canActivate: [AuthGuard] },
-  { path: 'firstpage/update-orderdetail/:id', component: UpdateOrderdetailComponent, canActivate: [AuthGuard] },
   { path: 'thirdpage', component: ThirdpageComponent, canActivate: [AuthGuard] },
 
 

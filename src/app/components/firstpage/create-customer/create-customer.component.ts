@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CustomerService } from '../../../../services/customer.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   standalone: false,
@@ -10,88 +10,117 @@ import { CustomerService } from '../../../../services/customer.service';
 })
 export class CreateCustomerComponent implements OnInit {
   customer = { first_name: '', last_name: '', email: '', phone: '', address: '', city: '' };
-  errorMessage: string = '';
-  successMessage: string = '';
-  firstnameError: string = '';
-  lastnameError: string = '';
+  firstNameError: string = '';
+  lastNameError: string = '';
   emailError: string = '';
   cityError: string = '';
+  errorMessage: string = '';
+  successMessage: string = '';
 
-  constructor(private customerService: CustomerService, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
-    // Initialization code here (if needed)
+    console.log('CreateCustomerComponent initialized');
   }
 
   createCustomer(): void {
+    console.log('createCustomer() called');
+
+    // Clear previous error messages
     this.clearMessages();
 
-    // Ensure that validation errors prevent form submission
-    if (!this.validateInputs()) {
-      return;  // If validation fails, stop further execution
+    // Validate the form
+    if (this.isFormInvalid()) {
+      console.log('Form validation failed', {
+        errors: {
+          firstNameError: this.firstNameError,
+          lastNameError: this.lastNameError,
+          emailError: this.emailError,
+          cityError: this.cityError,
+        },
+      });
+      return;  // If validation fails, stop form submission
     }
 
-    // If validation passes, proceed with customer creation
-    this.customerService.createCustomer(this.customer).subscribe(
-      () => {
-        this.errorMessage = '';
+    const payload = {
+      first_name: this.customer.first_name,
+      last_name: this.customer.last_name,
+      email: this.customer.email,
+      phone: this.customer.phone,
+      address: this.customer.address,
+      city: this.customer.city
+    };
+
+    console.log('Payload to be sent to the API:', payload);
+
+    this.http.post('https://localhost:5000/api/customer/create-user-and-customer', payload).subscribe(
+      (response: any) => {
+        console.log('API response:', response);
         this.successMessage = 'Customer created successfully.';
-        // Redirect after a short delay to show the success message
-        setTimeout(() => this.router.navigate(['/firstpage']), 1500);
+        setTimeout(() => {
+          console.log('Navigating to /firstpage');
+          this.router.navigate(['/firstpage']);
+        }, 1500);
       },
       (error: any) => {
+        console.error('API error:', error);
         this.errorMessage = `Failed to create the customer. Please try again later.`;
       }
     );
   }
 
-  validateInputs(): boolean {
+  isFormInvalid(): boolean {
     let isValid = true;
 
-    // Clear previous error messages
-    this.firstnameError = '';
-    this.lastnameError = '';
-    this.emailError = '';
-    this.cityError = '';
-
-    // Validate fields and set errors if any
     if (!this.customer.first_name) {
-      this.firstnameError = 'First name is required.';
+      this.firstNameError = 'First name is required.';
+      console.log('Validation error: First name is missing');
       isValid = false;
     }
 
     if (!this.customer.last_name) {
-      this.lastnameError = 'Last name is required.';
+      this.lastNameError = 'Last name is required.';
+      console.log('Validation error: Last name is missing');
       isValid = false;
     }
 
     if (!this.customer.email) {
       this.emailError = 'Email is required.';
+      console.log('Validation error: Email is missing');
       isValid = false;
     } else if (!this.isValidEmail(this.customer.email)) {
-      this.emailError = 'Invalid email format.';
+      this.emailError = 'Please enter a valid email address.';
+      console.log('Validation error: Email is invalid');
       isValid = false;
     }
 
     if (!this.customer.city) {
       this.cityError = 'City is required.';
+      console.log('Validation error: City is missing');
       isValid = false;
     }
 
-    return isValid; // Return false if any field is invalid
+    console.log('Form validation result:', isValid);
+    return isValid;
   }
 
+
   isValidEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const isValid = emailRegex.test(email);
+    if (!isValid) {
+      console.log('Invalid email format:', email);
+    }
+    return isValid;
   }
 
   clearMessages(): void {
-    this.errorMessage = '';
-    this.successMessage = '';
-    this.firstnameError = '';
-    this.lastnameError = '';
+    console.log('Clearing all messages');
+    this.firstNameError = '';
+    this.lastNameError = '';
     this.emailError = '';
     this.cityError = '';
+    this.successMessage = '';
+    this.errorMessage = '';
   }
 }

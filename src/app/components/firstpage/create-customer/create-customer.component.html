@@ -6,17 +6,15 @@
       <!-- First Name Field -->
       <div class="form-group">
         <label for="first_name">First Name</label>
-        <input id="first_name" class="form-control" [(ngModel)]="customer.first_name" name="first_name" required
-          minlength="2" />
-        <span *ngIf="firstnameError" class="text-danger">{{ firstnameError }}</span>
+        <input id="first_name" class="form-control" [(ngModel)]="customer.first_name" name="first_name" required />
+        <span *ngIf="firstNameError" class="text-danger">{{ firstNameError }}</span>
       </div>
 
       <!-- Last Name Field -->
       <div class="form-group">
         <label for="last_name">Last Name</label>
-        <input id="last_name" class="form-control" [(ngModel)]="customer.last_name" name="last_name" required
-          minlength="2" />
-        <span *ngIf="lastnameError" class="text-danger">{{ lastnameError }}</span>
+        <input id="last_name" class="form-control" [(ngModel)]="customer.last_name" name="last_name" required />
+        <span *ngIf="lastNameError" class="text-danger">{{ lastNameError }}</span>
       </div>
 
       <!-- Email Field -->

@@ -1,41 +1,61 @@
+/* General Container Styling */
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #b6ebfc;
   min-height: 100vh;
   gap: 1.5em;
-  padding: 2em;
+  background-color: #b6ebfc;
+  user-select: none;
 }
 
+/* Header Styling */
 .container h1 {
   font-size: 2em;
   font-weight: bold;
   color: #3e4684;
 }
 
-.products-container {
-  width: 100%;
-  max-width: 800px;
-  background: white;
-  box-shadow: 0 0 2em #e6e9f9;
-  border-radius: 15px;
-  padding: 2em;
+/* Button Styling for container and other areas */
+.container .btn {
+  padding: 0.8em 1.2em;
+  font-size: 1em;
+  border-radius: 8px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
 }
 
-.products-container h2 {
-  font-size: 1.8em;
-  font-weight: bold;
-  color: #3e4684;
-  margin-bottom: 1.5em;
+.container .btn-primary {
+  background-color: #3e4684;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
 }
 
+.container .btn-primary:hover {
+  background-color: #2c3561;
+}
+
+.container .btn-danger {
+  background-color: #c23535;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.container .btn-danger:hover {
+  background-color: #b92e2e;
+}
+
+/* Table Styling */
 .table {
-  width: 100%;
+  min-width: 600px;
   background: white;
   box-shadow: 0 0 2em #e6e9f9;
   border-radius: 15px;
   overflow: hidden;
+  gap: 15px;
 }
 
 .table thead {
@@ -57,74 +77,51 @@
   background-color: #eef5ff;
 }
 
+.table td a {
+  margin-right: 0.5em;
+}
+
+/* Minimalistic Button Styling Inside Table */
 .table td button {
-  padding: 0.5em 1em;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.table td button:hover {
-  opacity: 0.8;
-}
-
-.table td .mx-2 {
-  margin: 0 1em;
-}
-
-.quantity-input {
-  width: 60px;
-  text-align: center;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  padding: 0.5em;
-}
-
-.quantity-input:focus {
-  outline: none;
-  border-color: #3e4684;
-  box-shadow: 0 0 5px rgba(62, 70, 132, 0.5);
-}
-
-.btn {
-  padding: 0.8em 1.2em;
+  padding: 0.3em 0.6em; /* Reduced padding for smaller buttons */
   font-size: 1em;
-  border-radius: 8px;
-  text-decoration: none;
-  text-align: center;
+  border: 1px solid #000; /* Thin border for visibility */
+  background-color: transparent; /* No background color */
+  color: #3e4684; /* Text color */
   cursor: pointer;
+  margin-right: 0.3em; /* Small margin between buttons */
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.btn-primary {
-  background-color: #3e4684;
-  color: white;
-  border: none;
-  transition: background-color 0.3s ease;
+/* Button Hover Effects */
+.table td button:hover {
+  background-color: #f0f0f0; /* Light grey background on hover */
+  color: #2c3561; /* Darker text color on hover */
 }
 
-.btn-primary:hover {
-  background-color: #2c3561;
+.table td .btn-danger:hover {
+  background-color: #fbe9e9; /* Light red background on hover */
 }
 
-.btn-danger {
-  background-color: #c23535;
-  color: white;
-  border: none;
-  transition: background-color 0.3s ease;
+.table td .btn-success:hover {
+  background-color: #e8f5e8; /* Light green background on hover */
 }
 
-.btn-danger:hover {
-  background-color: #b92e2e;
+/* Input field adjustments */
+.table td input[type="number"] {
+  width: 50px;
+  text-align: center;
+  padding: 0.5em; /* Padding for better visibility */
+  margin-left: 0.3em;  /* Small gap to the left of buttons */
+  margin-right: 0.3em; /* Small gap to the right of buttons */
+  border: 1px solid #ccc; /* Border around input for consistency */
+  border-radius: 4px; /* Slight border radius */
 }
 
-.logoutButton {
-  margin-top: 1.5em;
-  width: 100%;
-  max-width: 200px;
-}
+
 
 .quantity-input::-webkit-outer-spin-button,
 .quantity-input::-webkit-inner-spin-button {
   -webkit-appearance: none;
-  /* Κρύβει τα κουμπιά + και - για browsers Webkit (Chrome, Safari) */
   margin: 0;
 }

@@ -18,10 +18,6 @@ import { ChatComponent } from './components/chat/chat.component';
 import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
 import { CreateProductComponent } from './components/firstpage/create-product/create-product.component';
 import { UpdateProductComponent } from './components/firstpage/update-product/update-product.component';
-import { CreateOrderComponent } from './components/firstpage/create-order/create-order.component';
-import { UpdateOrderComponent } from './components/firstpage/update-order/update-order.component';
-import { CreateOrderdetailComponent } from './components/firstpage/create-orderdetail/create-orderdetail.component';
-import { UpdateOrderdetailComponent } from './components/firstpage/update-orderdetail/update-orderdetail.component';
 
 @NgModule({
   declarations: [
@@ -38,10 +34,6 @@ import { UpdateOrderdetailComponent } from './components/firstpage/update-orderd
     ThirdpageComponent,
     CreateProductComponent,
     UpdateProductComponent,
-    CreateOrderComponent,
-    UpdateOrderComponent,
-    CreateOrderdetailComponent,
-    UpdateOrderdetailComponent,
   ],
   imports: [
     RouterModule,
