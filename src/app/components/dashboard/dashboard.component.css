@@ -71,6 +71,20 @@
   margin: 0 1em;
 }
 
+.quantity-input {
+  width: 60px;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 0.5em;
+}
+
+.quantity-input:focus {
+  outline: none;
+  border-color: #3e4684;
+  box-shadow: 0 0 5px rgba(62, 70, 132, 0.5);
+}
+
 .btn {
   padding: 0.8em 1.2em;
   font-size: 1em;
@@ -106,4 +120,11 @@
   margin-top: 1.5em;
   width: 100%;
   max-width: 200px;
+}
+
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  /* Κρύβει τα κουμπιά + και - για browsers Webkit (Chrome, Safari) */
+  margin: 0;
 }

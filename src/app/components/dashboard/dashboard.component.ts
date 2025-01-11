@@ -22,10 +22,7 @@ export class DashboardComponent {
     private _sessionService: SessionService,
     private productService: ProductService,
     private http: HttpClient
-
-  ) {
-
-  }
+  ) { }
 
   ngOnInit() {
     this.username = this._sessionService.username;
@@ -53,7 +50,6 @@ export class DashboardComponent {
     );
   }
 
-
   increaseQuantity(product: any) {
     product.quantity++;
   }
@@ -61,6 +57,15 @@ export class DashboardComponent {
   decreaseQuantity(product: any) {
     if (product.quantity > 0) {
       product.quantity--;
+    }
+  }
+  validateNumber(event: KeyboardEvent): void {
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
+    if (
+      !/^\d$/.test(event.key) &&
+      !allowedKeys.includes(event.key)
+    ) {
+      event.preventDefault();
     }
   }
 
@@ -79,7 +84,7 @@ export class DashboardComponent {
     };
 
     // Log the payload to the console
-    console.log("Generated JSON Payload:", JSON.stringify(payload, null, 2));
+    console.log(JSON.stringify(payload, null, 2));
 
     this.http.post('https://localhost:5000/api/ComplexOrder', payload).subscribe({
       next: (response: any) => {
@@ -92,9 +97,6 @@ export class DashboardComponent {
       },
     });
   }
-
-
-
 
   LogOut(): void {
     alert("You successfully logged out...");

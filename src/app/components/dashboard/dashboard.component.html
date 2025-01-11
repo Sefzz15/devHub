@@ -2,31 +2,34 @@
   <h1>You have successfully logged in!</h1>
 
   <h2>Product List</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>product id</th>
-        <th>product Name</th>
-        <th>price</th>
-        <th>stock</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let product  of products">
-        <td>{{ product.p_id }}</td>
-        <td>{{ product.p_name }}</td>
-        <td>{{ product.price }}</td>
-        <td>{{ product.stock_quantity }}</td>
-        <td>
-          <button class="btn btn-sm btn-danger" (click)="decreaseQuantity(product)">-</button>
-          <span class="mx-2">{{ product.quantity }}</span>
-          <button class="btn btn-sm btn-success" (click)="increaseQuantity(product)">+</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="products-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product ID</th>
+          <th>Product Name</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{ product.p_id }}</td>
+          <td>{{ product.p_name }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.stock_quantity }}</td>
+          <td>
+            <button class="btn btn-sm btn-danger" (click)="decreaseQuantity(product)">-</button>
+            <input type="number" [(ngModel)]="product.quantity" class="mx-2 quantity-input" min="0"
+              (keydown)="validateNumber($event)" />
+            <button class="btn btn-sm btn-success" (click)="increaseQuantity(product)">+</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <button class="btn btn-primary" (click)="buyProducts()">Buy</button>
   <button class="btn btn-danger logoutButton" (click)="LogOut()">Log out</button>
-
 </div>
