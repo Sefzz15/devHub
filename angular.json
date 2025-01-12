@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "login-app": {
+    "devHub-app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/login-app",
+            "outputPath": "dist/devHub-app",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -75,10 +75,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "login-app:build:production"
+              "buildTarget": "devHub-app:build:production"
             },
             "development": {
-              "buildTarget": "login-app:build:development"
+              "buildTarget": "devHub-app:build:development"
             }
           },
           "defaultConfiguration": "development"
