@@ -39,6 +39,7 @@ export class DashboardComponent {
   getProducts(): void {
     this.productService.getProducts().subscribe(
       (data: any) => {
+        console.log("Fetched products:", data);
         this.products = data.map((product: any) => ({
           ...product,
           quantity: 0, // Initialize quantity to 0
@@ -49,6 +50,7 @@ export class DashboardComponent {
       }
     );
   }
+
 
   increaseQuantity(product: any) {
     product.quantity++;
@@ -70,26 +72,34 @@ export class DashboardComponent {
   }
 
   buyProducts() {
-    const userID = this._sessionService.userID; // Get user ID from session service
+    const userID = this._sessionService.userID;  // Get user ID from session service
+
+    // Filter products where quantity is greater than 0 (not stock_quantity)
     const selectedProducts = this.products
-      .filter((product) => product.quantity > 0)
+      .filter((product) => product.quantity > 0)  // Use product.quantity instead of stock_quantity
       .map((product) => ({
-        productId: product.p_id,  // Correct field name
-        quantity: product.quantity,
+        p_id: product.p_id,  // Send p_id
+        quantity: product.quantity,  // Send the user's selected quantity
       }));
+
+    // If no products were selected, alert the user
+    if (selectedProducts.length === 0) {
+      alert('Please select at least one product to buy.');
+      return;
+    }
 
     const payload = {
       customerId: userID,  // Send customerId instead of userID
       products: selectedProducts,
     };
 
-    // Log the payload to the console
-    console.log(JSON.stringify(payload, null, 2));
+    console.log("Payload to be sent:", JSON.stringify(payload, null, 2));  // Log the payload for debugging
 
+    // Make the HTTP request to create the order
     this.http.post('https://localhost:5000/api/ComplexOrder', payload).subscribe({
       next: (response: any) => {
         console.log('Order created successfully:', response);
-        this.getProducts();
+        this.getProducts();  // Refresh the product list after the order
       },
       error: (error) => {
         console.error('Error creating order:', error);

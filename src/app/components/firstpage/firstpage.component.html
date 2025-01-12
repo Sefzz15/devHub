@@ -96,7 +96,6 @@
         <th>customer id</th>
         <th>order date</th>
         <th>total ammount</th>
-        <th>status</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -106,7 +105,6 @@
         <td>{{ order.c_id }}</td>
         <td>{{ order.o_date }}</td>
         <td>{{ order.total_amount }}</td>
-        <td>{{ order.status }}</td>
         <td>
           <a class="btn btn-primary btn-sm" [routerLink]="['/firstpage/update-order', order.c_id]">Update</a>
           <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.o_id)">Delete</a>
