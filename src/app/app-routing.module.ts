@@ -6,15 +6,18 @@ import { AuthGuard } from '../services/auth.guard';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 import { FirstpageComponent } from './components/firstpage/firstpage.component';
+
 import { CreateUserComponent } from './components/firstpage/create-user/create-user.component';
 import { UpdateUserComponent } from './components/firstpage/update-user/update-user.component';
 
 import { CreateCustomerComponent } from './components/firstpage/create-customer/create-customer.component';
 import { UpdateCustomerComponent } from './components/firstpage/update-customer/update-customer.component';
 
-import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
 import { CreateProductComponent } from './components/firstpage/create-product/create-product.component';
 import { UpdateProductComponent } from './components/firstpage/update-product/update-product.component';
+
+import { SecondpageComponent } from './components/secondpage/secondpage.component';
+import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
 
 import { ChatComponent } from './components/chat/chat.component';
 
@@ -31,6 +34,7 @@ const routes: Routes = [
   { path: 'firstpage/update-customer/:id', component: UpdateCustomerComponent, canActivate: [AuthGuard] },
   { path: 'firstpage/create-product', component: CreateProductComponent, canActivate: [AuthGuard] },
   { path: 'firstpage/update-product/:id', component: UpdateProductComponent, canActivate: [AuthGuard] },
+  { path: 'secondpage', component: SecondpageComponent, canActivate: [AuthGuard] },
   { path: 'thirdpage', component: ThirdpageComponent, canActivate: [AuthGuard] },
 
 

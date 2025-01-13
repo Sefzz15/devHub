@@ -1,8 +1,14 @@
 <nav class="container">
 
-  <h1>User List</h1>
-  <a class="btn btn-primary" routerLink="/firstpage/create-user">New User</a>
-  <table class="table">
+  <div class="header-actions">
+    <h1>Users List</h1>
+    <div class="actions">
+      <button class="btn btn-secondary" (click)="getUsers()">Load Users</button>
+      <a class="btn btn-primary" routerLink="/firstpage/create-user">New User</a>
+    </div>
+  </div>
+
+  <table *ngIf="users.length > 0" class="table">
     <thead>
       <tr>
         <th>ID</th>
@@ -25,8 +31,14 @@
   </table>
 
 
-  <h1>Customer List</h1>
-  <a class="btn btn-primary" routerLink="/firstpage/create-customer">New Customer</a>
+  <div class="header-actions">
+    <h1>Customers List</h1>
+    <div class="actions">
+      <button class="btn btn-secondary" (click)="getCustomers()">Load Customers</button>
+      <a class="btn btn-primary" routerLink="/firstpage/create-customer">New Customer</a>
+    </div>
+  </div>
+
   <table class="table">
     <thead>
       <tr>
@@ -58,8 +70,14 @@
   </table>
 
 
-  <h1>Product List</h1>
-  <a class="btn btn-primary" routerLink="/firstpage/create-product">New Product</a>
+  <div class="header-actions">
+    <h1>Products List</h1>
+    <div class="actions">
+      <button class="btn btn-secondary" (click)="getProducts()">Load Products</button>
+      <a class="btn btn-primary" routerLink="/firstpage/create-product">New Product</a>
+    </div>
+  </div>
+
   <table class="table">
     <thead>
       <tr>
@@ -87,8 +105,14 @@
   </table>
 
 
-  <h1>Order List</h1>
-  <a class="btn btn-primary" routerLink="/firstpage/create-order">New Order</a>
+  <div class="header-actions">
+    <h1>Orders List</h1>
+    <div class="actions">
+      <button class="btn btn-secondary" (click)="getOrders()">Load Orders</button>
+      <a class="btn btn-primary" routerLink="/secondpage">New Order</a>
+    </div>
+  </div>
+
   <table class="table">
     <thead>
       <tr>
@@ -114,8 +138,13 @@
   </table>
 
 
-  <h1>OrderDetails List</h1>
-  <a class="btn btn-primary" routerLink="/firstpage/create-orderdetail">New OrderDetails</a>
+  <div class="header-actions">
+    <h1>Order Details List</h1>
+    <div class="actions">
+      <button class="btn btn-secondary" (click)="getOrderDetails()">Load Order Details</button>
+    </div>
+  </div>
+
   <table class="table">
     <thead>
       <tr>

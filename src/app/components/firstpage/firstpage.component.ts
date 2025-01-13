@@ -29,24 +29,19 @@ export class FirstpageComponent implements OnInit {
     private orderdetailService: OrderDetailService) { }
 
   ngOnInit(): void {
-    this.getUsers();
-    this.getCustomers();
-    this.getProducts();
-    this.getOrders();
-    this.getOrderDetails();
   }
 
-  // Get users from the API
   getUsers(): void {
     this.userService.getUsers().subscribe(
       (data: any) => {
-        this.users = data;
+        this.users = data; // Ensure this updates the array
       },
       (error: any) => {
         console.error('Error fetching users:', error);
       }
     );
   }
+
 
   // Delete a user
   deleteUser(id: number): void {
@@ -61,7 +56,7 @@ export class FirstpageComponent implements OnInit {
   getCustomers(): void {
     this.customerService.getCustomers().subscribe(
       (data: any) => {
-        this.customers = data;
+        this.customers = data; // Ensure this updates the array
       },
       (error: any) => {
         console.error('Error fetching customers:', error);
@@ -69,11 +64,12 @@ export class FirstpageComponent implements OnInit {
     );
   }
 
-  // Delete a customers
+
+  // Delete a customer
   deleteCustomer(id: number): void {
     if (confirm('Are you sure you want to delete this customer?')) {
       this.customerService.deleteCustomer(id).subscribe(() => {
-        this.getCustomers();  // Refresh the customer list
+        this.getCustomers();
       });
     }
   }

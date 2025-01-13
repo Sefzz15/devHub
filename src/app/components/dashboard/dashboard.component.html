@@ -1,33 +1,29 @@
 <div class="container">
-  <h1>Product List</h1>
+  <h1>Website Features Overview</h1>
 
-  <a class="btn btn-primary" routerLink="/firstpage/create-product">New Product</a>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Product ID</th>
-        <th>Product Name</th>
-        <th>Price</th>
-        <th>Stock</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let product of products">
-        <td>{{ product.p_id }}</td>
-        <td>{{ product.p_name }}</td>
-        <td>{{ product.price }}</td>
-        <td>{{ product.stock_quantity }}</td>
-        <td>
-          <button class="btn btn-sm btn-danger" (click)="decreaseQuantity(product)">-</button>
-          <input type="number" [(ngModel)]="product.quantity" class="mx-2 quantity-input" min="0"
-            (keydown)="validateNumber($event)" />
-          <button class="btn btn-sm btn-success" (click)="increaseQuantity(product)">+</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <section>
+    <h2>Page 1: Table Display and Data Creation</h2>
+    <p>This page allows users to view tables containing existing data. Users can also create new data entries directly
+      within the selected table for seamless interaction and management.</p>
+  </section>
 
-  <button class="btn btn-primary" (click)="buyProducts()">Buy</button>
+  <section>
+    <h2>Page 2: Order Creation</h2>
+    <p>Users can create orders based on the currently selected user. This feature ensures streamlined order management
+      by associating orders with specific customers easily.</p>
+  </section>
+
+  <section>
+    <h2>Page 3: Enhanced Table Visualization</h2>
+    <p>Complex tables are displayed in an intuitive and user-friendly manner. This improvement helps users better
+      understand the data by presenting it in a structured and visually appealing format.</p>
+  </section>
+
+  <section>
+    <h2>Page 4: Chat Application for Customer Support</h2>
+    <p>An integrated chat application allows customers to get support in real-time. This feature improves customer
+      satisfaction by providing instant assistance and addressing their needs promptly.</p>
+  </section>
+
   <button class="btn btn-danger logoutButton" (click)="LogOut()">Log out</button>
 </div>

@@ -1,0 +1,72 @@
+/* Table Styling */
+.table {
+  min-width: 600px;
+  background: white;
+  box-shadow: 0 0 2em #e6e9f9;
+  border-radius: 15px;
+  overflow: hidden;
+  gap: 15px;
+}
+
+.table thead {
+  background-color: #3e4684;
+  color: white;
+}
+
+.table th,
+.table td {
+  padding: 1em;
+  text-align: left;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f0f0f0;
+}
+
+.table tbody tr:hover {
+  background-color: #eef5ff;
+}
+
+.table td a {
+  margin-right: 0.5em;
+}
+
+.table td button {
+  padding: 0.3em 0.6em;
+  font-size: 1em;
+  border: 1px solid #000;
+  background-color: transparent;
+  color: #3e4684;
+  cursor: pointer;
+  margin-right: 0.3em;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.table td button:hover {
+  background-color: #f0f0f0;
+  color: #2c3561;
+}
+
+.table td .btn-danger:hover {
+  background-color: #fbe9e9;
+}
+
+.table td .btn-success:hover {
+  background-color: #e8f5e8;
+}
+
+.table td input[type="number"] {
+  width: 50px;
+  text-align: center;
+  padding: 0.5em;
+  margin-left: 0.3em;
+  margin-right: 0.3em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

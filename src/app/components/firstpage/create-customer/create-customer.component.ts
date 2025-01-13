@@ -30,7 +30,10 @@ export class CreateCustomerComponent implements OnInit {
     this.clearMessages();
 
     // Validate the form
-    if (this.isFormInvalid()) {
+    const isFormValid = !this.isFormInvalid(); // Store the result in a variable
+    console.log('Form validation result:', isFormValid);
+
+    if (!isFormValid) {
       console.log('Form validation failed', {
         errors: {
           firstNameError: this.firstNameError,
@@ -39,7 +42,7 @@ export class CreateCustomerComponent implements OnInit {
           cityError: this.cityError,
         },
       });
-      return;  // If validation fails, stop form submission
+      return; // If validation fails, stop form submission
     }
 
     const payload = {
@@ -48,7 +51,7 @@ export class CreateCustomerComponent implements OnInit {
       email: this.customer.email,
       phone: this.customer.phone,
       address: this.customer.address,
-      city: this.customer.city
+      city: this.customer.city,
     };
 
     console.log('Payload to be sent to the API:', payload);
@@ -70,38 +73,32 @@ export class CreateCustomerComponent implements OnInit {
   }
 
   isFormInvalid(): boolean {
-    let isValid = true;
+    let hasError = false;
 
     if (!this.customer.first_name) {
       this.firstNameError = 'First name is required.';
-      console.log('Validation error: First name is missing');
-      isValid = false;
+      hasError = true;
     }
 
     if (!this.customer.last_name) {
       this.lastNameError = 'Last name is required.';
-      console.log('Validation error: Last name is missing');
-      isValid = false;
+      hasError = true;
     }
 
     if (!this.customer.email) {
       this.emailError = 'Email is required.';
-      console.log('Validation error: Email is missing');
-      isValid = false;
+      hasError = true;
     } else if (!this.isValidEmail(this.customer.email)) {
       this.emailError = 'Please enter a valid email address.';
-      console.log('Validation error: Email is invalid');
-      isValid = false;
+      hasError = true;
     }
 
     if (!this.customer.city) {
       this.cityError = 'City is required.';
-      console.log('Validation error: City is missing');
-      isValid = false;
+      hasError = true;
     }
 
-    console.log('Form validation result:', isValid);
-    return isValid;
+    return hasError;
   }
 
 

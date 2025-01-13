@@ -18,6 +18,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
 import { CreateProductComponent } from './components/firstpage/create-product/create-product.component';
 import { UpdateProductComponent } from './components/firstpage/update-product/update-product.component';
+import { SecondpageComponent } from './components/secondpage/secondpage.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { UpdateProductComponent } from './components/firstpage/update-product/up
     ThirdpageComponent,
     CreateProductComponent,
     UpdateProductComponent,
+    SecondpageComponent,
   ],
   imports: [
     RouterModule,
