@@ -30,7 +30,7 @@ const routes: Routes = [
   { path: 'firstpage', component: FirstpageComponent, canActivate: [AuthGuard] },
   { path: 'firstpage/create-user', component: CreateUserComponent },
   { path: 'firstpage/update-user/:id', component: UpdateUserComponent, canActivate: [AuthGuard] },
-  { path: 'firstpage/create-customer', component: CreateCustomerComponent },
+  { path: 'firstpage/create-customer', component: CreateCustomerComponent, canActivate: [AuthGuard] },
   { path: 'firstpage/update-customer/:id', component: UpdateCustomerComponent, canActivate: [AuthGuard] },
   { path: 'firstpage/create-product', component: CreateProductComponent, canActivate: [AuthGuard] },
   { path: 'firstpage/update-product/:id', component: UpdateProductComponent, canActivate: [AuthGuard] },

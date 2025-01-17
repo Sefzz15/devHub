@@ -11,7 +11,6 @@ import { HttpClient } from '@angular/common/http';
 
   templateUrl: './secondpage.component.html',
   styleUrls: ['../firstpage/firstpage.component.css', './secondpage.component.css'],
-
 })
 export class SecondpageComponent {
   userID: number = 0;
@@ -32,9 +31,8 @@ export class SecondpageComponent {
 
     console.log('Username :', this.username);
     console.log('UserID :', this.userID);
-
-
   }
+
   products: any[] = [];
 
   getProducts(): void {
@@ -52,7 +50,6 @@ export class SecondpageComponent {
     );
   }
 
-
   increaseQuantity(product: any) {
     product.quantity++;
   }
@@ -62,6 +59,7 @@ export class SecondpageComponent {
       product.quantity--;
     }
   }
+
   validateNumber(event: KeyboardEvent): void {
     const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
     if (
@@ -73,38 +71,43 @@ export class SecondpageComponent {
   }
 
   buyProducts() {
-    const userID = this._sessionService.userID;  // Get user ID from session service
+    const userID = this._sessionService.userID;  // The UID of the user from the Session Service
 
-    // Filter products where quantity is greater than 0 (not stock_quantity)
     const selectedProducts = this.products
-      .filter((product) => product.quantity > 0)  // Use product.quantity instead of stock_quantity
+      .filter((product) => product.quantity > 0)
       .map((product) => ({
-        p_id: product.p_id,  // Send p_id
-        quantity: product.quantity,  // Send the user's selected quantity
+        ProductId: product.p_id, // Corresponding ProductId
+        Quantity: product.quantity, // Quantity
       }));
 
-    // If no products were selected, alert the user
     if (selectedProducts.length === 0) {
       alert('Please select at least one product to buy.');
       return;
     }
 
+    // Creating Payload
     const payload = {
-      customerId: userID,  // Send customerId instead of userID
-      products: selectedProducts,
+      orderRequest: {
+        Uid: String(userID),  // Using the uid in lowercase
+        Products: selectedProducts,
+      },
     };
 
-    console.log("Payload to be sent:", JSON.stringify(payload, null, 2));  // Log the payload for debugging
+    console.log('Payload to be sent:', JSON.stringify(payload, null, 2));
 
-    // Make the HTTP request to create the order
-    this.http.post('https://localhost:5000/api/ComplexOrder', payload).subscribe({
+    // HTTP Request
+    this.http.post('https://localhost:5000/api/complexorder/create-order', payload).subscribe({
       next: (response: any) => {
         console.log('Order created successfully:', response);
-        this.getProducts();  // Refresh the product list after the order
+        this.getProducts(); // Refresh products
       },
       error: (error) => {
         console.error('Error creating order:', error);
-        alert('Failed to create order. Please try again.');
+        if (error.error && error.error.errors) {
+          console.log(`Validation errors: ${JSON.stringify(error.error.errors, null, 2)}`);
+        } else {
+          alert('Failed to create order. Please try again.');
+        }
       },
     });
   }
@@ -113,6 +116,5 @@ export class SecondpageComponent {
     alert("You successfully logged out...");
     this._authService.logout();
     this._router.navigate(['/']);
-
   }
 }
