@@ -17,7 +17,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   messageInput: string = '';
   username: string = '';
   connectedUsers: string[] = []; // List of connected users
-  unreadCount: number = 0; // Αριθμός αδιάβαστων μηνυμάτων
+  unreadCount: number = 0;
 
 
   constructor(private _sessionService: SessionService) { }
@@ -58,7 +58,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.connection.on('ReceiveMessage', (user: string, message: string) => {
       if (user !== this.username) {
         this.messages.push({ text: `${user}: ${message}`, isSender: false });
-        this.unreadCount++; // Αυξάνοντας τα αδιάβαστα μηνύματα
+        this.unreadCount++;
         this.scrollToBottom(); // Scroll to bottom
       }
     });
@@ -93,7 +93,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         .then(() => {
           this.messages.push({ text: `${user}: ${this.messageInput}`, isSender: true });
           this.messageInput = '';
-          this.unreadCount = 0; // Μηδενισμός των αδιάβαστων μηνυμάτων
+          this.unreadCount = 0;
           this.scrollToBottom();
         })
         .catch((err) => console.error('Error while sending message: ', err));
