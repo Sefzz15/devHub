@@ -60,6 +60,23 @@
   position: relative;
 }
 
+.unread-count {
+  width: 30px;
+  height: 30px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  position: absolute;
+  left: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: bold;
+}
+
 input[type="text"] {
   flex-grow: 1;
   padding: 10px;

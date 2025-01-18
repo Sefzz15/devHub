@@ -11,17 +11,24 @@ import { SessionService } from '../../../services/session.service';
 export class ChatComponent implements OnInit, OnDestroy {
   @ViewChild('chatWindow') private chatWindowRef!: ElementRef;
 
-  messages: { text: string; isSender: boolean }[] = [];
-  connectedUsers: string[] = []; // List of connected users
-  messageInput: string = '';
   private connection!: signalR.HubConnection;
+
+  messages: { text: string; isSender: boolean }[] = [];
+  messageInput: string = '';
   username: string = '';
+  connectedUsers: string[] = []; // List of connected users
+  unreadCount: number = 0; // Αριθμός αδιάβαστων μηνυμάτων
+
 
   constructor(private _sessionService: SessionService) { }
 
   ngOnInit() {
     this.username = this._sessionService.username;
 
+    const savedUnreadCount = sessionStorage.getItem('unreadCount');
+    if (savedUnreadCount) {
+      this.unreadCount = JSON.parse(savedUnreadCount);
+    }
     // Retrieve messages and connected users from sessionStorage
     const savedMessages = sessionStorage.getItem('messages');
     const savedUsers = sessionStorage.getItem('connectedUsers');
@@ -51,7 +58,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.connection.on('ReceiveMessage', (user: string, message: string) => {
       if (user !== this.username) {
         this.messages.push({ text: `${user}: ${message}`, isSender: false });
-        this.scrollToBottom(); // Scroll to bottom when a new message is received
+        this.unreadCount++; // Αυξάνοντας τα αδιάβαστα μηνύματα
+        this.scrollToBottom(); // Scroll to bottom
       }
     });
 
@@ -80,13 +88,12 @@ export class ChatComponent implements OnInit, OnDestroy {
   sendMessage() {
     if (this.messageInput.trim()) {
       const user = this.username;
-
-      // Send the message to the server
       this.connection
         .invoke('SendMessage', user, this.messageInput)
         .then(() => {
           this.messages.push({ text: `${user}: ${this.messageInput}`, isSender: true });
           this.messageInput = '';
+          this.unreadCount = 0; // Μηδενισμός των αδιάβαστων μηνυμάτων
           this.scrollToBottom();
         })
         .catch((err) => console.error('Error while sending message: ', err));
@@ -100,8 +107,17 @@ export class ChatComponent implements OnInit, OnDestroy {
     }, 100); // Slight delay to ensure the DOM updates before scrolling
   }
 
+  markAsRead() {
+    this.unreadCount = 0;
+  }
+
+  onInputFocus() {
+    this.unreadCount = 0;
+  }
+
   ngOnDestroy() {
     // Save the data before disconnecting
+    sessionStorage.setItem('unreadCount', JSON.stringify(this.unreadCount));
     sessionStorage.setItem('messages', JSON.stringify(this.messages));
     sessionStorage.setItem('connectedUsers', JSON.stringify(this.connectedUsers));
 
