@@ -9,9 +9,10 @@ import { SessionService } from '../../../services/session.service';
   styleUrls: ['./chat.component.css'],
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  @ViewChild('chatWindow') private chatWindowRef!: ElementRef; // ViewChild reference to the chat window
+  @ViewChild('chatWindow') private chatWindowRef!: ElementRef;
 
   messages: { text: string; isSender: boolean }[] = [];
+  connectedUsers: string[] = []; // List of connected users
   messageInput: string = '';
   private connection!: signalR.HubConnection;
   username: string = '';
@@ -21,15 +22,19 @@ export class ChatComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.username = this._sessionService.username;
 
-    // Load saved messages if any (using sessionStorage instead of localStorage)
+    // Retrieve messages and connected users from sessionStorage
     const savedMessages = sessionStorage.getItem('messages');
+    const savedUsers = sessionStorage.getItem('connectedUsers');
     if (savedMessages) {
       this.messages = JSON.parse(savedMessages);
     }
+    if (savedUsers) {
+      this.connectedUsers = JSON.parse(savedUsers);
+    }
 
+    // Create SignalR connection
     this.connection = new signalR.HubConnectionBuilder()
       .withUrl('http://localhost:5001/chathub')
-      // .withUrl("http://192.168.1.180:5001/chathub")
       .withAutomaticReconnect()
       .build();
 
@@ -38,15 +43,37 @@ export class ChatComponent implements OnInit, OnDestroy {
       .start()
       .then(() => {
         console.log('SignalR Connected.');
+        this.connection.invoke('UserConnected', this.username); // Register the user on the server
       })
       .catch((err) => console.error('SignalR Connection Error: ', err));
 
-    // Listen for incoming messages
+    // Receive messages and update the list of connected users
     this.connection.on('ReceiveMessage', (user: string, message: string) => {
       if (user !== this.username) {
         this.messages.push({ text: `${user}: ${message}`, isSender: false });
         this.scrollToBottom(); // Scroll to bottom when a new message is received
       }
+    });
+
+    // Add a user to the list of connected users
+    this.connection.on('UserConnected', (user: string) => {
+      if (!this.connectedUsers.includes(user)) {
+        this.connectedUsers.push(user);
+      }
+      this.messages.push({ text: `A wild ${user} appeared!`, isSender: false });
+      this.scrollToBottom();
+    });
+
+    // Remove a user from the list of connected users
+    this.connection.on('UserDisconnected', (user: string) => {
+      this.connectedUsers = this.connectedUsers.filter((u) => u !== user);
+      this.messages.push({ text: `A wild ${user} disappeared!`, isSender: false });
+      this.scrollToBottom();
+    });
+
+    // Save the list of connected users to sessionStorage
+    this.connection.on('ReceiveConnectedUsers', (users: string[]) => {
+      this.connectedUsers = users;
     });
   }
 
@@ -54,19 +81,18 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (this.messageInput.trim()) {
       const user = this.username;
 
-      // Send message to the backend
+      // Send the message to the server
       this.connection
         .invoke('SendMessage', user, this.messageInput)
         .then(() => {
           this.messages.push({ text: `${user}: ${this.messageInput}`, isSender: true });
           this.messageInput = '';
-          this.scrollToBottom(); // Scroll to bottom after sending a message
+          this.scrollToBottom();
         })
         .catch((err) => console.error('Error while sending message: ', err));
     }
   }
 
-  // Scrolls the chat window to the bottom
   private scrollToBottom(): void {
     setTimeout(() => {
       const chatWindow = this.chatWindowRef.nativeElement;
@@ -75,10 +101,12 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // Save messages before destruction (using sessionStorage)
+    // Save the data before disconnecting
     sessionStorage.setItem('messages', JSON.stringify(this.messages));
+    sessionStorage.setItem('connectedUsers', JSON.stringify(this.connectedUsers));
 
     if (this.connection) {
+      this.connection.invoke('UserDisconnected', this.username); // Notify the server about the disconnection
       this.connection.stop().catch((err) => console.error('Error while stopping connection: ', err));
     }
   }
