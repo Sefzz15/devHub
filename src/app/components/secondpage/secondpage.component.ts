@@ -41,7 +41,7 @@ export class SecondpageComponent {
         console.log("Fetched products:", data);
         this.products = data.map((product: any) => ({
           ...product,
-          quantity: 0, // Initialize quantity to 0
+          quantity: 0,
         }));
       },
       (error: any) => {
@@ -76,8 +76,8 @@ export class SecondpageComponent {
     const selectedProducts = this.products
       .filter((product) => product.quantity > 0)
       .map((product) => ({
-        ProductId: product.p_id, // Corresponding ProductId
-        Quantity: product.quantity, // Quantity
+        ProductId: product.pid,
+        Quantity: product.quantity,
       }));
 
     if (selectedProducts.length === 0) {
@@ -88,7 +88,7 @@ export class SecondpageComponent {
     // Creating Payload
     const payload = {
       orderRequest: {
-        Uid: String(userID),  // Using the uid in lowercase
+        Uid: String(userID),
         Products: selectedProducts,
       },
     };

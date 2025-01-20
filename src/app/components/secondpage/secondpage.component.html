@@ -14,10 +14,10 @@
     </thead>
     <tbody>
       <tr *ngFor="let product of products">
-        <td>{{ product.p_id }}</td>
+        <td>{{ product.pid }}</td>
         <td>{{ product.p_name }}</td>
         <td>{{ product.price }}</td>
-        <td>{{ product.stock_quantity }}</td>
+        <td>{{ product.stock }}</td>
         <td>
           <button class="btn btn-sm btn-danger" (click)="decreaseQuantity(product)">-</button>
           <input type="number" [(ngModel)]="product.quantity" class="mx-2 quantity-input" min="0"

@@ -74,12 +74,12 @@ export class DashboardComponent {
   buyProducts() {
     const userID = this._sessionService.userID;  // Get user ID from session service
 
-    // Filter products where quantity is greater than 0 (not stock_quantity)
+    // Filter products where quantity is greater than 0 (not stock quantity)
     const selectedProducts = this.products
-      .filter((product) => product.quantity > 0)  // Use product.quantity instead of stock_quantity
+      .filter((product) => product.quantity > 0)
       .map((product) => ({
-        p_id: product.p_id,  // Send p_id
-        quantity: product.quantity,  // Send the user's selected quantity
+        pid: product.pid,
+        quantity: product.quantity,
       }));
 
     // If no products were selected, alert the user
@@ -89,7 +89,7 @@ export class DashboardComponent {
     }
 
     const payload = {
-      customerId: userID,  // Send customerId instead of userID
+      customerId: userID, 
       products: selectedProducts,
     };
 

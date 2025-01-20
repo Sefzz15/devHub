@@ -9,7 +9,7 @@ import { ProductService } from '../../../../services/product.service';
   styleUrls: ['../../firstpage/create-user/create-user.component.css'],
 })
 export class UpdateProductComponent implements OnInit {
-  product = { p_id: 0, p_name: '', description: '', price: '', stock_quantity: '' };
+  product = { pid: 0, p_name: '', description: '', price: '', stock: '' };
   productnameError: string = '';
   productpriceError: string = '';
   productquantityError: string = '';
@@ -20,15 +20,15 @@ export class UpdateProductComponent implements OnInit {
   constructor(private productService: ProductService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-    const p_id = this.route.snapshot.paramMap.get('id');
-    console.log('Route ID:', p_id); // Debugging the raw route parameter
+    const pid = this.route.snapshot.paramMap.get('id');
+    console.log('Route ID:', pid); // Debugging the raw route parameter
 
-    if (!p_id) {
+    if (!pid) {
       this.errorMessage = 'Route parameter "id" is missing or invalid.';
       return;
     }
 
-    const productId = Number(p_id); // Convert to a number
+    const productId = Number(pid); // Convert to a number
     if (isNaN(productId) || productId <= 0) {
       this.errorMessage = 'Invalid product ID.';
       return;
@@ -58,7 +58,7 @@ export class UpdateProductComponent implements OnInit {
       this.productpriceError = 'Password is required.';
     }
 
-    if (!this.product.stock_quantity) {
+    if (!this.product.stock) {
       this.productquantityError = 'Stock quantity is required.';
     }
 
@@ -66,9 +66,8 @@ export class UpdateProductComponent implements OnInit {
       return; // Stop if there are validation errors
     }
 
-    this.productService.updateProduct(this.product.p_id, this.product).subscribe(
+    this.productService.updateProduct(this.product.pid, this.product).subscribe(
       () => {
-        // Show success message
         this.errorMessage = '';
         this.successMessage = 'Product updated successfully. Redirecting...';
 
@@ -76,7 +75,7 @@ export class UpdateProductComponent implements OnInit {
         setTimeout(() => {
           // After the delay, navigate to the first page
           this.router.navigate(['/firstpage']);
-        }, 2000); // 2-second delay (2000ms)
+        }, 1500);
       },
       (error: any) => {
         this.errorMessage = 'Failed to update the product. Please try again later.';

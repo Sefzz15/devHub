@@ -5,8 +5,8 @@
     <form (ngSubmit)="updateProduct()">
       <!-- Product ID Field -->
       <div class="form-group">
-        <label for="p_id">Product ID</label>
-        <input id="p_id" class="form-control" readonly [(ngModel)]="product.p_id" name="p_id" />
+        <label for="pid">Product ID</label>
+        <input id="pid" class="form-control" readonly [(ngModel)]="product.pid" name="pid" />
       </div>
 
       <!-- Productname Field -->
@@ -29,10 +29,10 @@
             <span *ngIf="productpriceError" class="text-danger">{{ productpriceError }}</span>
           </div>
 
-               <!-- stock_quantity Field -->
+               <!-- stock quantity Field -->
       <div class="form-group">
-        <label for="stock_quantity">stock quantity</label>
-        <input id="stock_quantity" class="form-control" [(ngModel)]="product.stock_quantity" name="stock_quantity" required />
+        <label for="stock">stock quantity</label>
+        <input id="stock" class="form-control" [(ngModel)]="product.stock" name="stock" required />
         <span *ngIf="productquantityError" class="text-danger">{{ productquantityError }}</span>
       </div>
 

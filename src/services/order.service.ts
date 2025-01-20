@@ -21,7 +21,6 @@ export class OrderService {
     return this.http.get<any>(`${this._url}/${id}`);
   }
 
-
   // Create a new order
   createOrder(order: any): Observable<any> {
     return this.http.post<any>(`${this._url}`, order);

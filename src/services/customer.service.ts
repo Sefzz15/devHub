@@ -21,7 +21,6 @@ export class CustomerService {
     return this.http.get<any>(`${this._url}/${id}`);
   }
 
-
   // Create a new customer
   createCustomer(customer: any): Observable<any> {
     return this.http.post<any>(`${this._url}`, customer);

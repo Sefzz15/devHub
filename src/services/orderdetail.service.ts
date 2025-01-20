@@ -21,7 +21,6 @@ export class OrderDetailService {
     return this.http.get<any>(`${this._url}/${o_details_id}`);
   }
 
-
   // Create a new orderdetail
   createOrderDetail(orderdetail: any): Observable<any> {
     return this.http.post<any>(`${this._url}`, orderdetail);

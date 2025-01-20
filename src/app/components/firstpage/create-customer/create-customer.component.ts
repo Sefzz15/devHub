@@ -12,7 +12,16 @@ import { CustomerService } from '../../../../services/customer.service';
 })
 export class CreateCustomerComponent implements OnInit {
   userID: number = 0;
-  customer = { uid: this.userID, first_name: '', last_name: '', email: '', phone: '', address: '', city: '' };
+  customer = { 
+    uid: this.userID, 
+    first_name: '', 
+    last_name: '', 
+    email: '', 
+    phone: '', 
+    address: '', 
+    city: '' };
+  
+  
   firstNameError: string = '';
   lastNameError: string = '';
   emailError: string = '';
@@ -25,7 +34,7 @@ export class CreateCustomerComponent implements OnInit {
     private router: Router,
     private _sessionService: SessionService,
     private customerService: CustomerService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.userID = this._sessionService.userID;
@@ -36,23 +45,17 @@ export class CreateCustomerComponent implements OnInit {
   }
 
   createCustomer(): void {
-    // Clear previous error messages
     this.clearMessages();
-    console.log('Payload to be sent to backend:', this.customer);  // Ελέγξτε αν εκτυπώνεται το payload
+    console.log('Payload to be sent to backend:', this.customer);
 
-    // Validate customer inputs
-    console.log('Validating customer inputs...');
     if (!this.validateInputs()) {
-      console.log('Validation failed.');
-      return; // If validation fails, stop the form submission
+      console.log('Validation failed. Form submission halted.');
+      return;
     }
 
-    console.log('Inputs validated successfully. Proceeding to make HTTP request to backend');
-
-    // Call the service to create the customer
-    this.customerService.createCustomer(this.customer).subscribe(
-      (response: any) => {
-        console.log('Response from backend:', response);  // Ελέγξτε αν υπάρχει απόκριση
+    this.customerService.createCustomer(this.customer).subscribe({
+      next: (response: any) => {
+        console.log('Response from backend:', response);
         this.errorMessage = '';
         this.successMessage = 'Customer created successfully. Redirecting...';
 
@@ -61,42 +64,57 @@ export class CreateCustomerComponent implements OnInit {
           this.router.navigate(['/firstpage']);
         }, 2000);
       },
-      (error: any) => {
-        console.error('Error from backend:', error);  // Αν υπάρχει σφάλμα
-        this.errorMessage = 'Failed to create the customer. Please try again later.';
-      }
-    );
+      error: (error: any) => {
+        console.error('Error from backend:', error);
+        this.errorMessage = 'Failed to create the customer.';
+
+        if (error.error?.errors) {
+          const errors = error.error.errors;
+          console.log('Validation errors from backend:', errors);
+
+          if (errors.first_name) {
+            this.firstNameError = errors.first_name[0];
+          }
+          if (errors.last_name) {
+            this.lastNameError = errors.last_name[0];
+          }
+          if (errors.email) {
+            this.emailError = errors.email[0];
+          }
+          if (errors.city) {
+            this.cityError = errors.city[0];
+          }
+        }
+      },
+    });
   }
 
   validateInputs(): boolean {
     let isValid = true;
 
     if (!this.customer.first_name) {
-      this.firstNameError = 'Username is required.';
+      this.firstNameError = 'First name is required.';
       isValid = false;
     }
 
     if (!this.customer.last_name) {
-      this.lastNameError = 'Password is required.';
+      this.lastNameError = 'Last name is required.';
       isValid = false;
     }
 
     if (!this.customer.email) {
       this.emailError = 'Email is required.';
-      isValid = true;
-      console.log('Email is missing!');
+      isValid = false; 
     } else if (!this.isValidEmail(this.customer.email)) {
       this.emailError = 'Please enter a valid email address.';
-      isValid = true;
-      console.log('Invalid email format:', this.customer.email);
-    } else {
-      console.log('Email:', this.customer.email);
+      isValid = false;
     }
 
     if (!this.customer.city) {
       this.cityError = 'City is required.';
       isValid = false;
     }
+
     return isValid;
   }
 

@@ -19,11 +19,9 @@ export class CreateUserComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
-    // Initialization logic (if needed)
   }
 
   createUser(): void {
-    // Clear previous error messages
     this.clearErrorMessages();
 
     // Validate user inputs
@@ -31,18 +29,16 @@ export class CreateUserComponent implements OnInit {
       return; // If validation fails, stop the form submission
     }
 
-    // Call the service to create the user
     this.userService.createUser(this.user).subscribe(
       (response: any) => {
-        // Show success message
         this.errorMessage = '';
         this.successMessage = 'User created successfully. Redirecting...';
 
         // Set a delay before redirecting
         setTimeout(() => {
-          // After 2 seconds, navigate to the first page
+          // After 1,5 seconds, navigate to the first page
           this.router.navigate(['/firstpage']);
-        }, 2000); // Adjust the delay time here (2000ms = 2 seconds)
+        }, 1500);
       },
       (error: any) => {
         this.errorMessage = 'Failed to create the user. Please try again later.';
@@ -59,13 +55,11 @@ export class CreateUserComponent implements OnInit {
   validateInputs(): boolean {
     let isValid = true;
 
-    // Username validation
     if (!this.user.uname) {
       this.usernameError = 'Username is required.';
       isValid = false;
     }
 
-    // Password validation
     if (!this.user.upass) {
       this.passwordError = 'Password is required.';
       isValid = false;

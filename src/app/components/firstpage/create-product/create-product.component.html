@@ -25,8 +25,8 @@
 
       <!-- Quantity Field -->
       <div class="form-group">
-        <label for="stock_quantity">Stock Quantity</label>
-        <input id="stock_quantity" class="form-control" [(ngModel)]="product.stock_quantity" name="stock_quantity" required />
+        <label for="stock">Stock Quantity</label>
+        <input id="stock" class="form-control" [(ngModel)]="product.stock" name="stock" required />
         <span *ngIf="productquantityError" class="text-danger">{{ productquantityError }}</span>
       </div>
 

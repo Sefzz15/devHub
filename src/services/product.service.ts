@@ -17,10 +17,9 @@ export class ProductService {
   }
 
   // Get a specific product by ID
-  getProduct(p_id: number): Observable<any> {
-    return this.http.get<any>(`${this._url}/${p_id}`);
+  getProduct(pid: number): Observable<any> {
+    return this.http.get<any>(`${this._url}/${pid}`);
   }
-
 
   // Create a new product
   createProduct(product: any): Observable<any> {
@@ -28,12 +27,12 @@ export class ProductService {
   }
 
   // Update an existing product
-  updateProduct(p_id: number, product: any): Observable<any> {
-    return this.http.put<any>(`${this._url}/${p_id}`, product);
+  updateProduct(pid: number, product: any): Observable<any> {
+    return this.http.put<any>(`${this._url}/${pid}`, product);
   }
 
   // Delete a product
-  deleteProduct(p_id: number): Observable<any> {
-    return this.http.delete<any>(`${this._url}/${p_id}`);
+  deleteProduct(pid: number): Observable<any> {
+    return this.http.delete<any>(`${this._url}/${pid}`);
   }
 }

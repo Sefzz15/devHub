@@ -42,7 +42,6 @@ export class FirstpageComponent implements OnInit {
     );
   }
 
-
   // Delete a user
   deleteUser(id: number): void {
     if (confirm('Are you sure you want to delete this user?')) {
@@ -56,14 +55,13 @@ export class FirstpageComponent implements OnInit {
   getCustomers(): void {
     this.customerService.getCustomers().subscribe(
       (data: any) => {
-        this.customers = data; // Ensure this updates the array
+        this.customers = data;
       },
       (error: any) => {
         console.error('Error fetching customers:', error);
       }
     );
   }
-
 
   // Delete a customer
   deleteCustomer(id: number): void {
@@ -75,14 +73,14 @@ export class FirstpageComponent implements OnInit {
   }
 
   // Utility function to get customer name by ID
-  getCustomerName(c_id: number): string {
-    const customer = this.customers.find(c => c.c_id === c_id);
+  getCustomerName(cid: number): string {
+    const customer = this.customers.find(c => c.cid === cid);
     return customer ? customer.first_name : 'Unknown';
   }
 
   // Utility function to get product by ID
-  getProductById(p_id: number): any {
-    return this.products.find(product => product.p_id === p_id) || null;
+  getProductById(pid: number): any {
+    return this.products.find(product => product.pid === pid) || null;
   }
 
   // Process and combine orders with relevant details
@@ -91,17 +89,17 @@ export class FirstpageComponent implements OnInit {
       console.log('All data is loaded, processing...');
 
       this.datas = this.orders.flatMap(order => {
-        const matchedOrderDetails = this.orderdetails.filter(orderDetail => orderDetail.o_id === order.o_id);
+        const matchedOrderDetails = this.orderdetails.filter(orderDetail => orderDetail.oid === order.oid);
 
         return matchedOrderDetails.map(orderDetail => {
-          const customerName = this.getCustomerName(order.c_id);
-          const product = this.getProductById(orderDetail.p_id);
+          const customerName = this.getCustomerName(order.cid);
+          const product = this.getProductById(orderDetail.pid);
           const quantity = orderDetail.Quantity || 0;
           const price = product ? product.price : 0;
 
           return {
             CustomerName: customerName,
-            OrderID: order.o_id,
+            OrderID: order.oid,
             ProductName: product ? product.p_name : 'Unknown Product',
             Quantity: orderDetail.quantity,
             PricePerUnit: price,

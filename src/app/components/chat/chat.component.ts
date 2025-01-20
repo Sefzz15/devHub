@@ -59,7 +59,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       if (user !== this.username) {
         this.messages.push({ text: `${user}: ${message}`, isSender: false });
         this.unreadCount++;
-        this.scrollToBottom(); // Scroll to bottom
+        this.scrollToBottom();
       }
     });
 

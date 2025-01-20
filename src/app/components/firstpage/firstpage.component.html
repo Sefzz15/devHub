@@ -54,7 +54,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let customer of customers">
-        <td>{{ customer.c_id }}</td>
+        <td>{{ customer.cid }}</td>
         <td>{{ customer.first_name }}</td>
         <td>{{ customer.last_name }}</td>
         <td>{{ customer.email }}</td>
@@ -62,8 +62,8 @@
         <td>{{ customer.address }}</td>
         <td>{{ customer.city }}</td>
         <td>
-          <a class="btn btn-primary btn-sm" [routerLink]="['/firstpage/update-customer', customer.c_id]">Update</a>
-          <a class="btn btn-danger btn-sm" (click)="deleteCustomer(customer.c_id)">Delete</a>
+          <a class="btn btn-primary btn-sm" [routerLink]="['/firstpage/update-customer', customer.cid]">Update</a>
+          <a class="btn btn-danger btn-sm" (click)="deleteCustomer(customer.cid)">Delete</a>
         </td>
       </tr>
     </tbody>
@@ -91,14 +91,14 @@
     </thead>
     <tbody>
       <tr *ngFor="let product  of products">
-        <td>{{ product.p_id }}</td>
+        <td>{{ product.pid }}</td>
         <td>{{ product.p_name }}</td>
         <td>{{ product.description }}</td>
         <td>{{ product.price }}</td>
-        <td>{{ product.stock_quantity }}</td>
+        <td>{{ product.stock }}</td>
         <td>
-          <a class="btn btn-primary btn-sm" [routerLink]="['/firstpage/update-product', product.p_id]">Update</a>
-          <a class="btn btn-danger btn-sm" (click)="deleteProduct(product.p_id)">Delete</a>
+          <a class="btn btn-primary btn-sm" [routerLink]="['/firstpage/update-product', product.pid]">Update</a>
+          <a class="btn btn-danger btn-sm" (click)="deleteProduct(product.pid)">Delete</a>
         </td>
       </tr>
     </tbody>
@@ -125,13 +125,13 @@
     </thead>
     <tbody>
       <tr *ngFor="let order of orders">
-        <td>{{ order.o_id }}</td>
-        <td>{{ order.c_id }}</td>
+        <td>{{ order.oid }}</td>
+        <td>{{ order.cid }}</td>
         <td>{{ order.o_date }}</td>
         <td>{{ order.total_amount }}</td>
         <td>
-          <a class="btn btn-primary btn-sm" [routerLink]="['/firstpage/update-order', order.c_id]">Update</a>
-          <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.o_id)">Delete</a>
+          <a class="btn btn-primary btn-sm" [routerLink]="['/firstpage/update-order', order.cid]">Update</a>
+          <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">Delete</a>
         </td>
       </tr>
     </tbody>
@@ -159,13 +159,13 @@
     <tbody>
       <tr *ngFor="let orderdetail of orderdetails">
         <td>{{ orderdetail.o_details_id }}</td>
-        <td>{{ orderdetail.o_id }}</td>
-        <td>{{ orderdetail.p_id }}</td>
+        <td>{{ orderdetail.oid }}</td>
+        <td>{{ orderdetail.pid }}</td>
         <td>{{ orderdetail.quantity }}</td>
         <td>{{ orderdetail.price }}</td>
         <td>
           <a class="btn btn-primary btn-sm"
-            [routerLink]="['/firstpage/update-orderdetail', orderdetail.c_id]">Update</a>
+            [routerLink]="['/firstpage/update-orderdetail', orderdetail.cid]">Update</a>
           <a class="btn btn-danger btn-sm" (click)="deleteOrderDetail(orderdetail.o_details_id)">Delete</a>
         </td>
       </tr>
