@@ -37,7 +37,7 @@ export class UpdateUserComponent implements OnInit {
         this.user = data;
       },
       (error: any) => {
-        this.errorMessage = 'Unable to fetch user details.';
+        this.errorMessage = 'Unable to fetch user data.';
       }
     );
   }

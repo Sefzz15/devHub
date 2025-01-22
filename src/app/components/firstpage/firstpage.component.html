@@ -46,9 +46,6 @@
         <th>First Name</th>
         <th>Last Name</th>
         <th>E-mail</th>
-        <th>Phone</th>
-        <th>Address</th>
-        <th>City</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -58,9 +55,6 @@
         <td>{{ customer.first_name }}</td>
         <td>{{ customer.last_name }}</td>
         <td>{{ customer.email }}</td>
-        <td>{{ customer.phone }}</td>
-        <td>{{ customer.address }}</td>
-        <td>{{ customer.city }}</td>
         <td>
           <a class="btn btn-primary btn-sm" [routerLink]="['/firstpage/update-customer', customer.cid]">Update</a>
           <a class="btn btn-danger btn-sm" (click)="deleteCustomer(customer.cid)">Delete</a>
@@ -83,7 +77,6 @@
       <tr>
         <th>product id</th>
         <th>product Name</th>
-        <th>description</th>
         <th>price</th>
         <th>stock</th>
         <th>Action</th>
@@ -93,7 +86,6 @@
       <tr *ngFor="let product  of products">
         <td>{{ product.pid }}</td>
         <td>{{ product.p_name }}</td>
-        <td>{{ product.description }}</td>
         <td>{{ product.price }}</td>
         <td>{{ product.stock }}</td>
         <td>
@@ -132,41 +124,6 @@
         <td>
           <a class="btn btn-primary btn-sm" [routerLink]="['/firstpage/update-order', order.cid]">Update</a>
           <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">Delete</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-
-  <div class="header-actions">
-    <h1>Order Details List</h1>
-    <div class="actions">
-      <button class="btn btn-secondary" (click)="getOrderDetails()">Load Order Details</button>
-    </div>
-  </div>
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th>o_details_id </th>
-        <th>o id </th>
-        <th>p id </th>
-        <th>quantity </th>
-        <th>price </th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let orderdetail of orderdetails">
-        <td>{{ orderdetail.o_details_id }}</td>
-        <td>{{ orderdetail.oid }}</td>
-        <td>{{ orderdetail.pid }}</td>
-        <td>{{ orderdetail.quantity }}</td>
-        <td>{{ orderdetail.price }}</td>
-        <td>
-          <a class="btn btn-primary btn-sm"
-            [routerLink]="['/firstpage/update-orderdetail', orderdetail.cid]">Update</a>
-          <a class="btn btn-danger btn-sm" (click)="deleteOrderDetail(orderdetail.o_details_id)">Delete</a>
         </td>
       </tr>
     </tbody>

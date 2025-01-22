@@ -10,7 +10,13 @@ import { CustomerService } from '../../../../services/customer.service';
   styleUrls: ['../../firstpage/create-user/create-user.component.css'],
 })
 export class UpdateCustomerComponent implements OnInit {
-  customer = { cid: 0, first_name: '', last_name: '', email: '', phone: '', address: '', city: '' };
+  customer = {
+    cid: 0,
+    first_name: '',
+    last_name: '',
+    email: '',
+  };
+
   errorMessage: string = '';
   successMessage: string = '';
   firstnameError: string = '';
@@ -34,7 +40,7 @@ export class UpdateCustomerComponent implements OnInit {
         this.customer = data;
       },
       (error: any) => {
-        this.errorMessage = `Unable to fetch customer details. Error: ${error.message}`;
+        this.errorMessage = `Unable to fetch customer data. Error: ${error.message}`;
       }
     );
   }
@@ -72,10 +78,6 @@ export class UpdateCustomerComponent implements OnInit {
       this.emailError = 'Email is required.';
     } else if (!this.isValidEmail(this.customer.email)) {
       this.emailError = 'Invalid email format.';
-    }
-
-    if (!this.customer.city) {
-      this.cityError = 'City is required.';
     }
 
     return !this.firstnameError && !this.lastnameError && !this.emailError && !this.cityError;

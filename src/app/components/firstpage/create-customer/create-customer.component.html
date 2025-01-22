@@ -24,25 +24,6 @@
         <span *ngIf="emailError" class="text-danger">{{ emailError }}</span>
       </div>
 
-      <!-- Phone Field (Optional) -->
-      <div class="form-group">
-        <label for="phone">Phone</label>
-        <input id="phone" class="form-control" [(ngModel)]="customer.phone" name="phone" />
-      </div>
-
-      <!-- Address Field (Optional) -->
-      <div class="form-group">
-        <label for="address">Address</label>
-        <input id="address" class="form-control" [(ngModel)]="customer.address" name="address" />
-      </div>
-
-      <!-- City Field -->
-      <div class="form-group">
-        <label for="city">City</label>
-        <input id="city" class="form-control" [(ngModel)]="customer.city" name="city" required />
-        <span *ngIf="cityError" class="text-danger">{{ cityError }}</span>
-      </div>
-
       <!-- Error Message -->
       <div *ngIf="errorMessage">
         {{ errorMessage }}

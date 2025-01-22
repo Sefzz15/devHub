@@ -3,7 +3,6 @@ import { UserService } from '../../../services/user.service';
 import { CustomerService } from '../../../services/customer.service';
 import { ProductService } from '../../../services/product.service';
 import { OrderService } from '../../../services/order.service';
-import { OrderDetailService } from '../../../services/orderdetail.service';
 
 @Component({
   standalone: false,
@@ -17,7 +16,6 @@ export class FirstpageComponent implements OnInit {
   customers: any[] = [];
   products: any[] = [];
   orders: any[] = [];
-  orderdetails: any[] = [];
   datas: any[] = [];
 
 
@@ -25,8 +23,7 @@ export class FirstpageComponent implements OnInit {
     private userService: UserService,
     private customerService: CustomerService,
     private productService: ProductService,
-    private orderService: OrderService,
-    private orderdetailService: OrderDetailService) { }
+    private orderService: OrderService) { }
 
   ngOnInit(): void {
   }
@@ -83,34 +80,34 @@ export class FirstpageComponent implements OnInit {
     return this.products.find(product => product.pid === pid) || null;
   }
 
-  // Process and combine orders with relevant details
-  getCompleteOrderDetails(): void {
-    if (this.customers.length && this.products.length && this.orders.length && this.orderdetails.length) {
-      console.log('All data is loaded, processing...');
+  // // Process and combine orders with relevant details
+  // getCompleteOrderDetails(): void {
+  //   if (this.customers.length && this.products.length && this.orders.length && this.orderdetails.length) {
+  //     console.log('All data is loaded, processing...');
 
-      this.datas = this.orders.flatMap(order => {
-        const matchedOrderDetails = this.orderdetails.filter(orderDetail => orderDetail.oid === order.oid);
+  //     this.datas = this.orders.flatMap(order => {
+  //       const matchedOrderDetails = this.orderdetails.filter(orderDetail => orderDetail.oid === order.oid);
 
-        return matchedOrderDetails.map(orderDetail => {
-          const customerName = this.getCustomerName(order.cid);
-          const product = this.getProductById(orderDetail.pid);
-          const quantity = orderDetail.Quantity || 0;
-          const price = product ? product.price : 0;
+  //       return matchedOrderDetails.map(orderDetail => {
+  //         const customerName = this.getCustomerName(order.cid);
+  //         const product = this.getProductById(orderDetail.pid);
+  //         const quantity = orderDetail.Quantity || 0;
+  //         const price = product ? product.price : 0;
 
-          return {
-            CustomerName: customerName,
-            OrderID: order.oid,
-            ProductName: product ? product.p_name : 'Unknown Product',
-            Quantity: orderDetail.quantity,
-            PricePerUnit: price,
-            TotalPriceForProduct: orderDetail.quantity * price,
-          };
-        });
-      });
-    } else {
-      console.log('Not all data is loaded');
-    }
-  }
+  //         return {
+  //           CustomerName: customerName,
+  //           OrderID: order.oid,
+  //           ProductName: product ? product.p_name : 'Unknown Product',
+  //           Quantity: orderDetail.quantity,
+  //           PricePerUnit: price,
+  //           TotalPriceForProduct: orderDetail.quantity * price,
+  //         };
+  //       });
+  //     });
+  //   } else {
+  //     console.log('Not all data is loaded');
+  //   }
+  // }
 
   // Delete a product
   deleteProduct(id: number): void {
@@ -126,20 +123,11 @@ export class FirstpageComponent implements OnInit {
     if (confirm('Are you sure you want to delete this order?')) {
       this.orderService.deleteOrder(id).subscribe(() => {
         this.getOrders();  // Refresh the orders list
-        this.getOrderDetails();  // Refresh the order detail list because on delete cascade is implemented
       });
     }
   }
 
-  // Delete an order detail
-  deleteOrderDetail(id: number): void {
-    if (confirm('Are you sure you want to delete this order detail entry?')) {
-      this.orderdetailService.deleteOrderDetail(id).subscribe(() => {
-        this.getOrderDetails();  // Refresh the order detail list
-      });
-    }
-  }
-
+ 
   // Fetch products after deletion
   getProducts(): void {
     this.productService.getProducts().subscribe(
@@ -164,15 +152,5 @@ export class FirstpageComponent implements OnInit {
     );
   }
 
-  // Fetch order details after deletion
-  getOrderDetails(): void {
-    this.orderdetailService.getOrderDetails().subscribe(
-      (data: any) => {
-        this.orderdetails = data;
-      },
-      (error: any) => {
-        console.error('Error fetching order details:', error);
-      }
-    );
-  }
+
 }

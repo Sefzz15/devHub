@@ -12,16 +12,14 @@ import { CustomerService } from '../../../../services/customer.service';
 })
 export class CreateCustomerComponent implements OnInit {
   userID: number = 0;
-  customer = { 
-    uid: this.userID, 
-    first_name: '', 
-    last_name: '', 
-    email: '', 
-    phone: '', 
-    address: '', 
-    city: '' };
-  
-  
+  customer = {
+    uid: this.userID,
+    first_name: '',
+    last_name: '',
+    email: ''
+  };
+
+
   firstNameError: string = '';
   lastNameError: string = '';
   emailError: string = '';
@@ -34,7 +32,7 @@ export class CreateCustomerComponent implements OnInit {
     private router: Router,
     private _sessionService: SessionService,
     private customerService: CustomerService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.userID = this._sessionService.userID;
@@ -104,16 +102,12 @@ export class CreateCustomerComponent implements OnInit {
 
     if (!this.customer.email) {
       this.emailError = 'Email is required.';
-      isValid = false; 
+      isValid = false;
     } else if (!this.isValidEmail(this.customer.email)) {
       this.emailError = 'Please enter a valid email address.';
       isValid = false;
     }
 
-    if (!this.customer.city) {
-      this.cityError = 'City is required.';
-      isValid = false;
-    }
 
     return isValid;
   }

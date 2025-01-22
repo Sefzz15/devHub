@@ -39,7 +39,7 @@ export class UpdateProductComponent implements OnInit {
         this.product = data;
       },
       (error: any) => {
-        this.errorMessage = 'Unable to fetch product details.';
+        this.errorMessage = 'Unable to fetch product data.';
       }
     );
   }
