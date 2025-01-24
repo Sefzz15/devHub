@@ -22,7 +22,7 @@ export class AuthService {
     return this._http.post<{ message: string; token?: string; userID?: number }>(this._url, { username, password }).pipe(
       map(response => {
         console.log('Server response:', response); // Log the full server response
-        if (response.message === 'Login successful!' && response.token) {
+        if (response.message === 'Login successful!' ) {
           const token = response.token;
           const userID = response.userID; // Extract userID
           this.isAuthenticatedSubject.next(true);

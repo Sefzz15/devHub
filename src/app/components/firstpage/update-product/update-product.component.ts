@@ -9,7 +9,7 @@ import { ProductService } from '../../../../services/product.service';
   styleUrls: ['../../firstpage/create-user/create-user.component.css'],
 })
 export class UpdateProductComponent implements OnInit {
-  product = { pid: 0, p_name: '', description: '', price: '', stock: '' };
+  product = { pid: 0, pname: '', price: '', stock: '' };
   productnameError: string = '';
   productpriceError: string = '';
   productquantityError: string = '';
@@ -50,7 +50,7 @@ export class UpdateProductComponent implements OnInit {
     this.productquantityError = '';
     this.successMessage = '';
 
-    if (!this.product.p_name) {
+    if (!this.product.pname) {
       this.productnameError = 'Productname is required.';
     }
 

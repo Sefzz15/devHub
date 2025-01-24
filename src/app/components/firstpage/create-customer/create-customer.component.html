@@ -5,15 +5,15 @@
     <form (ngSubmit)="createCustomer()">
       <!-- First Name Field -->
       <div class="form-group">
-        <label for="first_name">First Name</label>
-        <input id="first_name" class="form-control" [(ngModel)]="customer.first_name" name="first_name" required />
+        <label for="firstname">First Name</label>
+        <input id="firstname" class="form-control" [(ngModel)]="customer.firstname" name="firstname" required />
         <span *ngIf="firstNameError" class="text-danger">{{ firstNameError }}</span>
       </div>
 
       <!-- Last Name Field -->
       <div class="form-group">
-        <label for="last_name">Last Name</label>
-        <input id="last_name" class="form-control" [(ngModel)]="customer.last_name" name="last_name" required />
+        <label for="lastname">Last Name</label>
+        <input id="lastname" class="form-control" [(ngModel)]="customer.lastname" name="lastname" required />
         <span *ngIf="lastNameError" class="text-danger">{{ lastNameError }}</span>
       </div>
 

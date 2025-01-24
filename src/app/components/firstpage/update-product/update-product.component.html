@@ -11,25 +11,19 @@
 
       <!-- Productname Field -->
       <div class="form-group">
-        <label for="p_name">Productname</label>
-        <input id="p_name" class="form-control" [(ngModel)]="product.p_name" name="p_name" required />
+        <label for="pname">Productname</label>
+        <input id="pname" class="form-control" [(ngModel)]="product.pname" name="pname" required />
         <span *ngIf="productnameError" class="text-danger">{{ productnameError }}</span>
       </div>
 
-      <!-- description Field -->
+      <!-- price Field -->
       <div class="form-group">
-        <label for="description">description</label>
-        <input id="description" class="form-control" [(ngModel)]="product.description" name="description"/>
+        <label for="price">price</label>
+        <input id="price" class="form-control" [(ngModel)]="product.price" name="price" required />
+        <span *ngIf="productpriceError" class="text-danger">{{ productpriceError }}</span>
       </div>
 
-           <!-- price Field -->
-           <div class="form-group">
-            <label for="price">price</label>
-            <input id="price" class="form-control" [(ngModel)]="product.price" name="price" required />
-            <span *ngIf="productpriceError" class="text-danger">{{ productpriceError }}</span>
-          </div>
-
-               <!-- stock quantity Field -->
+      <!-- stock quantity Field -->
       <div class="form-group">
         <label for="stock">stock quantity</label>
         <input id="stock" class="form-control" [(ngModel)]="product.stock" name="stock" required />

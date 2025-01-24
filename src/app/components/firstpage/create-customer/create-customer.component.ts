@@ -14,8 +14,8 @@ export class CreateCustomerComponent implements OnInit {
   userID: number = 0;
   customer = {
     uid: this.userID,
-    first_name: '',
-    last_name: '',
+    firstname: '',
+    lastname: '',
     email: ''
   };
 
@@ -70,11 +70,11 @@ export class CreateCustomerComponent implements OnInit {
           const errors = error.error.errors;
           console.log('Validation errors from backend:', errors);
 
-          if (errors.first_name) {
-            this.firstNameError = errors.first_name[0];
+          if (errors.firstname) {
+            this.firstNameError = errors.firstname[0];
           }
-          if (errors.last_name) {
-            this.lastNameError = errors.last_name[0];
+          if (errors.lastname) {
+            this.lastNameError = errors.lastname[0];
           }
           if (errors.email) {
             this.emailError = errors.email[0];
@@ -90,12 +90,12 @@ export class CreateCustomerComponent implements OnInit {
   validateInputs(): boolean {
     let isValid = true;
 
-    if (!this.customer.first_name) {
+    if (!this.customer.firstname) {
       this.firstNameError = 'First name is required.';
       isValid = false;
     }
 
-    if (!this.customer.last_name) {
+    if (!this.customer.lastname) {
       this.lastNameError = 'Last name is required.';
       isValid = false;
     }

@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <table class="table">
+  <table *ngIf="customers.length > 0" class="table">
     <thead>
       <tr>
         <th>customer id</th>
@@ -52,8 +52,8 @@
     <tbody>
       <tr *ngFor="let customer of customers">
         <td>{{ customer.cid }}</td>
-        <td>{{ customer.first_name }}</td>
-        <td>{{ customer.last_name }}</td>
+        <td>{{ customer.firstname }}</td>
+        <td>{{ customer.lastname }}</td>
         <td>{{ customer.email }}</td>
         <td>
           <a class="btn btn-primary btn-sm" [routerLink]="['/firstpage/update-customer', customer.cid]">Update</a>
@@ -72,7 +72,7 @@
     </div>
   </div>
 
-  <table class="table">
+  <table *ngIf="products.length > 0" class="table">
     <thead>
       <tr>
         <th>product id</th>
@@ -85,7 +85,7 @@
     <tbody>
       <tr *ngFor="let product  of products">
         <td>{{ product.pid }}</td>
-        <td>{{ product.p_name }}</td>
+        <td>{{ product.pname }}</td>
         <td>{{ product.price }}</td>
         <td>{{ product.stock }}</td>
         <td>
@@ -105,13 +105,14 @@
     </div>
   </div>
 
-  <table class="table">
+  <table *ngIf="orders.length > 0" class="table">
     <thead>
       <tr>
         <th>order id</th>
         <th>customer id</th>
-        <th>order date</th>
-        <th>total ammount</th>
+        <th>product id</th>
+        <th>date</th>
+        <th>quantity</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -119,8 +120,9 @@
       <tr *ngFor="let order of orders">
         <td>{{ order.oid }}</td>
         <td>{{ order.cid }}</td>
-        <td>{{ order.o_date }}</td>
-        <td>{{ order.total_amount }}</td>
+        <td>{{ order.pid }}</td>
+        <td>{{ order.date }}</td>
+        <td>{{ order.quantity }}</td>
         <td>
           <a class="btn btn-primary btn-sm" [routerLink]="['/firstpage/update-order', order.cid]">Update</a>
           <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">Delete</a>

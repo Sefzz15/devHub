@@ -5,8 +5,8 @@
     <form (ngSubmit)="createProduct()">
       <!-- Product Name Field -->
       <div class="form-group">
-        <label for="p_name">Product Name</label>
-        <input id="p_name" class="form-control" [(ngModel)]="product.p_name" name="p_name" required />
+        <label for="pname">Product Name</label>
+        <input id="pname" class="form-control" [(ngModel)]="product.pname" name="pname" required />
         <span *ngIf="productnameError" class="text-danger">{{ productnameError }}</span>
       </div>
 

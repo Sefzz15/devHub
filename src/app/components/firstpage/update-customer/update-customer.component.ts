@@ -12,8 +12,8 @@ import { CustomerService } from '../../../../services/customer.service';
 export class UpdateCustomerComponent implements OnInit {
   customer = {
     cid: 0,
-    first_name: '',
-    last_name: '',
+    firstname: '',
+    lastname: '',
     email: '',
   };
 
@@ -66,11 +66,11 @@ export class UpdateCustomerComponent implements OnInit {
   }
 
   validateInputs(): boolean {
-    if (!this.customer.first_name) {
+    if (!this.customer.firstname) {
       this.firstnameError = 'First name is required.';
     }
 
-    if (!this.customer.last_name) {
+    if (!this.customer.lastname) {
       this.lastnameError = 'Last name is required.';
     }
 

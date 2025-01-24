@@ -44,7 +44,7 @@ export class ThirdpageComponent implements OnInit {
   // Utility function to get customer name by ID
   private getCustomerName(cid: number): string {
     const customer = this.customers.find(c => c.cid === cid);
-    return customer ? customer.first_name : 'Unknown';
+    return customer ? customer.firstname : 'Unknown';
   }
 
   // Utility function to get product by ID

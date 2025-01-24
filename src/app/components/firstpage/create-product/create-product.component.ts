@@ -9,7 +9,7 @@ import { ProductService } from '../../../../services/product.service';
   styleUrls: ['../../firstpage/create-user/create-user.component.css'],
 })
 export class CreateProductComponent implements OnInit {
-  product = { p_name: '', description: '', price: '', stock: '' };
+  product = { pname: '', description: '', price: '', stock: '' };
   productnameError: string = '';
   productpriceError: string = '';
   productquantityError: string = '';
@@ -57,7 +57,7 @@ export class CreateProductComponent implements OnInit {
   validateInputs(): boolean {
     let isValid = true;
 
-    if (!this.product.p_name) {
+    if (!this.product.pname) {
       this.productnameError = 'Product name is required.';
       isValid = false;
     }
