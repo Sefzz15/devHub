@@ -16,7 +16,6 @@
     customers: any[] = [];
     products: any[] = [];
     orders: any[] = [];
-    datas: any[] = [];
 
 
     constructor(
@@ -31,7 +30,6 @@
     getUsers(): void {
       this.userService.getUsers().subscribe(
         (data: any) => {
-          console.log('Fetched users:', data.$values);
           this.users = data.$values; // Ensure this updates the array
         },
         (error: any) => {
