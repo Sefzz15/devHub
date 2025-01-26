@@ -4,6 +4,7 @@ import { AuthService } from '../../../services/auth.service';
 import { SessionService } from '../../../services/session.service';
 import { ProductService } from '../../../services/product.service';
 import { HttpClient } from '@angular/common/http';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,7 +14,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-  userID: number = 0;
+  userID?: number;
   username: string = '';
 
   constructor(
@@ -21,7 +22,8 @@ export class DashboardComponent {
     private _authService: AuthService,
     private _sessionService: SessionService,
     private productService: ProductService,
-    private http: HttpClient
+    private http: HttpClient,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
@@ -34,6 +36,7 @@ export class DashboardComponent {
 
 
   }
+
   // products: any[] = [];
 
   // getProducts(): void {

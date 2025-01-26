@@ -3,6 +3,7 @@
   import { CustomerService } from '../../../services/customer.service';
   import { ProductService } from '../../../services/product.service';
   import { OrderService } from '../../../services/order.service';
+import { SessionService } from '../../../services/session.service';
 
   @Component({
     standalone: false,
@@ -12,6 +13,7 @@
   })
 
   export class FirstpageComponent implements OnInit {
+    userID?: number;
     users: any[] = [];
     customers: any[] = [];
     products: any[] = [];
@@ -19,12 +21,16 @@
 
 
     constructor(
+      private _sessionService: SessionService,
       private userService: UserService,
       private customerService: CustomerService,
       private productService: ProductService,
       private orderService: OrderService) { }
 
     ngOnInit(): void {
+      this.userID = this._sessionService.userID;
+      console.log('UserID in Dashboard:', this.userID);
+
     }
 
     getUsers(): void {

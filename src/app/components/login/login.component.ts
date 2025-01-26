@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { SessionService } from '../../../services/session.service';
+import { UserService } from '../../../services/user.service';
 
 
 @Component({
@@ -11,6 +12,7 @@ import { SessionService } from '../../../services/session.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  userID: number = 0;
   username: string = '';
   password: string = '';
   usernameError: string = '';
@@ -20,7 +22,8 @@ export class LoginComponent {
   constructor(
     private _router: Router,
     private _authService: AuthService,
-    private _sessionService: SessionService
+    private _sessionService: SessionService,
+    private userService: UserService
   ) { }
 
   onSubmit() {
@@ -46,7 +49,8 @@ export class LoginComponent {
           this._router.navigate(['/dashboard']);
           console.log('You successfully logged in...');
           this._sessionService.username = this.username;
-        } else {
+          this.getUserId();
+                } else {
           // Set general error message if authentication fails
           this.generalError = this._authService.generalError;
           console.log('Invalid Username and/or password...');
@@ -56,6 +60,18 @@ export class LoginComponent {
         // In case of network or server error
         this.generalError = this._authService.generalError;
         console.error('Authentication failed due to an error:', error);
+      }
+    );
+  }
+
+  getUserId() {
+    this.userService.getUserIdByUsername(this.username).subscribe(
+      (response) => {
+        this.userID = response.userId; // Store userId in component
+        this._sessionService.userID = this.userID; // Store userId in session service
+      },
+      (error) => {
+        this.userID = 0; // Reset userId on error
       }
     );
   }

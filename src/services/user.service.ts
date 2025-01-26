@@ -21,6 +21,10 @@ export class UserService {
     return this.http.get<any>(`${this._url}/${id}`);
   }
 
+  getUserIdByUsername(username: string): Observable<any> {
+    return this.http.get<any>(`${this._url}/getIdByUsername/${username}`);
+  }
+
   // Create a new user
   createUser(user: any): Observable<any> {
     return this.http.post<any>(`${this._url}`, user);
