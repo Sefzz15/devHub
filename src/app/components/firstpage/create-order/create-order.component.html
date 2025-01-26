@@ -1,0 +1,57 @@
+<div class="firstpage-container">
+  <div class="form-container">
+    <h1 class="form-header">Create Product</h1>
+
+    <form (ngSubmit)="createOrder()">
+      <!--  Order Name Field -->
+      <div class="form-group">
+        <label for="oid">Order Id</label>
+        <input id="oid" class="form-control" [(ngModel)]="order.oid" name="pname" required />
+        <span *ngIf="orderidError" class="text-danger">{{ orderidError }}</span>
+      </div>
+
+      <!-- Description Field -->
+      <div class="form-group">
+        <label for="cid">cid</label>
+        <input id="cid" class="form-control" [(ngModel)]="order.cid" name="cid" required />
+      </div>
+
+      <!-- Description Field -->
+      <div class="form-group">
+        <label for="pid">pid</label>
+        <input id="pid" class="form-control" [(ngModel)]="order.pid" name="pid" required />
+      </div>
+<!-- 
+      Price Field -->
+      <div class="form-group">
+        <label for="date">date</label>
+        <input id="date" class="form-control" [(ngModel)]="order.date" name="date" required />
+        <span *ngIf="orderdateError" class="text-danger">{{ orderdateError }}</span>
+      </div>
+
+      <!-- Quantity Field -->
+      <div class="form-group">
+        <label for="c">quantity</label>
+        <input id="quantity" class="form-control" [(ngModel)]="order.quantity" name="quantity" required />
+        <span *ngIf="orderquantityError" class="text-danger">{{ orderquantityError }}</span>
+      </div>
+
+
+      <!-- Buttons -->
+      <div class="button-group">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a class="btn btn-outline-primary" routerLink="/firstpage">Cancel</a>
+      </div>
+    </form>
+
+    <!-- Success Message -->
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage">
+      <div class="error">{{ errorMessage }}</div>
+    </div>
+  </div>
+</div>

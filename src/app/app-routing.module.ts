@@ -14,6 +14,8 @@ import { CreateCustomerComponent } from './components/firstpage/create-customer/
 import { UpdateCustomerComponent } from './components/firstpage/update-customer/update-customer.component';
 
 import { CreateProductComponent } from './components/firstpage/create-product/create-product.component';
+import { CreateOrderComponent } from './components/firstpage/create-order/create-order.component';
+
 import { UpdateProductComponent } from './components/firstpage/update-product/update-product.component';
 
 import { SecondpageComponent } from './components/secondpage/secondpage.component';
@@ -29,6 +31,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'firstpage', component: FirstpageComponent, canActivate: [AuthGuard] },
   { path: 'firstpage/create-user', component: CreateUserComponent },
+  { path: 'firstpage/create-order', component: CreateOrderComponent },
   { path: 'firstpage/update-user/:id', component: UpdateUserComponent, canActivate: [AuthGuard] },
   { path: 'firstpage/create-customer', component: CreateCustomerComponent, canActivate: [AuthGuard] },
   { path: 'firstpage/update-customer/:id', component: UpdateCustomerComponent, canActivate: [AuthGuard] },

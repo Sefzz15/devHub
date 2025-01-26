@@ -19,6 +19,8 @@ import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
 import { CreateProductComponent } from './components/firstpage/create-product/create-product.component';
 import { UpdateProductComponent } from './components/firstpage/update-product/update-product.component';
 import { SecondpageComponent } from './components/secondpage/secondpage.component';
+import { CreateOrderComponent } from './components/firstpage/create-order/create-order.component';
+import { UpdateOrderComponent } from './components/firstpage/update-order/update-order.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import { SecondpageComponent } from './components/secondpage/secondpage.componen
     CreateProductComponent,
     UpdateProductComponent,
     SecondpageComponent,
+    CreateOrderComponent,
+    UpdateOrderComponent,
   ],
   imports: [
     RouterModule,
