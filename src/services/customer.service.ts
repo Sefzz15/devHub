@@ -9,7 +9,9 @@ export class CustomerService {
 
   private _url = 'https://localhost:5000/api/customers';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   // Get all customers
   getCustomers(): Observable<any> {

@@ -9,7 +9,9 @@ export class UserService {
 
   private _url = 'https://localhost:5000/api/users';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   // Get all users
   getUsers(): Observable<any> {

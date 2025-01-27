@@ -9,7 +9,9 @@ export class OrderService {
 
   private _url = 'https://localhost:5000/api/orders';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   // Get all orders
   getOrders(): Observable<any> {

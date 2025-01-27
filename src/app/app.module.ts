@@ -40,6 +40,7 @@ import { UpdateOrderComponent } from './components/firstpage/update-order/update
     SecondpageComponent,
     CreateOrderComponent,
     UpdateOrderComponent,
+    UpdateOrderComponent,
   ],
   imports: [
     RouterModule,

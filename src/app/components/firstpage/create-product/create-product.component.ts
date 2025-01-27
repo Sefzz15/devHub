@@ -9,7 +9,7 @@ import { ProductService } from '../../../../services/product.service';
   styleUrls: ['../../firstpage/create-user/create-user.component.css'],
 })
 export class CreateProductComponent implements OnInit {
-  product = { pname: '', description: '', price: '', stock: '' };
+  product = { pname: '', price: '', stock: '' };
   productnameError: string = '';
   productpriceError: string = '';
   productquantityError: string = '';
@@ -17,7 +17,10 @@ export class CreateProductComponent implements OnInit {
   errorMessage: string = '';
   generalError: string = '';
 
-  constructor(private productService: ProductService, private router: Router) { }
+  constructor(
+    private productService: ProductService, 
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
   }

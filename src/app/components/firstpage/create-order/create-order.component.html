@@ -1,32 +1,21 @@
 <div class="firstpage-container">
   <div class="form-container">
-    <h1 class="form-header">Create Product</h1>
+    <h1 class="form-header">Create Order</h1>
 
     <form (ngSubmit)="createOrder()">
-      <!--  Order Name Field -->
-      <div class="form-group">
-        <label for="oid">Order Id</label>
-        <input id="oid" class="form-control" [(ngModel)]="order.oid" name="pname" required />
-        <span *ngIf="orderidError" class="text-danger">{{ orderidError }}</span>
-      </div>
 
-      <!-- Description Field -->
+      <!-- cid Field -->
       <div class="form-group">
         <label for="cid">cid</label>
         <input id="cid" class="form-control" [(ngModel)]="order.cid" name="cid" required />
+        <span *ngIf="ordercidError" class="text-danger">{{ ordercidError }}</span>
       </div>
 
-      <!-- Description Field -->
+      <!-- pid Field -->
       <div class="form-group">
         <label for="pid">pid</label>
         <input id="pid" class="form-control" [(ngModel)]="order.pid" name="pid" required />
-      </div>
-<!-- 
-      Price Field -->
-      <div class="form-group">
-        <label for="date">date</label>
-        <input id="date" class="form-control" [(ngModel)]="order.date" name="date" required />
-        <span *ngIf="orderdateError" class="text-danger">{{ orderdateError }}</span>
+        <span *ngIf="orderpidError" class="text-danger">{{ orderpidError }}</span>
       </div>
 
       <!-- Quantity Field -->

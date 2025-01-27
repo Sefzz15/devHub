@@ -15,7 +15,11 @@ export class UpdateUserComponent implements OnInit {
   passwordError: string = '';
   successMessage: string = '';
 
-  constructor(private userService: UserService, private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private userService: UserService, 
+    private route: ActivatedRoute, 
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     const uid = this.route.snapshot.paramMap.get('id');

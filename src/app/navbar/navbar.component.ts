@@ -11,7 +11,10 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
   isAuthenticated: boolean = false;
 
-  constructor(private _authService: AuthService, private _router: Router,) {
+  constructor(
+    private _authService: AuthService, 
+    private _router: Router
+  ) {
 
   }
 

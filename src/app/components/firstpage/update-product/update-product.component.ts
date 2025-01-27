@@ -17,7 +17,11 @@ export class UpdateProductComponent implements OnInit {
   errorMessage: string = '';
   generalError: string = '';
 
-  constructor(private productService: ProductService, private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private productService: ProductService, 
+    private route: ActivatedRoute, 
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     const pid = this.route.snapshot.paramMap.get('id');

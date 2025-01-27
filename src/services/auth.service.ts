@@ -16,13 +16,16 @@ export class AuthService {
 
   public generalError: string = '';
 
-  constructor(private _http: HttpClient, private _sessionService: SessionService) { }
+  constructor(
+    private _http: HttpClient,
+    private _sessionService: SessionService
+  ) { }
 
   authenticate(username: string, password: string): Observable<boolean> {
     return this._http.post<{ message: string; token?: string; userID?: number }>(this._url, { username, password }).pipe(
       map(response => {
         console.log('Server response:', response); // Log the full server response
-        if (response.message === 'Login successful!' ) {
+        if (response.message === 'Login successful!') {
           const token = response.token;
           const userID = response.userID; // Extract userID
           this.isAuthenticatedSubject.next(true);

@@ -24,7 +24,11 @@ export class UpdateCustomerComponent implements OnInit {
   emailError: string = '';
   cityError: string = '';
 
-  constructor(private customerService: CustomerService, private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private customerService: CustomerService, 
+    private route: ActivatedRoute, 
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     const cid = this.route.snapshot.paramMap.get('id');

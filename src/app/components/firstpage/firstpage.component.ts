@@ -25,7 +25,8 @@ import { SessionService } from '../../../services/session.service';
       private userService: UserService,
       private customerService: CustomerService,
       private productService: ProductService,
-      private orderService: OrderService) { }
+      private orderService: OrderService
+    ) { }
 
     ngOnInit(): void {
       this.userID = this._sessionService.userID;

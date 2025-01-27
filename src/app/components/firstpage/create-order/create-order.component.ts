@@ -5,22 +5,25 @@ import { OrderService } from '../../../../services/order.service';
 @Component({
   selector: 'app-create-order',
   standalone: false,
-  
+
   templateUrl: './create-order.component.html',
-  styleUrl: './create-order.component.css'
+  styleUrls: ['../../firstpage/create-user/create-user.component.css'],
 })
 export class CreateOrderComponent {
 
- 
-  order = { oid: 0, pid: 0,  cid: 0, date : '', quantity: 0 };
-  orderidError: string = '';
-  orderdateError: string = '';
+
+  order = { pid: '', cid: '', quantity: '' };
+  orderpidError: string = '';
+  ordercidError: string = '';
   orderquantityError: string = '';
   successMessage: string = '';
   errorMessage: string = '';
   generalError: string = '';
 
-  constructor(private orderService: OrderService, private router: Router) { }
+  constructor(
+    private orderService: OrderService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
   }
@@ -51,8 +54,8 @@ export class CreateOrderComponent {
   }
 
   clearErrorMessages(): void {
-    this.orderidError = '';
-    this.orderdateError = '';
+    this.ordercidError = '';
+    this.orderpidError = '';
     this.orderquantityError = '';
     this.successMessage = '';
   }
@@ -60,13 +63,14 @@ export class CreateOrderComponent {
   validateInputs(): boolean {
     let isValid = true;
 
-    if (!this.order.cid) {0
-      this.orderidError = 'Orderid is required.';
+
+    if (!this.order.cid) {
+      this.ordercidError = 'Customer  ID is required.';
       isValid = false;
     }
 
-    if (!this.order.date) {
-      this.orderdateError = 'Order Date is required.';
+    if (!this.order.pid) {
+      this.orderpidError = 'Product ID is required.';
       isValid = false;
     }
 

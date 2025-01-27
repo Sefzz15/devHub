@@ -16,7 +16,10 @@ export class CreateUserComponent implements OnInit {
   errorMessage: string = '';
   generalError: string = '';
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(
+    private userService: UserService, 
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
   }

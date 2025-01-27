@@ -20,7 +20,9 @@ export class ChatComponent implements OnInit, OnDestroy {
   unreadCount: number = 0;
 
 
-  constructor(private _sessionService: SessionService) { }
+  constructor(
+    private _sessionService: SessionService
+  ) { }
 
   ngOnInit() {
     this.username = this._sessionService.username;

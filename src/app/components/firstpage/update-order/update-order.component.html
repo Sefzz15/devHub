@@ -1,1 +1,53 @@
-<p>update-order works!</p>
+<div class="firstpage-container">
+    <div class="form-container">
+      <h1 class="form-header">Update Order</h1>
+  
+      <form (ngSubmit)="updateOrder()">
+         
+        <!-- oid Field -->
+          <div class="form-group">
+            <label for="oid">oid</label>
+            <input id="oid" class="form-control" [(ngModel)]="order.oid" name="oid" required />
+            <span *ngIf="orderoidError" class="text-danger">{{ orderoidError }}</span>
+          </div>
+
+        <!-- cid Field -->
+        <div class="form-group">
+          <label for="cid">cid</label>
+          <input id="cid" class="form-control" [(ngModel)]="order.cid" name="cid" required />
+          <span *ngIf="ordercidError" class="text-danger">{{ ordercidError }}</span>
+        </div>
+  
+        <!-- pid Field -->
+        <div class="form-group">
+          <label for="pid">pid</label>
+          <input id="pid" class="form-control" [(ngModel)]="order.pid" name="pid" required />
+          <span *ngIf="orderpidError" class="text-danger">{{ orderpidError }}</span>
+        </div>
+  
+        <!-- Quantity Field -->
+        <div class="form-group">
+          <label for="c">quantity</label>
+          <input id="quantity" class="form-control" [(ngModel)]="order.quantity" name="quantity" required />
+          <span *ngIf="orderquantityError" class="text-danger">{{ orderquantityError }}</span>
+        </div>
+  
+  
+        <!-- Buttons -->
+        <div class="button-group">
+          <button type="submit" class="btn btn-primary">Update</button>
+          <a class="btn btn-outline-primary" routerLink="/firstpage">Cancel</a>
+        </div>
+      </form>
+  
+      <!-- Success Message -->
+      <div *ngIf="successMessage" class="alert alert-success">
+        {{ successMessage }}
+      </div>
+  
+      <!-- Error Message -->
+      <div *ngIf="errorMessage">
+        <div class="error">{{ errorMessage }}</div>
+      </div>
+    </div>
+  </div>

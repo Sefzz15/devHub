@@ -9,7 +9,9 @@ export class ProductService {
 
   private _url = 'https://localhost:5000/api/products';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   // Get all products
   getProducts(): Observable<any> {

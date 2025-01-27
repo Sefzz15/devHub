@@ -124,7 +124,7 @@
         <td>{{ order.date }}</td>
         <td>{{ order.quantity }}</td>
         <td>
-          <a class="btn btn-primary btn-sm" [routerLink]="['/firstpage/update-order', order.cid]">Update</a>
+          <a class="btn btn-primary btn-sm" [routerLink]="['/firstpage/update-order', order.oid]">Update</a>
           <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">Delete</a>
         </td>
       </tr>
