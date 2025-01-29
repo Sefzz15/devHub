@@ -30,9 +30,11 @@ export class ThirdpageComponent implements OnInit {
       customers: this.customerService.getCustomers(),
     }).subscribe({
       next: (data) => {
-        this.products = data.products;
-        this.orders = data.orders;
-        this.customers = data.customers;
+        this.products = data.products.$values;
+        this.orders = data.orders.$values;
+        this.customers = data.customers.$values;
+        console.log("Fetched products:", data);
+
 
       },
       error: (error) => {
@@ -40,16 +42,4 @@ export class ThirdpageComponent implements OnInit {
       }
     });
   }
-
-  // Utility function to get customer name by ID
-  private getCustomerName(cid: number): string {
-    const customer = this.customers.find(c => c.cid === cid);
-    return customer ? customer.firstname : 'Unknown';
-  }
-
-  // Utility function to get product by ID
-  private getProductById(pid: number): any {
-    return this.products.find(product => product.pid === pid) || null;
-  }
-
 }

@@ -39,7 +39,7 @@ export class SecondpageComponent {
     this.productService.getProducts().subscribe(
       (data: any) => {
         console.log("Fetched products:", data);
-        this.products = data.map((product: any) => ({
+        this.products = data.$values.map((product: any) => ({
           ...product,
           quantity: 0,
         }));
