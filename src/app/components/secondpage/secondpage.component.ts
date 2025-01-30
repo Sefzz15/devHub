@@ -15,6 +15,7 @@ import { HttpClient } from '@angular/common/http';
 export class SecondpageComponent {
   userID: number = 0;
   username: string = '';
+  cid: number = 0;
 
   constructor(
     private _router: Router,
@@ -28,12 +29,15 @@ export class SecondpageComponent {
     this.username = this._sessionService.username;
     this.userID = this._sessionService.userID;
     this.getProducts();
+    this.checkIfUserIsCustomer();
 
     console.log('Username :', this.username);
     console.log('UserID :', this.userID);
+
   }
 
   products: any[] = [];
+  productQuantities: Map<number, number> = new Map(); // Map to track product quantity changes
 
   getProducts(): void {
     this.productService.getProducts().subscribe(
@@ -51,12 +55,18 @@ export class SecondpageComponent {
   }
 
   increaseQuantity(product: any) {
+    const currentQuantity = this.productQuantities.get(product.pid) || 0;
+    this.productQuantities.set(product.pid, currentQuantity + 1);
     product.quantity++;
   }
 
   decreaseQuantity(product: any) {
     if (product.quantity > 0) {
       product.quantity--;
+    }
+    const currentQuantity = this.productQuantities.get(product.pid) || 0;
+    if (currentQuantity > 0) {
+      this.productQuantities.set(product.pid, currentQuantity - 1);
     }
   }
 
@@ -73,30 +83,27 @@ export class SecondpageComponent {
   buyProducts() {
     const userID = this._sessionService.userID;  // The UID of the user from the Session Service
 
-    const selectedProducts = this.products
-      .filter((product) => product.quantity > 0)
-      .map((product) => ({
-        ProductId: product.pid,
-        Quantity: product.quantity,
-      }));
+    const orderItems = Array.from(this.productQuantities)
+    .filter(([pid, quantity]) => quantity > 0) // Only include items with quantity > 0
+    .map(([pid, quantity]) => ({
+      Pid: pid,
+      Quantity: quantity
+    }));
 
-    if (selectedProducts.length === 0) {
-      alert('Please select at least one product to buy.');
-      return;
-    }
-
+    console.log('Order Items:', orderItems);
     // Creating Payload
     const payload = {
-      orderRequest: {
-        Uid: String(userID),
-        Products: selectedProducts,
-      },
+
+      "cid": this.cid,
+      "date": "2024-01-30T12:00:00",
+      "orderItems": orderItems
+
     };
 
     console.log('Payload to be sent:', JSON.stringify(payload, null, 2));
 
     // HTTP Request
-    this.http.post('https://localhost:5000/api/complexorder/create-order', payload).subscribe({
+    this.http.post('https://localhost:5000/api/orders', payload).subscribe({
       next: (response: any) => {
         console.log('Order created successfully:', response);
         this.getProducts(); // Refresh products
@@ -109,6 +116,21 @@ export class SecondpageComponent {
           alert('Failed to create order. Please try again.');
         }
       },
+    });
+  }
+
+  checkIfUserIsCustomer() {
+    this._authService.checkIfUserIsCustomer(this.userID).subscribe({
+      next: (response) => {
+        // Handle success response
+        console.log('Customer data:', response);
+        const customerData = response;
+        this.cid = response.cid;
+      },
+      error: (error) => {
+        // Handle error response
+        console.error('Error:', error);
+      }
     });
   }
 

@@ -10,9 +10,11 @@ import { SessionService } from './session.service';
 })
 export class AuthService {
   private _url = 'https://localhost:5000/api/users/login'; // Backend URL
+  private _url1 = 'https://localhost:5000/api/users'; // Backend URL
   // private _url = 'https://192.168.1.180:5000/api/users/login'; // Backend URL
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   private token: string | null = null;
+  userID: number = 0;
 
   public generalError: string = '';
 
@@ -27,15 +29,15 @@ export class AuthService {
         console.log('Server response:', response); // Log the full server response
         if (response.message === 'Login successful!') {
           const token = response.token;
-          const userID = response.userID; // Extract userID
+          this.userID = response.userID!; // Extract userID
           this.isAuthenticatedSubject.next(true);
 
           // Update SessionService with the username and userID
           this._sessionService.username = username;  // Set the username
-          this._sessionService.userID = userID || 0;  // Set the userID (default to 0 if not available)
+          this._sessionService.userID = this.userID || 0;  // Set the userID (default to 0 if not available)
 
           console.log('Generated Token:', token);
-          console.log('User ID:', userID);  // Log userID to the console
+          console.log('User ID:', this.userID);  // Log userID to the console
           return true;
         } else {
           console.log('Authentication failed');
@@ -64,6 +66,12 @@ export class AuthService {
   get isAuthenticated(): Observable<boolean> {
     return this.isAuthenticatedSubject.asObservable();
   }
+
+  checkIfUserIsCustomer(userId: number = this.userID): Observable<any> {
+    return this._http.get<any>(`${this._url1}/check-customer/${userId}`);
+  }
+
+  
 
   logout(): void {
     this.isAuthenticatedSubject.next(false);
