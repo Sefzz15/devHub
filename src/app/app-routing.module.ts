@@ -24,6 +24,7 @@ import { SecondpageComponent } from './components/secondpage/secondpage.componen
 import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
 
 import { ChatComponent } from './components/chat/chat.component';
+import { MultistepformComponent } from './components/multistepform/multistepform.component';
 
 
 const routes: Routes = [
@@ -42,6 +43,7 @@ const routes: Routes = [
   { path: 'firstpage/update-order/:id', component: UpdateOrderComponent, canActivate: [AuthGuard] },
   { path: 'secondpage', component: SecondpageComponent, canActivate: [AuthGuard] },
   { path: 'thirdpage', component: ThirdpageComponent, canActivate: [AuthGuard] },
+  { path: 'multistepform', component: MultistepformComponent, canActivate: [AuthGuard] },
 
 
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },

@@ -21,6 +21,14 @@ import { UpdateProductComponent } from './components/firstpage/update-product/up
 import { SecondpageComponent } from './components/secondpage/secondpage.component';
 import { CreateOrderComponent } from './components/firstpage/create-order/create-order.component';
 import { UpdateOrderComponent } from './components/firstpage/update-order/update-order.component';
+import { MultistepformComponent } from './components/multistepform/multistepform.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 
 @NgModule({
   declarations: [
@@ -41,6 +49,7 @@ import { UpdateOrderComponent } from './components/firstpage/update-order/update
     CreateOrderComponent,
     UpdateOrderComponent,
     UpdateOrderComponent,
+    MultistepformComponent,
   ],
   imports: [
     RouterModule,
@@ -49,6 +58,13 @@ import { UpdateOrderComponent } from './components/firstpage/update-order/update
     FormsModule,
     HttpClientModule,
     MatToolbarModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    MatStepperModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [
     provideClientHydration(withEventReplay()),
