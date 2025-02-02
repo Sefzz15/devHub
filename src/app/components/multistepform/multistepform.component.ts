@@ -1,13 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { StepperOrientation, MatStepperModule } from '@angular/material/stepper';
+import { StepperOrientation } from '@angular/material/stepper';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'stepper-responsive-example',

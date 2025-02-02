@@ -31,6 +31,7 @@ import { UpdateOrderComponent } from './components/firstpage/update-order/update
 import { SecondpageComponent } from './components/secondpage/secondpage.component';
 import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MultistepformComponent } from './components/multistepform/multistepform.component';
 
 
@@ -72,7 +73,8 @@ import { MultistepformComponent } from './components/multistepform/multistepform
   ],
   providers: [
     provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch())
+    provideHttpClient(withFetch()),
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })
