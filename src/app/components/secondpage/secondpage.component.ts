@@ -91,7 +91,6 @@ export class SecondpageComponent {
     }));
 
     console.log('Order Items:', orderItems);
-    // Creating Payload
     const payload = {
 
       "cid": this.cid,
@@ -102,7 +101,6 @@ export class SecondpageComponent {
 
     console.log('Payload to be sent:', JSON.stringify(payload, null, 2));
 
-    // HTTP Request
     this.http.post('https://localhost:5000/api/orders', payload).subscribe({
       next: (response: any) => {
         console.log('Order created successfully:', response);
@@ -122,13 +120,11 @@ export class SecondpageComponent {
   checkIfUserIsCustomer() {
     this._authService.checkIfUserIsCustomer(this.userID).subscribe({
       next: (response) => {
-        // Handle success response
         console.log('Customer data:', response);
         const customerData = response;
         this.cid = response.cid;
       },
       error: (error) => {
-        // Handle error response
         console.error('Error:', error);
       }
     });

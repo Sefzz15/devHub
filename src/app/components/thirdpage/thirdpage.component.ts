@@ -23,7 +23,6 @@ export class ThirdpageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Fetch all necessary data in parallel
     forkJoin({
       products: this.productService.getProducts(),
       orders: this.orderService.getOrders(),
