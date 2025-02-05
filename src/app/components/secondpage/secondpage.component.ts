@@ -10,7 +10,9 @@ import { HttpClient } from '@angular/common/http';
   standalone: false,
 
   templateUrl: './secondpage.component.html',
-  styleUrls: ['../firstpage/firstpage.component.css', './secondpage.component.css'],
+  styleUrls: [
+    '../firstpage/firstpage.component.css',
+    './secondpage.component.css'],
 })
 export class SecondpageComponent {
   userID: number = 0;
@@ -84,11 +86,11 @@ export class SecondpageComponent {
     const userID = this._sessionService.userID;  // The UID of the user from the Session Service
 
     const orderItems = Array.from(this.productQuantities)
-    .filter(([pid, quantity]) => quantity > 0) // Only include items with quantity > 0
-    .map(([pid, quantity]) => ({
-      Pid: pid,
-      Quantity: quantity
-    }));
+      .filter(([pid, quantity]) => quantity > 0) // Only include items with quantity > 0
+      .map(([pid, quantity]) => ({
+        Pid: pid,
+        Quantity: quantity
+      }));
 
     console.log('Order Items:', orderItems);
     const payload = {

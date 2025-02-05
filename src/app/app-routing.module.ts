@@ -43,9 +43,8 @@ const routes: Routes = [
   { path: 'firstpage/update-order/:id', component: UpdateOrderComponent, canActivate: [AuthGuard] },
   { path: 'secondpage', component: SecondpageComponent, canActivate: [AuthGuard] },
   { path: 'thirdpage', component: ThirdpageComponent, canActivate: [AuthGuard] },
+  
   { path: 'multistepform', component: MultistepformComponent, canActivate: [AuthGuard] },
-
-
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
 ];
 
