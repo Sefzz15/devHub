@@ -26,7 +26,7 @@ export class AuthService {
   authenticate(username: string, password: string): Observable<boolean> {
     return this._http.post<{ message: string; token?: string; userID?: number }>(this._url, { username, password }).pipe(
       map(response => {
-        console.log('Server response:', response); // Log the full server response
+        console.log('Server response:', response);
         if (response.message === 'Login successful!') {
           const token = response.token;
           this.userID = response.userID!; // Extract userID
@@ -71,7 +71,7 @@ export class AuthService {
     return this._http.get<any>(`${this._url1}/check-customer/${userId}`);
   }
 
-  
+
 
   logout(): void {
     this.isAuthenticatedSubject.next(false);
