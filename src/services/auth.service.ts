@@ -72,7 +72,6 @@ export class AuthService {
   }
 
 
-
   logout(): void {
     this.isAuthenticatedSubject.next(false);
   }
