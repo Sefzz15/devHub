@@ -10,6 +10,7 @@ import { CustomerService } from '../../../../services/customer.service';
   templateUrl: './create-customer.component.html',
   styleUrls: ['../../firstpage/create-user/create-user.component.css'],
 })
+
 export class CreateCustomerComponent implements OnInit {
   userID: number = 0;
   customer = {
@@ -18,7 +19,6 @@ export class CreateCustomerComponent implements OnInit {
     lastname: '',
     email: ''
   };
-
 
   firstNameError: string = '';
   lastNameError: string = '';
