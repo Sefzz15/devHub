@@ -14,6 +14,7 @@ import { CustomerService } from '../../../../services/customer.service';
 export class CreateCustomerComponent implements OnInit {
   userID: number = 0;
   customer = {
+    cid: 0,
     uid: this.userID,
     firstname: '',
     lastname: '',

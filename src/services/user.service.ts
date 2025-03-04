@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { IUser } from '../app/interfaces/IUser';
 
 @Injectable({
   providedIn: 'root'
@@ -14,27 +15,29 @@ export class UserService {
   ) { }
 
   // Get all users
-  getUsers(): Observable<any> {
-    return this.http.get<any>(`${this._url}`);
+  getUsers(): Observable<IUser[]> {
+    return this.http.get<IUser[]>(`${this._url}`);
   }
 
   // Get a specific user by ID
-  getUser(id: number): Observable<any> {
-    return this.http.get<any>(`${this._url}/${id}`);
+  getUser(id: number): Observable<IUser> {
+    return this.http.get<IUser>(`${this._url}/${id}`);
   }
 
+  // Get user ID by username
+  // observable<any> needs to be updated
   getUserIdByUsername(username: string): Observable<any> {
     return this.http.get<any>(`${this._url}/getIdByUsername/${username}`);
   }
 
   // Create a new user
-  createUser(user: any): Observable<any> {
-    return this.http.post<any>(`${this._url}`, user);
+  createUser(user: IUser): Observable<IUser> {
+    return this.http.post<IUser>(`${this._url}`, user);
   }
 
   // Update an existing user
-  updateUser(id: number, user: any): Observable<any> {
-    return this.http.put<any>(`${this._url}/${id}`, user);
+  updateUser(id: number, user: IUser): Observable<IUser> {
+    return this.http.put<IUser>(`${this._url}/${id}`, user);
   }
 
   // Delete a user

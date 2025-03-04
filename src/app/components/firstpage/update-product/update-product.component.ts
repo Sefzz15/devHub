@@ -9,7 +9,7 @@ import { ProductService } from '../../../../services/product.service';
   styleUrls: ['../../firstpage/create-user/create-user.component.css'],
 })
 export class UpdateProductComponent implements OnInit {
-  product = { pid: 0, pname: '', price: '', stock: '' };
+  product = { pid: 0, pname: '', price: 0, stock: 0 };
   productnameError: string = '';
   productpriceError: string = '';
   productquantityError: string = '';
@@ -18,8 +18,8 @@ export class UpdateProductComponent implements OnInit {
   generalError: string = '';
 
   constructor(
-    private productService: ProductService, 
-    private route: ActivatedRoute, 
+    private productService: ProductService,
+    private route: ActivatedRoute,
     private router: Router
   ) { }
 

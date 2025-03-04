@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { IProduct } from '../app/interfaces/IProduct';
 
 @Injectable({
   providedIn: 'root'
@@ -14,23 +15,23 @@ export class ProductService {
   ) { }
 
   // Get all products
-  getProducts(): Observable<any> {
-    return this.http.get<any>(`${this._url}`);
+  getProducts(): Observable<IProduct[]> {
+    return this.http.get<IProduct[]>(`${this._url}`);
   }
 
   // Get a specific product by ID
-  getProduct(pid: number): Observable<any> {
-    return this.http.get<any>(`${this._url}/${pid}`);
+  getProduct(pid: number): Observable<IProduct> {
+    return this.http.get<IProduct>(`${this._url}/${pid}`);
   }
 
   // Create a new product
-  createProduct(product: any): Observable<any> {
-    return this.http.post<any>(`${this._url}`, product);
+  createProduct(product: IProduct): Observable<IProduct> {
+    return this.http.post<IProduct>(`${this._url}`, product);
   }
 
   // Update an existing product
-  updateProduct(pid: number, product: any): Observable<any> {
-    return this.http.put<any>(`${this._url}/${pid}`, product);
+  updateProduct(pid: number, product: IProduct): Observable<IProduct> {
+    return this.http.put<IProduct>(`${this._url}/${pid}`, product);
   }
 
   // Delete a product

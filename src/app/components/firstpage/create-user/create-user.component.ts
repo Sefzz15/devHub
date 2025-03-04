@@ -9,7 +9,7 @@ import { UserService } from '../../../../services/user.service';
   styleUrls: ['./create-user.component.css'],
 })
 export class CreateUserComponent implements OnInit {
-  user = { uname: '', upass: '' };
+  user = { uid: 0, uname: '', upass: '' };
   usernameError: string = '';
   passwordError: string = '';
   successMessage: string = '';
@@ -17,7 +17,7 @@ export class CreateUserComponent implements OnInit {
   generalError: string = '';
 
   constructor(
-    private userService: UserService, 
+    private userService: UserService,
     private router: Router
   ) { }
 

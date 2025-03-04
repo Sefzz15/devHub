@@ -12,6 +12,7 @@ import { CustomerService } from '../../../../services/customer.service';
 export class UpdateCustomerComponent implements OnInit {
   customer = {
     cid: 0,
+    uid: 0,
     firstname: '',
     lastname: '',
     email: '',
@@ -25,8 +26,8 @@ export class UpdateCustomerComponent implements OnInit {
   cityError: string = '';
 
   constructor(
-    private customerService: CustomerService, 
-    private route: ActivatedRoute, 
+    private customerService: CustomerService,
+    private route: ActivatedRoute,
     private router: Router
   ) { }
 

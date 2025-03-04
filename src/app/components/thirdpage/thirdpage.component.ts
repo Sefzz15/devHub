@@ -29,9 +29,9 @@ export class ThirdpageComponent implements OnInit {
       customers: this.customerService.getCustomers(),
     }).subscribe({
       next: (data) => {
-        this.products = data.products.$values;
+        // this.products = data.products.$values;
         this.orders = data.orders.$values;
-        this.customers = data.customers.$values;
+        // this.customers = data.customers.$values;
         console.log("Fetched products:", data);
 
 
