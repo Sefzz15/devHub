@@ -14,7 +14,7 @@ import { UserService } from '../../../services/user.service';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-  userID?: number;
+  userID: number = 0;
   username: string = '';
 
   constructor(
@@ -29,11 +29,9 @@ export class DashboardComponent {
   ngOnInit() {
     this.username = this._sessionService.username;
     this.userID = this._sessionService.userID;
-    // this.getProducts();
 
     console.log('Username in Dashboard:', this.username);
     console.log('UserID in Dashboard:', this.userID);
-
 
   }
 
