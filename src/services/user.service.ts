@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IUser } from '../app/interfaces/IUser';
+import { IUser } from '../interfaces/IUser';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +26,8 @@ export class UserService {
 
   // Get user ID by username
   // observable<any> needs to be updated
-  getUserIdByUsername(username: string): Observable<string> {
-    return this.http.get<string>(`${this._url}/getIdByUsername/${username}`);
+  getUserIdByUsername(username: string): Observable<any> {
+    return this.http.get<any>(`${this._url}/getIdByUsername/${username}`);
   }
 
   // Create a new user

@@ -49,6 +49,7 @@ export class LoginComponent {
           this._router.navigate(['/dashboard']);
           console.log('You successfully logged in...');
           this._sessionService.username = this.username;
+          // this._sessionService.userID = this.userID;
           this.getUserId();
                 } else {
           // Set general error message if authentication fails
@@ -67,7 +68,7 @@ export class LoginComponent {
   getUserId() {
     this.userService.getUserIdByUsername(this.username).subscribe(
       (response) => {
-        // this.userID = response.userId; // Store userId in component
+        this.userID = response.userId; // Store userId in component
         this._sessionService.userID = this.userID; // Store userId in session service
       },
       (error) => {
