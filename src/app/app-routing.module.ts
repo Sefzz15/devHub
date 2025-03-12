@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NavbarComponent } from './navbar/navbar.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from '../services/auth.guard';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -25,6 +25,7 @@ import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
 
 import { ChatComponent } from './components/chat/chat.component';
 import { MultistepformComponent } from './components/multistepform/multistepform.component';
+import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.component';
 
 
 const routes: Routes = [
@@ -43,6 +44,7 @@ const routes: Routes = [
   { path: 'firstpage/update-order/:id', component: UpdateOrderComponent, canActivate: [AuthGuard] },
   { path: 'secondpage', component: SecondpageComponent, canActivate: [AuthGuard] },
   { path: 'thirdpage', component: ThirdpageComponent, canActivate: [AuthGuard] },
+  { path: 'rubiks-cube', component: RubiksCubeComponent, canActivate: [AuthGuard] },
   
   { path: 'multistepform', component: MultistepformComponent, canActivate: [AuthGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },

@@ -1,0 +1,22 @@
+<div class="scene" (mousemove)="onMouseMove($event)" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp()">
+    <div #cube class="cube">
+        <div class="face front">
+            <div *ngFor="let i of nineArray" class="sticker front"></div>
+        </div>
+        <div class="face back">
+            <div *ngFor="let i of nineArray" class="sticker back"></div>
+        </div>
+        <div class="face right">
+            <div *ngFor="let i of nineArray" class="sticker right"></div>
+        </div>
+        <div class="face left">
+            <div *ngFor="let i of nineArray" class="sticker left"></div>
+        </div>
+        <div class="face top">
+            <div *ngFor="let i of nineArray" class="sticker top">a  </div>
+        </div>
+        <div class="face bottom">
+            <div *ngFor="let i of nineArray" class="sticker bottom"></div>
+        </div>
+    </div>
+</div>

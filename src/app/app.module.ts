@@ -33,6 +33,7 @@ import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MultistepformComponent } from './components/multistepform/multistepform.component';
+import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.component';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { MultistepformComponent } from './components/multistepform/multistepform
     CreateOrderComponent,
     UpdateOrderComponent,
     MultistepformComponent,
+    RubiksCubeComponent,
   ],
   imports: [
     RouterModule,
