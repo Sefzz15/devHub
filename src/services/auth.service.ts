@@ -37,7 +37,7 @@ export class AuthService {
           this._sessionService.userID = this.userID || 0;  // Set the userID (default to 0 if not available)
 
           console.log('Generated Token:', token);
-          console.log('User ID:', this.userID);  // Log userID to the console
+          console.log('Userc ID:', this.userID);  // Log userID to the console
           return true;
         } else {
           console.log('Authentication failed');

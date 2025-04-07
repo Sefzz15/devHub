@@ -3,6 +3,7 @@ import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { SessionService } from '../../../services/session.service';
 import { UserService } from '../../../services/user.service';
+import { IUser } from '../../../interfaces/IUser';
 
 
 @Component({
@@ -49,7 +50,7 @@ export class LoginComponent {
           this._router.navigate(['/dashboard']);
           console.log('You successfully logged in...');
           this._sessionService.username = this.username;
-          // this._sessionService.userID = this.userID;
+          this._sessionService.userID = this.userID;
           this.getUserId();
                 } else {
           // Set general error message if authentication fails
@@ -67,9 +68,10 @@ export class LoginComponent {
 
   getUserId() {
     this.userService.getUserIdByUsername(this.username).subscribe(
-      (response) => {
-        this.userID = response.userId; // Store userId in component
+      (response: IUser) => {
+        this.userID = response.uid; // Store userId in component
         this._sessionService.userID = this.userID; // Store userId in session service
+        this._sessionService.userID = response.uid; // Store userId in session service
       },
       (error) => {
         this.userID = 0; // Reset userId on error

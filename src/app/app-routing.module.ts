@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NavbarComponent } from './components/navbar/navbar.component';
+// import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from '../services/auth.guard';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -30,7 +30,7 @@ import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.compon
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'navbar', component: NavbarComponent, canActivate: [AuthGuard] },
+  // { path: 'navbar', component: NavbarComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'firstpage', component: FirstpageComponent, canActivate: [AuthGuard] },

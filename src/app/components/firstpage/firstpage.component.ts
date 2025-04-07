@@ -30,7 +30,7 @@ import { SessionService } from '../../../services/session.service';
 
     ngOnInit(): void {
       this.userID = this._sessionService.userID;
-      console.log('UserID in Dashboard:', this.userID);
+      console.log('UserID in firstpage:', this.userID);
 
     }
 

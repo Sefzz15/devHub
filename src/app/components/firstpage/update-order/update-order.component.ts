@@ -9,7 +9,7 @@ import { OrderService } from '../../../../services/order.service';
   styleUrls: ['../../firstpage/create-user/create-user.component.css'],
 })
 export class UpdateOrderComponent implements OnInit {
-  order = { oid: 0, cid: 0, pid: 0, quantity: 0, };
+  order = { oid: 0, cid: 0, pid: 0, quantity: 0, ooid:0, datetime:'' };
 
   orderoidError: string = '';
   ordercidError: string = '';

@@ -30,14 +30,14 @@ export class ThirdpageComponent implements OnInit {
     }).subscribe({
       next: (data) => {
         // this.products = data.products.$values;
-        this.orders = data.orders.$values;
+        // this.orders = data.orders.$values;
         // this.customers = data.customers.$values;
         console.log("Fetched products:", data);
 
 
       },
       error: (error) => {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching datam:', error);
       }
     });
   }
