@@ -3,7 +3,7 @@
   background-color: #3e4684;
   padding: 10px 20px;
   height: 5%;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
 }
 
 .navbar-links {
@@ -54,11 +54,11 @@
     flex-direction: column;
     width: 100%;
     gap: 10px;
+    align-items: flex-start;
   }
 
   .navbar-links a {
     width: 100%;
-    padding: 10px 20px;
     text-align: left;
   }
 
