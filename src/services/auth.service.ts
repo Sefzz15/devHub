@@ -24,12 +24,12 @@ export class AuthService {
   ) { }
 
   authenticate(username: string, password: string): Observable<boolean> {
-    return this._http.post<{ message: string; token?: string; userID?: number }>(this._url, { username, password }).pipe(
+    return this._http.post<{ message: string; token?: string; $id?: number; user: { $id: string; uid: number; uname: string } }>(this._url, { username, password }).pipe(
       map(response => {
         console.log('Server response:', response);
         if (response.message === 'Login successful!') {
           const token = response.token;
-          this.userID = response.userID!; // Extract userID
+          this.userID = response.user.uid;          // Extract userID
           this.isAuthenticatedSubject.next(true);
 
           // Update SessionService with the username and userID
@@ -37,7 +37,7 @@ export class AuthService {
           this._sessionService.userID = this.userID || 0;  // Set the userID (default to 0 if not available)
 
           console.log('Generated Token:', token);
-          console.log('Userc ID:', this.userID);  // Log userID to the console
+          console.log('User ID:', this.userID);  // Log userID to the console
           return true;
         } else {
           console.log('Authentication failed');

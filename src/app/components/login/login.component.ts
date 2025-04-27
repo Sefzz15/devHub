@@ -70,8 +70,8 @@ export class LoginComponent {
     this.userService.getUserIdByUsername(this.username).subscribe(
       (response: IUser) => {
         this.userID = response.uid; // Store userId in component
-        // this._sessionService.userID = this.userID; // Store userId in session service
-        this._sessionService.userID = response.uid; // Store userId in session service
+         this._sessionService.userID = this.userID; // Store userId in session service
+        //this._sessionService.userID = response.uid; // Store userId in session service
       },
       (error) => {
         this.userID = 0; // Reset userId on error
