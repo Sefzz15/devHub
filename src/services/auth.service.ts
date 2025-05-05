@@ -29,6 +29,7 @@ export class AuthService {
         console.log('Server response:', response);
         if (response.message === 'Login successful!') {
           const token = response.token;
+          //console.log('Raw response.user.uid:', response.user?.uid);
           this.userID = response.user.uid;          // Extract userID
           this.isAuthenticatedSubject.next(true);
 
