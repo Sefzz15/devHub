@@ -47,35 +47,32 @@ export class LoginComponent {
     this._authService.authenticate(this.username, this.password).subscribe(
       (isAuthenticated) => {
         if (isAuthenticated) {
+          this._sessionService.username = this.username;
+          this._sessionService.userID = this._authService.userID; 
           this._router.navigate(['/dashboard']);
           console.log('You successfully logged in...');
-          this._sessionService.username = this.username;
-          this._sessionService.userID = this.userID;
-          this.getUserId();
-                } else {
-          // Set general error message if authentication fails
+        } else {
           this.generalError = this._authService.generalError;
           console.log('Invalid Username and/or password...');
         }
       },
       (error) => {
-        // In case of network or server error
         this.generalError = this._authService.generalError;
         console.error('Authentication failed due to an error:', error);
       }
     );
   }
 
-  getUserId() {
-    this.userService.getUserIdByUsername(this.username).subscribe(
-      (response: IUser) => {
-        this.userID = response.uid; // Store userId in component
-         this._sessionService.userID = this.userID; // Store userId in session service
-        //this._sessionService.userID = response.uid; // Store userId in session service
-      },
-      (error) => {
-        this.userID = 0; // Reset userId on error
-      }
-    );
-  }
+  // getUserId() {
+  //   this.userService.getUserIdByUsername(this.username).subscribe(
+  //     (response: IUser) => {
+  //       this._sessionService.userID = this.userID; // Store userId in session service
+  //       // this._sessionService.userID = response.uid; // Store userId in session service
+  //       // this.userID = response.uid; // Store userId in component
+  //     },
+  //     (error) => {
+  //       this.userID = 0; // Reset userId on error
+  //     }
+  //   );
+  // }
 }

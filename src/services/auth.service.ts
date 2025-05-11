@@ -29,13 +29,13 @@ export class AuthService {
         console.log('Server response:', response);
         if (response.message === 'Login successful!') {
           const token = response.token;
-          //console.log('Raw response.user.uid:', response.user?.uid);
+        //  console.log('Raw response.user.uid:', response.user?.uid);
           this.userID = response.user.uid;          // Extract userID
           this.isAuthenticatedSubject.next(true);
 
           // Update SessionService with the username and userID
           this._sessionService.username = username;  // Set the username
-          this._sessionService.userID = this.userID || 0;  // Set the userID (default to 0 if not available)
+          this._sessionService.userID = this.userID;  // Set the userID 
 
           console.log('Generated Token:', token);
           console.log('User ID:', this.userID);  // Log userID to the console
