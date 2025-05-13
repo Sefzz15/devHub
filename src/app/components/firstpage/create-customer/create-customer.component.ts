@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { SessionService } from '../../../../services/session.service';
 import { CustomerService } from '../../../../services/customer.service';
+import { ICustomer } from '../../../../interfaces/ICustomer';
 
 @Component({
   standalone: false,
@@ -53,7 +54,7 @@ export class CreateCustomerComponent implements OnInit {
     }
 
     this.customerService.createCustomer(this.customer).subscribe({
-      next: (response: any) => {
+      next: (response: ICustomer) => {
         console.log('Response from backend:', response);
         this.errorMessage = '';
         this.successMessage = 'Customer created successfully. Redirecting...';

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerService } from '../../../../services/customer.service';
+import { ICustomer } from '../../../../interfaces/ICustomer';
 
 
 @Component({
@@ -41,7 +42,7 @@ export class UpdateCustomerComponent implements OnInit {
     const customerId = Number(cid);
 
     this.customerService.getCustomer(customerId).subscribe(
-      (data: any) => {
+      (data: ICustomer) => {
         this.customer = data;
       },
       (error: any) => {

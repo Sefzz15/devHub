@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../../../services/product.service';
+import { IUser } from '../../../../interfaces/IUser';
+import { IProduct } from '../../../../interfaces/IProduct';
 
 @Component({
   standalone: false,
@@ -39,7 +41,7 @@ export class UpdateProductComponent implements OnInit {
     }
 
     this.productService.getProduct(productId).subscribe(
-      (data: any) => {
+      (data: IProduct) => {
         this.product = data;
       },
       (error: any) => {

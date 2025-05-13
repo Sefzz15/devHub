@@ -4,6 +4,10 @@
   import { ProductService } from '../../../services/product.service';
   import { OrderService } from '../../../services/order.service';
 import { SessionService } from '../../../services/session.service';
+import { IUser } from '../../../interfaces/IUser';
+import { ICustomer } from '../../../interfaces/ICustomer';
+import { IProduct } from '../../../interfaces/IProduct';
+import { IOrder } from '../../../interfaces/IOrder';
 
   @Component({
     standalone: false,
@@ -14,10 +18,10 @@ import { SessionService } from '../../../services/session.service';
 
   export class FirstpageComponent implements OnInit {
     userID?: number;
-    users: any[] = [];
-    customers: any[] = [];
-    products: any[] = [];
-    orders: any[] = [];
+    users: IUser[] = [];
+    customers: ICustomer[] = [];
+    products: IProduct[] = [];
+    orders: IOrder[] = [];
 
 
     constructor(
@@ -36,7 +40,7 @@ import { SessionService } from '../../../services/session.service';
 
     getUsers(): void {
       this.userService.getUsers().subscribe(
-        (data: any) => {
+        (data: IUser[]) => {
           this.users = data.$values; // Ensure this updates the array
         },
         (error: any) => {
