@@ -40,7 +40,7 @@ import { IOrder } from '../../../interfaces/IOrder';
 
     getUsers(): void {
       this.userService.getUsers().subscribe(
-        (data: IUser[]) => {
+        (data: any) => {
           this.users = data.$values; // Ensure this updates the array
         },
         (error: any) => {

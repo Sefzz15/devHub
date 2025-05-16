@@ -12,7 +12,7 @@ import { OrderService } from '../../../../services/order.service';
 export class CreateOrderComponent {
 
 
-  order = { oid: 0, cid: 0, pid: 0, quantity: 0, ooid:0, datetime:'' };
+  order = { oid: 0, cid: 0, pid: 0, quantity: 0, ooid:0, date:'' };
   orderpidError: string = '';
   ordercidError: string = '';
   orderquantityError: string = '';

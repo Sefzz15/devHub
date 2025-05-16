@@ -2,5 +2,7 @@ export interface IOrder {
     oid: number;
     ooid: number;
     cid: number;
-    datetime: string;
+    pid: number;
+    date: string;
+    quantity: number;
 }
