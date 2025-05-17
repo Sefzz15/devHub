@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderService } from '../../../../services/order.service';
+import { IOrder } from '../../../../interfaces/IOrder';
 
 @Component({
   standalone: false,
@@ -41,7 +42,7 @@ export class UpdateOrderComponent implements OnInit {
     }
 
     this.orderService.getOrder(orderId).subscribe(
-      (data: any) => {
+      (data: IOrder) => {
         this.order = data;
       },
       (error: any) => {

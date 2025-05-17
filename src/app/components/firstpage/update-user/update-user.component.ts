@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../../services/user.service';
+import { IUser } from '../../../../interfaces/IUser';
 
 @Component({
   standalone: false,
@@ -37,7 +38,7 @@ export class UpdateUserComponent implements OnInit {
     }
 
     this.userService.getUser(userId).subscribe(
-      (data: any) => {
+      (data: IUser) => {
         this.user = data;
       },
       (error: any) => {
