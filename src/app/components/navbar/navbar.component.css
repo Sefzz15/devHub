@@ -1,8 +1,7 @@
 .navbar {
   top: 0;
   background-color: #3e4684;
-  padding: 10px 20px;
-  height: 5%;
+  height: 6vh;
   /* box-sizing: border-box; */
   display: flex;
 }
