@@ -12,10 +12,9 @@ import { OrderService } from '../../../../services/order.service';
 export class CreateOrderComponent {
 
 
-  order = { oid: 0, cid: 0, pid: 0, quantity: 0, ooid:0, date:'' };
+  order = { oid: 0, uid: 0, date: '' };
   orderpidError: string = '';
-  ordercidError: string = '';
-  orderquantityError: string = '';
+  orderuidError: string = '';
   successMessage: string = '';
   errorMessage: string = '';
   generalError: string = '';
@@ -54,9 +53,8 @@ export class CreateOrderComponent {
   }
 
   clearErrorMessages(): void {
-    this.ordercidError = '';
+    this.orderuidError = '';
     this.orderpidError = '';
-    this.orderquantityError = '';
     this.successMessage = '';
   }
 
@@ -64,21 +62,10 @@ export class CreateOrderComponent {
     let isValid = true;
 
 
-    if (!this.order.cid) {
-      this.ordercidError = 'Customer  ID is required.';
+    if (!this.order.uid) {
+      this.orderuidError = 'Customer  ID is required.';
       isValid = false;
     }
-
-    if (!this.order.pid) {
-      this.orderpidError = 'Product ID is required.';
-      isValid = false;
-    }
-
-    if (!this.order.quantity) {
-      this.orderquantityError = 'Stock Quantity is required.';
-      isValid = false;
-    }
-
     return isValid;
   }
 }

@@ -10,12 +10,10 @@ import { IOrder } from '../../../../interfaces/IOrder';
   styleUrls: ['../../firstpage/create-user/create-user.component.css'],
 })
 export class UpdateOrderComponent implements OnInit {
-  order = { oid: 0, cid: 0, pid: 0, quantity: 0, ooid:0, date:'' };
+  order = { oid: 0, uid: 0, date: '' };
 
   orderoidError: string = '';
-  ordercidError: string = '';
-  orderpidError: string = '';
-  orderquantityError: string = '';
+  orderuidError: string = '';
   successMessage: string = '';
   errorMessage: string = '';
   generalError: string = '';
@@ -28,10 +26,16 @@ export class UpdateOrderComponent implements OnInit {
 
   ngOnInit(): void {
     const oid = this.route.snapshot.paramMap.get('id');
+    const uid = this.route.snapshot.paramMap.get('id');
     console.log('Route ID:', oid); // Debugging the raw route parameter
 
     if (!oid) {
       this.errorMessage = 'Route parameter "id" is missing or invalid.';
+      return;
+    }
+
+    if (!uid) {
+      this.errorMessage = 'Route parameter "uid" is missing or invalid.';
       return;
     }
 
@@ -53,30 +57,14 @@ export class UpdateOrderComponent implements OnInit {
 
   updateOrder(): void {
     this.orderoidError = '';
-    this.ordercidError = '';
-    this.orderpidError = '';
-    this.orderquantityError = '';
     this.successMessage = '';
 
     if (!this.order.oid) {
       this.orderoidError = 'Order ID is required.';
     }
 
-    if (!this.order.cid) {
-      this.ordercidError = 'Customer ID is required.';
-    }
-    
-    if (!this.order.pid) {
-      this.orderpidError = 'Product ID is required.';
-    }
 
-    if (!this.order.quantity) {
-      this.orderquantityError = 'Order quantity is required.';
-    }
 
-    if (this.orderoidError || this.ordercidError || this.orderpidError || this.orderquantityError) {
-      return; // Stop if there are validation errors
-    }
 
     this.orderService.updateOrder(this.order.oid, this.order).subscribe(
       () => {

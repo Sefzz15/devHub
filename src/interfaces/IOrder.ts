@@ -1,8 +1,5 @@
 export interface IOrder {
     oid: number;
-    ooid: number;
-    cid: number;
-    pid: number;
+    uid: number;
     date: string;
-    quantity: number;
 }

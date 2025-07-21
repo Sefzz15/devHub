@@ -11,25 +11,19 @@
             <span *ngIf="orderoidError" class="text-danger">{{ orderoidError }}</span>
           </div>
 
-        <!-- cid Field -->
+        <!-- uid Field -->
         <div class="form-group">
-          <label for="cid">cid</label>
-          <input id="cid" class="form-control" [(ngModel)]="order.cid" name="cid" required />
-          <span *ngIf="ordercidError" class="text-danger">{{ ordercidError }}</span>
+          <label for="uid">uid</label>
+          <input id="uid" class="form-control" [(ngModel)]="order.uid" name="cid" required />
+          <span *ngIf="orderuidError" class="text-danger">{{ orderuidError }}</span>
         </div>
   
-        <!-- pid Field -->
-        <div class="form-group">
-          <label for="pid">pid</label>
-          <input id="pid" class="form-control" [(ngModel)]="order.pid" name="pid" required />
-          <span *ngIf="orderpidError" class="text-danger">{{ orderpidError }}</span>
-        </div>
+
   
         <!-- Quantity Field -->
         <div class="form-group">
           <label for="c">quantity</label>
-          <input id="quantity" class="form-control" [(ngModel)]="order.quantity" name="quantity" required />
-          <span *ngIf="orderquantityError" class="text-danger">{{ orderquantityError }}</span>
+          <input id="quantity" class="form-control" [(ngModel)]="order.date" name="quantity" required />
         </div>
   
   

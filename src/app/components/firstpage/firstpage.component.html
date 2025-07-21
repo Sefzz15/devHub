@@ -108,21 +108,17 @@
   <table *ngIf="orders.length > 0" class="table">
     <thead>
       <tr>
-        <th>order id</th>
-        <th>customer id</th>
-        <th>product id</th>
-        <th>date</th>
-        <th>quantity</th>
-        <th>Action</th>
+        <th>Order ID</th>
+        <th>User ID</th>
+        <th>Date</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let order of orders">
         <td>{{ order.oid }}</td>
-        <td>{{ order.cid }}</td>
-        <td>{{ order.pid }}</td>
+        <td>{{ order.uid }}</td>
         <td>{{ order.date }}</td>
-        <td>{{ order.quantity }}</td>
         <td>
           <a class="btn btn-primary btn-sm" [routerLink]="['/firstpage/update-order', order.oid]">Update</a>
           <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">Delete</a>
