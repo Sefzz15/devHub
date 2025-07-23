@@ -14,6 +14,7 @@ export class UpdateOrderComponent implements OnInit {
 
   orderoidError: string = '';
   orderuidError: string = '';
+  orderdateError: string = '';
   successMessage: string = '';
   errorMessage: string = '';
   generalError: string = '';

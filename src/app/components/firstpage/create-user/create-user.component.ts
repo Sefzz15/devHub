@@ -27,6 +27,8 @@ export class CreateUserComponent implements OnInit {
 
   createUser(): void {
     this.clearErrorMessages();
+        console.log('Payload to be sent to backend:', this.user);
+
 
     // Validate user inputs
     if (!this.validateInputs()) {

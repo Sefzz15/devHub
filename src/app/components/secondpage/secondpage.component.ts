@@ -17,7 +17,7 @@ import { HttpClient } from '@angular/common/http';
 export class SecondpageComponent {
   userID: number = 0;
   username: string = '';
-  cid: number = 0;
+  uid: number = 0;
 
   constructor(
     private _router: Router,
@@ -31,7 +31,6 @@ export class SecondpageComponent {
     this.username = this._sessionService.username;
     this.userID = this._sessionService.userID;
     this.getProducts();
-    this.checkIfUserIsCustomer();
 
     console.log('Username :', this.username);
     console.log('UserID :', this.userID);
@@ -85,19 +84,19 @@ export class SecondpageComponent {
   buyProducts() {
     const userID = this._sessionService.userID;  // The UID of the user from the Session Service
 
-    const orderItems = Array.from(this.productQuantities)
+    const orderDetails = Array.from(this.productQuantities)
       .filter(([pid, quantity]) => quantity > 0) // Only include items with quantity > 0
       .map(([pid, quantity]) => ({
         Pid: pid,
         Quantity: quantity
       }));
 
-    console.log('Order Items:', orderItems);
+    console.log('Order details:', orderDetails);
     const payload = {
 
-      "cid": this.cid,
+      "uid": this._sessionService.userID,
       "date": "2024-01-30T12:00:00",
-      "orderItems": orderItems
+      "orderDetails": orderDetails
 
     };
 
@@ -116,19 +115,6 @@ export class SecondpageComponent {
           alert('Failed to create order. Please try again.');
         }
       },
-    });
-  }
-
-  checkIfUserIsCustomer() {
-    this._authService.checkIfUserIsCustomer(this.userID).subscribe({
-      next: (response) => {
-        console.log('Customer data:', response);
-        const customerData = response;
-        this.cid = response.cid;
-      },
-      error: (error) => {
-        console.error('Error:', error);
-      }
     });
   }
 

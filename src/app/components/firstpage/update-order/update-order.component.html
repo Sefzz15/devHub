@@ -7,7 +7,7 @@
         <!-- oid Field -->
           <div class="form-group">
             <label for="oid">oid</label>
-            <input id="oid" class="form-control" [(ngModel)]="order.oid" name="oid" required />
+            <input id="oid" class="form-control" readonly [(ngModel)]="order.oid" name="oid" required />
             <span *ngIf="orderoidError" class="text-danger">{{ orderoidError }}</span>
           </div>
 

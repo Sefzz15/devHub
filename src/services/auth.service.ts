@@ -29,7 +29,7 @@ export class AuthService {
         console.log('Server response:', response);
         if (response.message === 'Login successful!') {
           const token = response.token;
-        //  console.log('Raw response.user.uid:', response.user?.uid);
+          //  console.log('Raw response.user.uid:', response.user?.uid);
           this.userID = response.user.uid;          // Extract userID
           this.isAuthenticatedSubject.next(true);
 
@@ -66,10 +66,6 @@ export class AuthService {
 
   get isAuthenticated(): Observable<boolean> {
     return this.isAuthenticatedSubject.asObservable();
-  }
-
-  checkIfUserIsCustomer(userId: number = this.userID): Observable<any> {
-    return this._http.get<any>(`${this._url1}/check-customer/${userId}`);
   }
 
 

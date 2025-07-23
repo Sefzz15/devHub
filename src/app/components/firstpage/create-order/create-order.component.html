@@ -4,11 +4,25 @@
 
     <form (ngSubmit)="createOrder()">
 
-      <!-- cid Field -->
+      <!-- oid Field -->
+      <!-- <div class="form-group">
+        <label for="oid">oid</label>
+        <input id="oid" class="form-control" [(ngModel)]="order.oid" name="oid" required />
+        <span *ngIf="orderoidError" class="text-danger">{{ orderoidError }}</span>
+      </div> -->
+
+      <!-- uid Field -->
       <div class="form-group">
         <label for="uid">uid</label>
         <input id="uid" class="form-control" [(ngModel)]="order.uid" name="uid" required />
         <span *ngIf="orderuidError" class="text-danger">{{ orderuidError }}</span>
+      </div>
+
+      <!-- date Field -->
+      <div class="form-group">
+        <label for="date">date</label>
+        <input id="date" class="form-control" [(ngModel)]="order.date" name="date" required />
+        <span *ngIf="orderdateError" class="text-danger">{{ orderdateError }}</span>
       </div>
 
       <!-- Buttons -->

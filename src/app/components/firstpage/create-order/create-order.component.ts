@@ -13,8 +13,9 @@ export class CreateOrderComponent {
 
 
   order = { oid: 0, uid: 0, date: '' };
-  orderpidError: string = '';
+  orderoidError: string = '';
   orderuidError: string = '';
+  orderdateError: string = '';
   successMessage: string = '';
   errorMessage: string = '';
   generalError: string = '';
@@ -29,6 +30,8 @@ export class CreateOrderComponent {
 
   createOrder(): void {
     this.clearErrorMessages();
+    console.log('Payload to be sent to backend:', this.order);
+
 
     if (!this.validateInputs()) {
       return; // If validation fails, stop the form submission
@@ -53,8 +56,9 @@ export class CreateOrderComponent {
   }
 
   clearErrorMessages(): void {
+    this.orderoidError = '';
     this.orderuidError = '';
-    this.orderpidError = '';
+    this.orderdateError = '';
     this.successMessage = '';
   }
 
