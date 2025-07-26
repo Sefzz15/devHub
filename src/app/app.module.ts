@@ -22,8 +22,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FirstpageComponent } from './components/firstpage/firstpage.component';
 import { CreateUserComponent } from './components/firstpage/create-user/create-user.component';
 import { UpdateUserComponent } from './components/firstpage/update-user/update-user.component';
-import { CreateCustomerComponent } from './components/firstpage/create-customer/create-customer.component';
-import { UpdateCustomerComponent } from './components/firstpage/update-customer/update-customer.component';
 import { CreateProductComponent } from './components/firstpage/create-product/create-product.component';
 import { UpdateProductComponent } from './components/firstpage/update-product/update-product.component';
 import { CreateOrderComponent } from './components/firstpage/create-order/create-order.component';
@@ -45,8 +43,6 @@ import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.compon
     NavbarComponent,
     CreateUserComponent,
     UpdateUserComponent,
-    CreateCustomerComponent,
-    UpdateCustomerComponent,
     ChatComponent,
     ThirdpageComponent,
     CreateProductComponent,

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomerService } from '../../../services/customer.service';
-import { ProductService } from '../../../services/product.service';
-import { OrderService } from '../../../services/order.service';
-import { forkJoin } from 'rxjs';
+import { IUser } from '../../../interfaces/IUser';
+import { SessionService } from '../../../services/session.service';
+import { UserService } from '../../../services/user.service';
+import { IUserResponse } from '../../../interfaces/IUser';
 
 @Component({
   standalone: false,
@@ -11,34 +11,35 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['../firstpage/firstpage.component.css'],
 })
 export class ThirdpageComponent implements OnInit {
-  customers: any[] = [];
-  products: any[] = [];
-  orders: any[] = [];
-  datas: any[] = [];
+  userID?: number;
+  // users: IUser[] = [];
+  users: IUserResponse[] = [];
+  clientNames: string[] = [];
+
 
   constructor(
-    private customerService: CustomerService,
-    private productService: ProductService,
-    private orderService: OrderService
+    private _sessionService: SessionService,
+    private _userService: UserService,
   ) { }
 
   ngOnInit(): void {
-    forkJoin({
-      products: this.productService.getProducts(),
-      orders: this.orderService.getOrders(),
-      customers: this.customerService.getCustomers(),
-    }).subscribe({
-      next: (data) => {
-        // this.products = data.products.$values;
-        // this.orders = data.orders.$values;
-        // this.customers = data.customers.$values;
-        console.log("Fetched products:", data);
+    this.userID = this._sessionService.userID;
+    this.getUsers();
+  }
 
-
+  getUsers(): void {
+    this._userService.getUsers().subscribe(
+      (data: any) => {
+        this.users = data.$values; // Ensure this updates the array
+        console.log('Fetched users:', this.users);
+        this.clientNames = this.users.map(user => user.$values.uname); // Extract usernames
+        // this.clientNames = this.users.map(user => user.uname); // Extract usernames
+        console.log('Fetched users:', this.clientNames);
       },
-      error: (error) => {
-        console.error('Error fetching datam:', error);
+      (error: any) => {
+        console.error('Error fetching users:', error);
       }
-    });
+    );
   }
 }
+

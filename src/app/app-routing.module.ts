@@ -10,8 +10,6 @@ import { FirstpageComponent } from './components/firstpage/firstpage.component';
 import { CreateUserComponent } from './components/firstpage/create-user/create-user.component';
 import { UpdateUserComponent } from './components/firstpage/update-user/update-user.component';
 
-import { CreateCustomerComponent } from './components/firstpage/create-customer/create-customer.component';
-import { UpdateCustomerComponent } from './components/firstpage/update-customer/update-customer.component';
 
 import { CreateProductComponent } from './components/firstpage/create-product/create-product.component';
 import { UpdateProductComponent } from './components/firstpage/update-product/update-product.component';
@@ -36,8 +34,6 @@ const routes: Routes = [
   { path: 'firstpage', component: FirstpageComponent, canActivate: [AuthGuard] },
   { path: 'firstpage/create-user', component: CreateUserComponent },
   { path: 'firstpage/update-user/:id', component: UpdateUserComponent, canActivate: [AuthGuard] },
-  { path: 'firstpage/create-customer', component: CreateCustomerComponent, canActivate: [AuthGuard] },
-  { path: 'firstpage/update-customer/:id', component: UpdateCustomerComponent, canActivate: [AuthGuard] },
   { path: 'firstpage/create-product', component: CreateProductComponent, canActivate: [AuthGuard] },
   { path: 'firstpage/update-product/:id', component: UpdateProductComponent, canActivate: [AuthGuard] },
   { path: 'firstpage/create-order', component: CreateOrderComponent, canActivate: [AuthGuard] },
@@ -45,7 +41,7 @@ const routes: Routes = [
   { path: 'secondpage', component: SecondpageComponent, canActivate: [AuthGuard] },
   { path: 'thirdpage', component: ThirdpageComponent, canActivate: [AuthGuard] },
   { path: 'rubiks-cube', component: RubiksCubeComponent, canActivate: [AuthGuard] },
-  
+
   { path: 'multistepform', component: MultistepformComponent, canActivate: [AuthGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
 ];

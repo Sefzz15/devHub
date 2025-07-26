@@ -67,7 +67,7 @@ export class CreateOrderComponent {
 
 
     if (!this.order.uid) {
-      this.orderuidError = 'Customer  ID is required.';
+      this.orderuidError = 'User  ID is required.';
       isValid = false;
     }
     return isValid;

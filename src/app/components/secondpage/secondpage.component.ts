@@ -87,24 +87,24 @@ export class SecondpageComponent {
     const orderDetails = Array.from(this.productQuantities)
       .filter(([pid, quantity]) => quantity > 0) // Only include items with quantity > 0
       .map(([pid, quantity]) => ({
-        Pid: pid,
-        Quantity: quantity
+        pid: pid,
+        quantity: quantity
       }));
 
     console.log('Order details:', orderDetails);
     const payload = {
 
       "uid": this._sessionService.userID,
-      "date": "2024-01-30T12:00:00",
       "orderDetails": orderDetails
 
     };
 
     console.log('Payload to be sent:', JSON.stringify(payload, null, 2));
 
-    this.http.post('https://localhost:5000/api/orders', payload).subscribe({
+    this.http.post('https://localhost:5000/api/orders/create', payload).subscribe({
       next: (response: any) => {
         console.log('Order created successfully:', response);
+        this.productQuantities.clear();
         this.getProducts(); // Refresh products
       },
       error: (error) => {
