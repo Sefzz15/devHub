@@ -105,7 +105,7 @@ export class SecondpageComponent {
       next: (response: any) => {
         console.log('Order created successfully:', response);
         this.productQuantities.clear();
-        this.getProducts(); // Refresh products
+        this.getProducts();
       },
       error: (error) => {
         console.error('Error creating order:', error);

@@ -63,7 +63,7 @@
   </table>
 
 
-  <!-- <div class="header-actions">
+  <div class="header-actions">
     <h1>Orders List</h1>
     <div class="actions">
       <button class="btn btn-secondary" (click)="getOrders()">Load Orders</button>
@@ -91,6 +91,36 @@
         </td>
       </tr>
     </tbody>
-  </table> -->
+  </table>
+
+    <div class="header-actions">
+    <h1>OrdersDetails List</h1>
+    <div class="actions">
+      <button class="btn btn-secondary" (click)="getOrderDetails()">Load Order Details</button>
+      <!-- <a class="btn btn-primary" routerLink="/firstpage/create-order">New Order</a> -->
+    </div>
+  </div>
+
+  <table *ngIf="orderDetails.length > 0" class="table">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Product ID</th>
+        <th>Quantity</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let orderDetail of orderDetails">
+        <td>{{ orderDetail.oid }}</td>
+        <td>{{ orderDetail.pid }}</td>
+        <td>{{ orderDetail.quantity }}</td>
+        <td>
+          <!-- <a class="btn btn-primary btn-sm" [routerLink]="['/firstpage/update-order', order.oid]">Update</a> -->
+          <!-- <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">Delete</a> -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
 </nav>

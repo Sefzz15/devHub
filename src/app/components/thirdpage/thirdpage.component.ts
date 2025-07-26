@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IUser } from '../../../interfaces/IUser';
+import { IUser, IUserValuesResponse } from '../../../interfaces/IUser';
 import { SessionService } from '../../../services/session.service';
 import { UserService } from '../../../services/user.service';
 import { IUserResponse } from '../../../interfaces/IUser';
@@ -12,7 +12,6 @@ import { IUserResponse } from '../../../interfaces/IUser';
 })
 export class ThirdpageComponent implements OnInit {
   userID?: number;
-  // users: IUser[] = [];
   users: IUserResponse[] = [];
   clientNames: string[] = [];
 
@@ -29,11 +28,8 @@ export class ThirdpageComponent implements OnInit {
 
   getUsers(): void {
     this._userService.getUsers().subscribe(
-      (data: any) => {
-        this.users = data.$values; // Ensure this updates the array
-        console.log('Fetched users:', this.users);
-        this.clientNames = this.users.map(user => user.$values.uname); // Extract usernames
-        // this.clientNames = this.users.map(user => user.uname); // Extract usernames
+      (data: IUserResponse) => {
+        this.clientNames = data.$values.map(i => i.uname);
         console.log('Fetched users:', this.clientNames);
       },
       (error: any) => {

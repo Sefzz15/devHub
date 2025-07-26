@@ -7,12 +7,13 @@ export interface IProduct {
 
 export interface IProductResponse {
     $id: string,
-    $values:
-    {
-        $id: string,
-        pid: number,
-        pname: string,
-        price: number,
-        stock: number,
-    }
+    $values: IProductValuesResponse[];
+}
+
+export interface IProductValuesResponse {
+    $id: string;
+    pid: number;
+    pname: string;
+    price: number;
+    stock: number;
 }

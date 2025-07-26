@@ -6,15 +6,12 @@ export interface IUser {
 
 export interface IUserResponse {
   $id: string,
-  $values: {
-    $id: string;
-    uid: number;
-    uname: string;
-    upass: string;
-  };
+  $values: IUserValuesResponse[];
 }
 
-// export interface IUserResponse {
-//     $id: string;
-//     $values: IUser[];
-// }
+export interface IUserValuesResponse {
+  $id: string;
+  uid: number;
+  uname: string;
+  upass: string;
+}

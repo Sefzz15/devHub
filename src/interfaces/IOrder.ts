@@ -6,10 +6,12 @@ export interface IOrder {
 
 export interface IOrderResponse {
     $id: string;
-    $values: {
-        $id: string;
-        oid: number;
-        uid: number;
-        date: string;
-    }
+    $values: IOrderValuesResponse[];
+}
+
+export interface IOrderValuesResponse {
+    $id: string;
+    oid: number;
+    uid: number;
+    date: string;
 }

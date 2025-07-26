@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { ProductService } from '../../../services/product.service';
 import { OrderService } from '../../../services/order.service';
+import { OrderDetailService } from '../../../services/orderDetail.service';
 import { SessionService } from '../../../services/session.service';
-import { IUser } from '../../../interfaces/IUser';
+import { IUser, IUserResponse } from '../../../interfaces/IUser';
 import { IProduct } from '../../../interfaces/IProduct';
 import { IOrder } from '../../../interfaces/IOrder';
+import { IOrderDetail } from '../../../interfaces/IOrderDetail';
 
 @Component({
   standalone: false,
@@ -19,24 +21,25 @@ export class FirstpageComponent implements OnInit {
   users: IUser[] = [];
   products: IProduct[] = [];
   orders: IOrder[] = [];
+  orderDetails: IOrderDetail[] = [];
 
 
   constructor(
     private _sessionService: SessionService,
     private userService: UserService,
     private productService: ProductService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private orderDetailService: OrderDetailService
   ) { }
 
   ngOnInit(): void {
     this.userID = this._sessionService.userID;
     console.log('UserID in firstpage:', this.userID);
-
   }
 
   getUsers(): void {
     this.userService.getUsers().subscribe(
-      (data: any) => {
+      (data: IUserResponse) => {
         this.users = data.$values; // Ensure this updates the array
       },
       (error: any) => {
@@ -95,6 +98,18 @@ export class FirstpageComponent implements OnInit {
     this.orderService.getOrders().subscribe(
       (data: any) => {
         this.orders = data.$values;
+      },
+      (error: any) => {
+        console.error('Error fetching orders:', error);
+      }
+    );
+  }
+
+  // Fetch orders after deletion
+  getOrderDetails(): void {
+    this.orderDetailService.getOrderDetails().subscribe(
+      (data: any) => {
+        this.orderDetails = data.$values;
       },
       (error: any) => {
         console.error('Error fetching orders:', error);
