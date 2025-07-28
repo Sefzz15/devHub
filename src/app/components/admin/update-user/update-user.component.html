@@ -1,8 +1,14 @@
-<div class="firstpage-container">
+<div class="adminpage-container">
   <div class="form-container">
-    <h1 class="form-header">Create User</h1>
+    <h1 class="form-header">Update User</h1>
 
-    <form (ngSubmit)="createUser()">
+    <form (ngSubmit)="updateUser()">
+      <!-- User ID Field -->
+      <div class="form-group">
+        <label for="uid">User ID</label>
+        <input id="uid" class="form-control" readonly [(ngModel)]="user.uid" name="uid" />
+      </div>
+
       <!-- Username Field -->
       <div class="form-group">
         <label for="uname">Username</label>
@@ -19,19 +25,20 @@
 
       <!-- Buttons -->
       <div class="button-group">
-        <button type="submit" class="btn btn-primary">Create</button>
-        <a class="btn btn-outline-primary" routerLink="/firstpage">Cancel</a>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a class="btn btn-outline-primary" routerLink="/adminpage">Cancel</a>
       </div>
     </form>
 
     <!-- Success Message -->
-    <div *ngIf="successMessage" class="alert alert-success">
+    <div *ngIf="successMessage">
       {{ successMessage }}
     </div>
 
     <!-- Error Message -->
-    <div *ngIf="errorMessage" >
+    <div *ngIf="errorMessage">
       <div class="error">{{ errorMessage }}</div>
     </div>
+
   </div>
 </div>

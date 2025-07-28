@@ -6,7 +6,7 @@ import { ProductService } from '../../../../services/product.service';
   standalone: false,
   selector: 'app-create-product',
   templateUrl: './create-product.component.html',
-  styleUrls: ['../../firstpage/create-user/create-user.component.css'],
+  styleUrls: ['../../admin/create-user/create-user.component.css'],
 })
 export class CreateProductComponent implements OnInit {
   product = { pid: 0, pname: '', price: 0, stock: 0 };
@@ -40,8 +40,8 @@ export class CreateProductComponent implements OnInit {
 
         // Set a delay before redirecting
         setTimeout(() => {
-          // After 1,5 seconds, navigate to the first page
-          this.router.navigate(['/firstpage']);
+          // After 1,5 seconds, navigate to the admin page
+          this.router.navigate(['/adminpage']);
         }, 1500);
       },
       (error: any) => {

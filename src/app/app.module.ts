@@ -19,13 +19,13 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { FirstpageComponent } from './components/firstpage/firstpage.component';
-import { CreateUserComponent } from './components/firstpage/create-user/create-user.component';
-import { UpdateUserComponent } from './components/firstpage/update-user/update-user.component';
-import { CreateProductComponent } from './components/firstpage/create-product/create-product.component';
-import { UpdateProductComponent } from './components/firstpage/update-product/update-product.component';
-import { CreateOrderComponent } from './components/firstpage/create-order/create-order.component';
-import { UpdateOrderComponent } from './components/firstpage/update-order/update-order.component';
+import { AdminpageComponent } from './components/admin/admin.component';
+import { CreateUserComponent } from './components/admin/create-user/create-user.component';
+import { UpdateUserComponent } from './components/admin/update-user/update-user.component';
+import { CreateProductComponent } from './components/admin/create-product/create-product.component';
+import { UpdateProductComponent } from './components/admin/update-product/update-product.component';
+import { CreateOrderComponent } from './components/admin/create-order/create-order.component';
+import { UpdateOrderComponent } from './components/admin/update-order/update-order.component';
 import { SecondpageComponent } from './components/secondpage/secondpage.component';
 import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
 import { ChatComponent } from './components/chat/chat.component';
@@ -39,7 +39,7 @@ import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.compon
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    FirstpageComponent,
+    AdminpageComponent,
     NavbarComponent,
     CreateUserComponent,
     UpdateUserComponent,

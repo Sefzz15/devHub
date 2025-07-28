@@ -42,8 +42,8 @@ export class CreateUserComponent implements OnInit {
 
         // Set a delay before redirecting
         setTimeout(() => {
-          // After 1,5 seconds, navigate to the first page
-          this.router.navigate(['/firstpage']);
+          // After 1,5 seconds, navigate to the admin page
+          this.router.navigate(['/adminpage']);
         }, 1500);
       },
       (error: any) => {

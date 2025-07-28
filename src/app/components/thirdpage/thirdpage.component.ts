@@ -8,7 +8,7 @@ import { IUserResponse } from '../../../interfaces/IUser';
   standalone: false,
   selector: 'app-thirdpage',
   templateUrl: './thirdpage.component.html',
-  styleUrls: ['../firstpage/firstpage.component.css'],
+  styleUrls: ['../admin/admin.component.css'],
 })
 export class ThirdpageComponent implements OnInit {
   userID?: number;

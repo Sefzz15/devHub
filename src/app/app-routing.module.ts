@@ -5,17 +5,17 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from '../services/auth.guard';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
-import { FirstpageComponent } from './components/firstpage/firstpage.component';
+import { AdminpageComponent } from './components/admin/admin.component';
 
-import { CreateUserComponent } from './components/firstpage/create-user/create-user.component';
-import { UpdateUserComponent } from './components/firstpage/update-user/update-user.component';
+import { CreateUserComponent } from './components/admin/create-user/create-user.component';
+import { UpdateUserComponent } from './components/admin/update-user/update-user.component';
 
 
-import { CreateProductComponent } from './components/firstpage/create-product/create-product.component';
-import { UpdateProductComponent } from './components/firstpage/update-product/update-product.component';
+import { CreateProductComponent } from './components/admin/create-product/create-product.component';
+import { UpdateProductComponent } from './components/admin/update-product/update-product.component';
 
-import { CreateOrderComponent } from './components/firstpage/create-order/create-order.component';
-import { UpdateOrderComponent } from './components/firstpage/update-order/update-order.component';
+import { CreateOrderComponent } from './components/admin/create-order/create-order.component';
+import { UpdateOrderComponent } from './components/admin/update-order/update-order.component';
 
 
 import { SecondpageComponent } from './components/secondpage/secondpage.component';
@@ -31,13 +31,13 @@ const routes: Routes = [
   // { path: 'navbar', component: NavbarComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'firstpage', component: FirstpageComponent, canActivate: [AuthGuard] },
-  { path: 'firstpage/create-user', component: CreateUserComponent },
-  { path: 'firstpage/update-user/:id', component: UpdateUserComponent, canActivate: [AuthGuard] },
-  { path: 'firstpage/create-product', component: CreateProductComponent, canActivate: [AuthGuard] },
-  { path: 'firstpage/update-product/:id', component: UpdateProductComponent, canActivate: [AuthGuard] },
-  { path: 'firstpage/create-order', component: CreateOrderComponent, canActivate: [AuthGuard] },
-  { path: 'firstpage/update-order/:id', component: UpdateOrderComponent, canActivate: [AuthGuard] },
+  { path: 'adminpage', component: AdminpageComponent, canActivate: [AuthGuard] },
+  { path: 'adminpage/create-user', component: CreateUserComponent },
+  { path: 'adminpage/update-user/:id', component: UpdateUserComponent, canActivate: [AuthGuard] },
+  { path: 'adminpage/create-product', component: CreateProductComponent, canActivate: [AuthGuard] },
+  { path: 'adminpage/update-product/:id', component: UpdateProductComponent, canActivate: [AuthGuard] },
+  { path: 'adminpage/create-order', component: CreateOrderComponent, canActivate: [AuthGuard] },
+  { path: 'adminpage/update-order/:id', component: UpdateOrderComponent, canActivate: [AuthGuard] },
   { path: 'secondpage', component: SecondpageComponent, canActivate: [AuthGuard] },
   { path: 'thirdpage', component: ThirdpageComponent, canActivate: [AuthGuard] },
   { path: 'rubiks-cube', component: RubiksCubeComponent, canActivate: [AuthGuard] },

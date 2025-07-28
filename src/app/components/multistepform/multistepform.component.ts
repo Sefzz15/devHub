@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
 
   templateUrl: './multistepform.component.html',
   styleUrls: [
-    '../firstpage/firstpage.component.css',
+    '../admin/admin.component.css',
     './multistepform.component.css',
   ],
 

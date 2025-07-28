@@ -8,7 +8,7 @@ import { IProduct } from '../../../../interfaces/IProduct';
   standalone: false,
   selector: 'app-update-product',
   templateUrl: './update-product.component.html',
-  styleUrls: ['../../firstpage/create-user/create-user.component.css'],
+  styleUrls: ['../../admin/create-user/create-user.component.css'],
 })
 export class UpdateProductComponent implements OnInit {
   product = { pid: 0, pname: '', price: 0, stock: 0 };
@@ -79,8 +79,8 @@ export class UpdateProductComponent implements OnInit {
 
         // Set a delay before redirecting
         setTimeout(() => {
-          // After the delay, navigate to the first page
-          this.router.navigate(['/firstpage']);
+          // After the delay, navigate to the admin page
+          this.router.navigate(['/adminpage']);
         }, 1500);
       },
       (error: any) => {

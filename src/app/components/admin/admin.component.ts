@@ -11,12 +11,12 @@ import { IOrderDetail } from '../../../interfaces/IOrderDetail';
 
 @Component({
   standalone: false,
-  selector: 'app-firstpage',
-  templateUrl: './firstpage.component.html',
-  styleUrl: './firstpage.component.css'
+  selector: 'app-admin',
+  templateUrl: './admin.component.html',
+  styleUrl: './admin.component.css'
 })
 
-export class FirstpageComponent implements OnInit {
+export class AdminpageComponent implements OnInit {
   userID?: number;
   users: IUser[] = [];
   products: IProduct[] = [];
@@ -34,7 +34,7 @@ export class FirstpageComponent implements OnInit {
 
   ngOnInit(): void {
     this.userID = this._sessionService.userID;
-    console.log('UserID in firstpage:', this.userID);
+    console.log('UserID in adminpage:', this.userID);
   }
 
   getUsers(): void {

@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 
   templateUrl: './secondpage.component.html',
   styleUrls: [
-    '../firstpage/firstpage.component.css',
+    '../admin/admin.component.css',
     './secondpage.component.css'],
 })
 export class SecondpageComponent {

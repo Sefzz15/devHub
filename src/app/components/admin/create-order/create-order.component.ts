@@ -7,7 +7,7 @@ import { OrderService } from '../../../../services/order.service';
   standalone: false,
 
   templateUrl: './create-order.component.html',
-  styleUrls: ['../../firstpage/create-user/create-user.component.css'],
+  styleUrls: ['../../admin/create-user/create-user.component.css'],
 })
 export class CreateOrderComponent {
 
@@ -45,8 +45,8 @@ export class CreateOrderComponent {
 
         // Set a delay before redirecting
         setTimeout(() => {
-          // After 1,5 seconds, navigate to the first page
-          this.router.navigate(['/firstpage']);
+          // After 1,5 seconds, navigate to the admin page
+          this.router.navigate(['/adminpage']);
         }, 1500);
       },
       (error: any) => {

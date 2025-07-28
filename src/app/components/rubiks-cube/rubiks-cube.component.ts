@@ -6,7 +6,7 @@ import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular
 
   templateUrl: './rubiks-cube.component.html',
     styleUrls: [
-    '../firstpage/firstpage.component.css',
+    '../admin/admin.component.css',
     './rubiks-cube.component.css'],
 })
 export class RubiksCubeComponent implements OnInit {

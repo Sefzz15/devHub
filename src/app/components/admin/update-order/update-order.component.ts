@@ -7,7 +7,7 @@ import { IOrder } from '../../../../interfaces/IOrder';
   standalone: false,
   selector: 'app-update-order',
   templateUrl: './update-order.component.html',
-  styleUrls: ['../../firstpage/create-user/create-user.component.css'],
+  styleUrls: ['../../admin/create-user/create-user.component.css'],
 })
 export class UpdateOrderComponent implements OnInit {
   order = { oid: 0, uid: 0, date: '' };
@@ -74,8 +74,8 @@ export class UpdateOrderComponent implements OnInit {
 
         // Set a delay before redirecting
         setTimeout(() => {
-          // After the delay, navigate to the first page
-          this.router.navigate(['/firstpage']);
+          // After the delay, navigate to the admin page
+          this.router.navigate(['/adminpage']);
         }, 1500);
       },
       (error: any) => {

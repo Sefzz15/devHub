@@ -71,8 +71,8 @@ export class UpdateUserComponent implements OnInit {
 
         // Set a delay before redirecting
         setTimeout(() => {
-          // After the delay, navigate to the first page
-          this.router.navigate(['/firstpage']);
+          // After the delay, navigate to the admin page
+          this.router.navigate(['/adminpage']);
         }, 1500);
       },
       (error: any) => {
