@@ -18,8 +18,8 @@ import { CreateOrderComponent } from './components/admin/create-order/create-ord
 import { UpdateOrderComponent } from './components/admin/update-order/update-order.component';
 
 
-import { SecondpageComponent } from './components/secondpage/secondpage.component';
-import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
+import { ShoppageComponent } from './components/shop/shop.component';
+import { OrderHistoryComponent } from './components/order-history/order-history';
 
 import { ChatComponent } from './components/chat/chat.component';
 import { MultistepformComponent } from './components/multistepform/multistepform.component';
@@ -38,8 +38,8 @@ const routes: Routes = [
   { path: 'adminpage/update-product/:id', component: UpdateProductComponent, canActivate: [AuthGuard] },
   { path: 'adminpage/create-order', component: CreateOrderComponent, canActivate: [AuthGuard] },
   { path: 'adminpage/update-order/:id', component: UpdateOrderComponent, canActivate: [AuthGuard] },
-  { path: 'secondpage', component: SecondpageComponent, canActivate: [AuthGuard] },
-  { path: 'thirdpage', component: ThirdpageComponent, canActivate: [AuthGuard] },
+  { path: 'shop', component: ShoppageComponent, canActivate: [AuthGuard] },
+  { path: 'order-history', component: OrderHistoryComponent, canActivate: [AuthGuard] },
   { path: 'rubiks-cube', component: RubiksCubeComponent, canActivate: [AuthGuard] },
 
   { path: 'multistepform', component: MultistepformComponent, canActivate: [AuthGuard] },

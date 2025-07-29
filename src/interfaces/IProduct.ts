@@ -11,7 +11,6 @@ export interface IProductResponse {
 }
 
 export interface IProductValuesResponse {
-    $id: string;
     pid: number;
     pname: string;
     price: number;

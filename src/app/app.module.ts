@@ -3,7 +3,7 @@ import { BrowserModule, provideClientHydration, withEventReplay } from '@angular
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
-import { RouterModule} from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,8 +26,8 @@ import { CreateProductComponent } from './components/admin/create-product/create
 import { UpdateProductComponent } from './components/admin/update-product/update-product.component';
 import { CreateOrderComponent } from './components/admin/create-order/create-order.component';
 import { UpdateOrderComponent } from './components/admin/update-order/update-order.component';
-import { SecondpageComponent } from './components/secondpage/secondpage.component';
-import { ThirdpageComponent } from './components/thirdpage/thirdpage.component';
+import { ShoppageComponent } from './components/shop/shop.component';
+import { OrderHistoryComponent } from './components/order-history/order-history';
 import { ChatComponent } from './components/chat/chat.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MultistepformComponent } from './components/multistepform/multistepform.component';
@@ -44,10 +44,10 @@ import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.compon
     CreateUserComponent,
     UpdateUserComponent,
     ChatComponent,
-    ThirdpageComponent,
+    OrderHistoryComponent,
     CreateProductComponent,
     UpdateProductComponent,
-    SecondpageComponent,
+    ShoppageComponent,
     CreateOrderComponent,
     UpdateOrderComponent,
     MultistepformComponent,

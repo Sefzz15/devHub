@@ -4,10 +4,10 @@ import { ProductService } from '../../../services/product.service';
 import { OrderService } from '../../../services/order.service';
 import { OrderDetailService } from '../../../services/orderDetail.service';
 import { SessionService } from '../../../services/session.service';
-import { IUser, IUserResponse } from '../../../interfaces/IUser';
-import { IProduct } from '../../../interfaces/IProduct';
-import { IOrder } from '../../../interfaces/IOrder';
-import { IOrderDetail } from '../../../interfaces/IOrderDetail';
+import { IUser, IUserResponse, IUserValuesResponse } from '../../../interfaces/IUser';
+import { IProduct, IProductValuesResponse } from '../../../interfaces/IProduct';
+import { IOrder, IOrderValuesResponse } from '../../../interfaces/IOrder';
+import { IOrderDetail, IOrderDetailsValues } from '../../../interfaces/IOrderDetail';
 
 @Component({
   standalone: false,
@@ -21,7 +21,7 @@ export class AdminpageComponent implements OnInit {
   users: IUser[] = [];
   products: IProduct[] = [];
   orders: IOrder[] = [];
-  orderDetails: IOrderDetail[] = [];
+  orderDetails: IOrderDetailsValues[] = [];
 
 
   constructor(
@@ -39,8 +39,8 @@ export class AdminpageComponent implements OnInit {
 
   getUsers(): void {
     this.userService.getUsers().subscribe(
-      (data: IUserResponse) => {
-        this.users = data.$values; // Ensure this updates the array
+      (data: IUserValuesResponse[]) => {
+        this.users = data; // Ensure this updates the array
       },
       (error: any) => {
         console.error('Error fetching users:', error);
@@ -80,12 +80,11 @@ export class AdminpageComponent implements OnInit {
     }
   }
 
-
   // Fetch products after deletion
   getProducts(): void {
     this.productService.getProducts().subscribe(
-      (data: any) => {
-        this.products = data.$values;
+      (data: IProductValuesResponse[]) => {
+        this.products = data;
       },
       (error: any) => {
         console.error('Error fetching products:', error);
@@ -96,8 +95,8 @@ export class AdminpageComponent implements OnInit {
   // Fetch orders after deletion
   getOrders(): void {
     this.orderService.getOrders().subscribe(
-      (data: any) => {
-        this.orders = data.$values;
+      (data: IOrderValuesResponse[]) => {
+        this.orders = data;
       },
       (error: any) => {
         console.error('Error fetching orders:', error);
@@ -108,14 +107,13 @@ export class AdminpageComponent implements OnInit {
   // Fetch orders after deletion
   getOrderDetails(): void {
     this.orderDetailService.getOrderDetails().subscribe(
-      (data: any) => {
-        this.orderDetails = data.$values;
+      (data: IOrderDetailsValues[]) => {
+        this.orderDetails = data;
       },
       (error: any) => {
         console.error('Error fetching orders:', error);
       }
     );
   }
-
 
 }

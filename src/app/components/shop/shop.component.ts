@@ -4,17 +4,18 @@ import { AuthService } from '../../../services/auth.service';
 import { SessionService } from '../../../services/session.service';
 import { ProductService } from '../../../services/product.service';
 import { HttpClient } from '@angular/common/http';
+import { IProductValuesResponse } from '../../../interfaces/IProduct';
 
 @Component({
-  selector: 'app-secondpage',
+  selector: 'app-shop',
   standalone: false,
 
-  templateUrl: './secondpage.component.html',
+  templateUrl: './shop.component.html',
   styleUrls: [
     '../admin/admin.component.css',
-    './secondpage.component.css'],
+    './shop.component.css'],
 })
-export class SecondpageComponent {
+export class ShoppageComponent {
   userID: number = 0;
   username: string = '';
   uid: number = 0;
@@ -42,9 +43,9 @@ export class SecondpageComponent {
 
   getProducts(): void {
     this.productService.getProducts().subscribe(
-      (data: any) => {
+      (data: IProductValuesResponse[]) => {
         console.log("Fetched products:", data);
-        this.products = data.$values.map((product: any) => ({
+        this.products = data.map((product: any) => ({
           ...product,
           quantity: 0,
         }));
@@ -68,6 +69,13 @@ export class SecondpageComponent {
     const currentQuantity = this.productQuantities.get(product.pid) || 0;
     if (currentQuantity > 0) {
       this.productQuantities.set(product.pid, currentQuantity - 1);
+    }
+  }
+
+  onQuantityChange(product: any): void {
+    const quantity = Number(product.quantity);
+    if (quantity >= 0) {
+      this.productQuantities.set(product.pid, quantity);
     }
   }
 

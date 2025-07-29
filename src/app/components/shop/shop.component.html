@@ -20,8 +20,8 @@
         <td>{{ product.stock }}</td>
         <td>
           <button class="btn btn-sm btn-danger" (click)="decreaseQuantity(product)">-</button>
-          <input type="number" [(ngModel)]="product.quantity" class="mx-2 quantity-input" min="0"
-            (keydown)="validateNumber($event)" />
+          <input type="number" [(ngModel)]="product.quantity" (ngModelChange)="onQuantityChange(product)"
+            class="mx-2 quantity-input" min="0" (keydown)="validateNumber($event)" />
           <button class="btn btn-sm btn-success" (click)="increaseQuantity(product)">+</button>
         </td>
       </tr>

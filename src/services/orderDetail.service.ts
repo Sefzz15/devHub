@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IOrderDetailResponse } from '../interfaces/IOrderDetail';
+import { IOrderDetails, IOrderDetailsValues } from '../app/Models/IOrderDetails';
+import { IOrderValuesResponse } from '../interfaces/IOrder';
 
 @Injectable({
     providedIn: 'root'
@@ -15,8 +16,8 @@ export class OrderDetailService {
     ) { }
 
     // Get all order details
-    getOrderDetails(): Observable<IOrderDetailResponse[]> {
-        return this.http.get<IOrderDetailResponse[]>(`${this._url}`);
+    getOrderDetails(): Observable<IOrderDetailsValues[]> {
+        return this.http.get<IOrderDetailsValues[]>(`${this._url}`);
     }
 
 }

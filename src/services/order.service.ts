@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IOrder, IOrderResponse } from '../interfaces/IOrder';
+import { IOrder, IOrderResponse, IOrderValuesResponse } from '../interfaces/IOrder';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,8 @@ export class OrderService {
   ) { }
 
   // Get all orders
-  getOrders(): Observable<IOrderResponse[]> {
-    return this.http.get<IOrderResponse[]>(`${this._url}`);
+  getOrders(): Observable<IOrderValuesResponse[]> {
+    return this.http.get<IOrderValuesResponse[]>(`${this._url}`);
   }
 
   // Get a specific order by ID

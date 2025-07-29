@@ -1,6 +1,6 @@
 <nav class="container">
 
-  <h1>Joined Tables List</h1>
+  <h1>Orders History</h1>
 
   <label for="clientSelect">Choose a client:</label>
   <select id="clientSelect">
@@ -20,7 +20,12 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let user of users">
+      <tr *ngFor="let order of orderDetails">
+        <td>{{ order.orderId }}</td>
+        <td>{{ order.product }}</td>
+        <td>{{ order.quantity }}</td>
+        <td>{{ order.price }}</td>
+        <td>{{ order.totalPrice }}</td>
       </tr>
     </tbody>
   </table>

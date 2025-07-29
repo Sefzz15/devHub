@@ -6,7 +6,7 @@ export interface IinternalOrderView {
     totalPrice: number;
 }
 
-export interface IOrderDetail {
+export interface IOrderDetails {
     $id: string;
     $values: IOrderDetailsValues[];
 }

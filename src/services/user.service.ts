@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IUser, IUserResponse } from '../interfaces/IUser';
+import { IUser, IUserResponse, IUserValuesResponse } from '../interfaces/IUser';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,8 @@ export class UserService {
   ) { }
 
   // Get all users
-  getUsers(): Observable<IUserResponse> {
-    return this.http.get<IUserResponse>(`${this._url}`);
+  getUsers(): Observable<IUserValuesResponse[]> {
+    return this.http.get<IUserValuesResponse[]>(`${this._url}`);
   }
 
   // Get a specific user by ID
