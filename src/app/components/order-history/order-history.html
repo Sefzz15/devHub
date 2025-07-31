@@ -3,7 +3,8 @@
   <h1>Orders History</h1>
 
   <label for="clientSelect">Choose a client:</label>
-  <select id="clientSelect">
+
+  <select id="clientSelect" (change)="selectClient($event)">
     <option *ngFor="let name of clientNames" [value]="name">{{ name }}</option>
   </select>
 
