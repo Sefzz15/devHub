@@ -4,19 +4,21 @@ import { SessionService } from '../../../services/session.service';
 import { UserService } from '../../../services/user.service';
 import { IUserResponse } from '../../../interfaces/IUser';
 import { OrderDetailService } from '../../../services/orderDetail.service';
-import { IinternalOrderView, IOrderDetails, IOrderDetailsValues, IUser } from '../../Models/IOrderDetails';
+import { IGroupedOrder, IinternalOrderView, IOrderDetails, IOrderDetailsValues, IOrderDetailsValuesFormatted, IUser } from '../../Models/IOrderDetails';
 
 @Component({
   standalone: false,
   selector: 'app-order-history',
   templateUrl: './order-history.html',
-  styleUrls: ['../admin/admin.component.css'],
+  styleUrls: ['../admin/admin.component.css', './order-history.css'],
 })
 export class OrderHistoryComponent implements OnInit {
   userID?: number;
   users: IUserResponse[] = [];
   clientNames: string[] = [];
   orderDetails?: IinternalOrderView[];
+  groupedOrderDetails: IGroupedOrder[] = [];
+  noOrders: boolean = false;
 
 
   constructor(
@@ -28,22 +30,6 @@ export class OrderHistoryComponent implements OnInit {
   ngOnInit(): void {
     this.userID = this._sessionService.userID;
     this.getUsers();
-
-    // this._orderDetailService.getOrderDetails().subscribe(
-    //   (data) => {
-    //     console.log('Order details fetched:', data);
-    //     this.orderDetails = data.map((item: any) => ({
-    //       orderId: item.oid,
-    //       product: item.product.pname,
-    //       quantity: item.quantity,
-    //       price: item.product.price,
-    //       totalPrice: item.quantity * item.product.price
-    //     }));
-    //   },
-    //   (error) => {
-    //     console.error('Error fetching order details:', error);
-    //   }
-    // );
   }
 
   getUsers(): void {
@@ -62,28 +48,51 @@ export class OrderHistoryComponent implements OnInit {
     const selectedClientName = (event.target as HTMLSelectElement).value;
     console.log('Client selected:', selectedClientName);
 
-    this._orderDetailService.getOrderDetails().subscribe(
-      (data: IOrderDetailsValues[]) => {
-        console.log('All order details fetched:', data);
+    this._orderDetailService.GetAllOrderDetailsFormatted().subscribe(
+      (data: IOrderDetailsValuesFormatted[]) => {
+        const groupedOrders: IGroupedOrder[] = [];
 
-        const filteredOrders = data
-          .filter(item => item.order?.user?.uname === selectedClientName)
-          .map(item => ({
-            orderId: item.oid,
-            product: item.product.pname,
+        const userOrders = data.filter(item => item.order?.user?.uname === selectedClientName);
+
+        if (userOrders.length === 0) {
+          this.groupedOrderDetails = [];
+          this.noOrders = true;
+          return;
+        }
+
+        const orderMap = new Map<number, IGroupedOrder>();
+
+        userOrders.forEach(item => {
+          const orderId = item.oid;
+          const date = item.date;
+          const itemTotal = item.quantity * item.price;
+
+          if (!orderMap.has(orderId)) {
+            orderMap.set(orderId, {
+              orderId,
+              date,
+              totalAmount: 0,
+              items: []
+            });
+          }
+
+          const orderGroup = orderMap.get(orderId)!;
+          orderGroup.items.push({
+            product: item.productName,
             quantity: item.quantity,
-            price: item.product.price,
-            totalPrice: item.quantity * item.product.price
-          }));
+            price: item.price,
+            totalPrice: itemTotal
+          });
 
-        this.orderDetails = filteredOrders;
+          orderGroup.totalAmount += itemTotal;
+        });
 
-        console.log(`Order details for ${selectedClientName}:`, this.orderDetails);
-      },
-      (error) => {
-        console.error('Error fetching order details:', error);
+        this.groupedOrderDetails = Array.from(orderMap.values());
+        this.noOrders = false; 
       }
     );
   }
+
+
 }
 

@@ -1,0 +1,7 @@
+.no-orders-message {
+    margin-top: 1rem;
+    color: #cc0000;
+    font-weight: bold;
+      font-size: 24px; /* or 1.5rem, 150%, etc */
+
+}

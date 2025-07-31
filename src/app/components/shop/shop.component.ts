@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { SessionService } from '../../../services/session.service';
 import { ProductService } from '../../../services/product.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { IProductValuesResponse } from '../../../interfaces/IProduct';
 
 @Component({
@@ -115,14 +115,16 @@ export class ShoppageComponent {
         this.productQuantities.clear();
         this.getProducts();
       },
-      error: (error) => {
-        console.error('Error creating order:', error);
-        if (error.error && error.error.errors) {
-          console.log(`Validation errors: ${JSON.stringify(error.error.errors, null, 2)}`);
-        } else {
-          alert('Failed to create order. Please try again.');
-        }
-      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Error response from backend:', error);
+
+        const message =
+          typeof error.error === 'string'
+            ? error.error
+            : error.error?.message || 'An unexpected error occurred.';
+
+        alert(message);
+      }
     });
   }
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IOrderDetails, IOrderDetailsValues } from '../app/Models/IOrderDetails';
+import { IOrderDetails, IOrderDetailsValues, IOrderDetailsValuesFormatted } from '../app/Models/IOrderDetails';
 import { IOrderValuesResponse } from '../interfaces/IOrder';
 
 @Injectable({
@@ -10,6 +10,7 @@ import { IOrderValuesResponse } from '../interfaces/IOrder';
 export class OrderDetailService {
 
     private _url = 'https://localhost:5000/api/orderdetails';
+    private _url1 = 'https://localhost:5000/api/orderdetails/formatted';
 
     constructor(
         private http: HttpClient
@@ -18,6 +19,10 @@ export class OrderDetailService {
     // Get all order details
     getOrderDetails(): Observable<IOrderDetailsValues[]> {
         return this.http.get<IOrderDetailsValues[]>(`${this._url}`);
+    }
+
+       GetAllOrderDetailsFormatted(): Observable<IOrderDetailsValuesFormatted[]> {
+        return this.http.get<IOrderDetailsValuesFormatted[]>(`${this._url1}`);
     }
 
 }

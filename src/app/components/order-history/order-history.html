@@ -5,30 +5,39 @@
   <label for="clientSelect">Choose a client:</label>
 
   <select id="clientSelect" (change)="selectClient($event)">
+    <option value="" disabled selected>-- Select client --</option>
     <option *ngFor="let name of clientNames" [value]="name">{{ name }}</option>
   </select>
 
-  <table class="table">
+  <div *ngFor="let order of groupedOrderDetails" class="order-block">
+    <h3>Order #{{ order.orderId }} - {{ order.date }}</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of order.items">
+          <td>{{ item.product }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.price }}</td>
+          <td>{{ item.totalPrice }}</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="3"><strong>Order Total</strong></td>
+          <td><strong>{{ order.totalAmount }}</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <thead>
-      <tr>
-        <th>Order ID</th>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Total Price</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let order of orderDetails">
-        <td>{{ order.orderId }}</td>
-        <td>{{ order.product }}</td>
-        <td>{{ order.quantity }}</td>
-        <td>{{ order.price }}</td>
-        <td>{{ order.totalPrice }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="noOrders" class="no-orders-message">
+    There are currently no purchases associated <br>
+    with the selected customer.
+  </div>
 
 </nav>
