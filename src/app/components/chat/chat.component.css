@@ -28,6 +28,24 @@
   max-height: 70%;
 }
 
+.chat-window {
+  height: 400px; /* or any fixed value that works for your layout */
+  overflow-y: auto;
+  border: 1px solid #ccc; /* optional: just for visual clarity */
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.chat-window::-webkit-scrollbar {
+  width: 8px;
+}
+.chat-window::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+
+
 .bubble {
   padding: 0px 15px;
   border-radius: 22px;

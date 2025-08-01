@@ -18,8 +18,8 @@ export class CreateProductComponent implements OnInit {
   generalError: string = '';
 
   constructor(
-    private productService: ProductService,
-    private router: Router
+    private _productService: ProductService,
+    private _router: Router
   ) { }
 
   ngOnInit(): void {
@@ -33,7 +33,7 @@ export class CreateProductComponent implements OnInit {
     }
 
     // Call the service to create the product
-    this.productService.createProduct(this.product).subscribe(
+    this._productService.createProduct(this.product).subscribe(
       (response: any) => {
         this.errorMessage = '';
         this.successMessage = 'Product created successfully. Redirecting...';
@@ -41,7 +41,7 @@ export class CreateProductComponent implements OnInit {
         // Set a delay before redirecting
         setTimeout(() => {
           // After 1,5 seconds, navigate to the admin page
-          this.router.navigate(['/adminpage']);
+          this._router.navigate(['/adminpage']);
         }, 1500);
       },
       (error: any) => {

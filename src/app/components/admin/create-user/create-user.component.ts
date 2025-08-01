@@ -18,8 +18,8 @@ export class CreateUserComponent implements OnInit {
   generalError: string = '';
 
   constructor(
-    private userService: UserService,
-    private router: Router
+    private _userService: UserService,
+    private _router: Router
   ) { }
 
   ngOnInit(): void {
@@ -35,7 +35,7 @@ export class CreateUserComponent implements OnInit {
       return; // If validation fails, stop the form submission
     }
 
-    this.userService.createUser(this.user).subscribe(
+    this._userService.createUser(this.user).subscribe(
       (response: IUser) => {
         this.errorMessage = '';
         this.successMessage = 'User created successfully. Redirecting...';
@@ -43,7 +43,7 @@ export class CreateUserComponent implements OnInit {
         // Set a delay before redirecting
         setTimeout(() => {
           // After 1,5 seconds, navigate to the admin page
-          this.router.navigate(['/adminpage']);
+          this._router.navigate(['/adminpage']);
         }, 1500);
       },
       (error: any) => {

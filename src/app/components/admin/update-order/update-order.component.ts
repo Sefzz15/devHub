@@ -20,14 +20,14 @@ export class UpdateOrderComponent implements OnInit {
   generalError: string = '';
 
   constructor(
-    private orderService: OrderService,
-    private route: ActivatedRoute,
-    private router: Router
+    private _orderService: OrderService,
+    private _route: ActivatedRoute,
+    private _router: Router
   ) { }
 
   ngOnInit(): void {
-    const oid = this.route.snapshot.paramMap.get('id');
-    const uid = this.route.snapshot.paramMap.get('id');
+    const oid = this._route.snapshot.paramMap.get('id');
+    const uid = this._route.snapshot.paramMap.get('id');
     console.log('Route ID:', oid); // Debugging the raw route parameter
 
     if (!oid) {
@@ -46,7 +46,7 @@ export class UpdateOrderComponent implements OnInit {
       return;
     }
 
-    this.orderService.getOrder(orderId).subscribe(
+    this._orderService.getOrder(orderId).subscribe(
       (data: IOrder) => {
         this.order = data;
       },
@@ -67,7 +67,7 @@ export class UpdateOrderComponent implements OnInit {
 
 
 
-    this.orderService.updateOrder(this.order.oid, this.order).subscribe(
+    this._orderService.updateOrder(this.order.oid, this.order).subscribe(
       () => {
         this.errorMessage = '';
         this.successMessage = 'Order updated successfully. Redirecting...';
@@ -75,7 +75,7 @@ export class UpdateOrderComponent implements OnInit {
         // Set a delay before redirecting
         setTimeout(() => {
           // After the delay, navigate to the admin page
-          this.router.navigate(['/adminpage']);
+          this._router.navigate(['/adminpage']);
         }, 1500);
       },
       (error: any) => {

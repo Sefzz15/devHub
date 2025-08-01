@@ -26,10 +26,10 @@ export class AdminpageComponent implements OnInit {
 
   constructor(
     private _sessionService: SessionService,
-    private userService: UserService,
-    private productService: ProductService,
-    private orderService: OrderService,
-    private orderDetailService: OrderDetailService
+    private _userService: UserService,
+    private _productService: ProductService,
+    private _orderService: OrderService,
+    private _orderDetailService: OrderDetailService
   ) { }
 
   ngOnInit(): void {
@@ -38,7 +38,7 @@ export class AdminpageComponent implements OnInit {
   }
 
   getUsers(): void {
-    this.userService.getUsers().subscribe(
+    this._userService.getUsers().subscribe(
       (data: IUserValuesResponse[]) => {
         this.users = data; // Ensure this updates the array
       },
@@ -51,7 +51,7 @@ export class AdminpageComponent implements OnInit {
   // Delete a user
   deleteUser(id: number): void {
     if (confirm('Are you sure you want to delete this user?')) {
-      this.userService.deleteUser(id).subscribe(() => {
+      this._userService.deleteUser(id).subscribe(() => {
         this.getUsers();  // Refresh the user list
       });
     }
@@ -65,7 +65,7 @@ export class AdminpageComponent implements OnInit {
   // Delete a product
   deleteProduct(id: number): void {
     if (confirm('Are you sure you want to delete this product?')) {
-      this.productService.deleteProduct(id).subscribe(() => {
+      this._productService.deleteProduct(id).subscribe(() => {
         this.getProducts();  // Refresh the product list
       });
     }
@@ -74,7 +74,7 @@ export class AdminpageComponent implements OnInit {
   // Delete an order
   deleteOrder(id: number): void {
     if (confirm('Are you sure you want to delete this order?')) {
-      this.orderService.deleteOrder(id).subscribe(() => {
+      this._orderService.deleteOrder(id).subscribe(() => {
         this.getOrders();  // Refresh the orders list
       });
     }
@@ -82,7 +82,7 @@ export class AdminpageComponent implements OnInit {
 
   // Fetch products after deletion
   getProducts(): void {
-    this.productService.getProducts().subscribe(
+    this._productService.getProducts().subscribe(
       (data: IProductValuesResponse[]) => {
         this.products = data;
       },
@@ -94,7 +94,7 @@ export class AdminpageComponent implements OnInit {
 
   // Fetch orders after deletion
   getOrders(): void {
-    this.orderService.getOrders().subscribe(
+    this._orderService.getOrders().subscribe(
       (data: IOrderValuesResponse[]) => {
         this.orders = data;
       },
@@ -106,7 +106,7 @@ export class AdminpageComponent implements OnInit {
 
   // Fetch orders after deletion
   getOrderDetails(): void {
-    this.orderDetailService.getOrderDetails().subscribe(
+    this._orderDetailService.getOrderDetails().subscribe(
       (data: IOrderDetailsValues[]) => {
         this.orderDetails = data;
       },

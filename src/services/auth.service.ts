@@ -12,8 +12,8 @@ export class AuthService {
   private _url = 'https://localhost:5000/api/users/login'; // Backend URL
   private _url1 = 'https://localhost:5000/api/users'; // Backend URL
   // private _url = 'https://192.168.1.180:5000/api/users/login'; // Backend URL
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  private token: string | null = null;
+  private _isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  private _token: string | null = null;
   userID: number = 0;
 
   public generalError: string = '';
@@ -31,7 +31,7 @@ export class AuthService {
           const token = response.token;
           //  console.log('Raw response.user.uid:', response.user?.uid);
           this.userID = response.user.uid;          // Extract userID
-          this.isAuthenticatedSubject.next(true);
+          this._isAuthenticatedSubject.next(true);
 
           // Update SessionService with the username and userID
           this._sessionService.username = username;  // Set the username
@@ -42,7 +42,7 @@ export class AuthService {
           return true;
         } else {
           console.log('Authentication failed');
-          this.isAuthenticatedSubject.next(false);
+          this._isAuthenticatedSubject.next(false);
           return false;
         }
       }),
@@ -65,11 +65,11 @@ export class AuthService {
   }
 
   get isAuthenticated(): Observable<boolean> {
-    return this.isAuthenticatedSubject.asObservable();
+    return this._isAuthenticatedSubject.asObservable();
   }
 
 
   logout(): void {
-    this.isAuthenticatedSubject.next(false);
+    this._isAuthenticatedSubject.next(false);
   }
 }

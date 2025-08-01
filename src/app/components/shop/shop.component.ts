@@ -24,8 +24,8 @@ export class ShoppageComponent {
     private _router: Router,
     private _authService: AuthService,
     private _sessionService: SessionService,
-    private productService: ProductService,
-    private http: HttpClient
+    private _productService: ProductService,
+    private _http: HttpClient
   ) { }
 
   ngOnInit() {
@@ -42,7 +42,7 @@ export class ShoppageComponent {
   productQuantities: Map<number, number> = new Map(); // Map to track product quantity changes
 
   getProducts(): void {
-    this.productService.getProducts().subscribe(
+    this._productService.getProducts().subscribe(
       (data: IProductValuesResponse[]) => {
         console.log("Fetched products:", data);
         this.products = data.map((product: any) => ({
@@ -109,7 +109,7 @@ export class ShoppageComponent {
 
     console.log('Payload to be sent:', JSON.stringify(payload, null, 2));
 
-    this.http.post('https://localhost:5000/api/orders/create', payload).subscribe({
+    this._http.post('https://localhost:5000/api/orders/create', payload).subscribe({
       next: (response: any) => {
         console.log('Order created successfully:', response);
         this.productQuantities.clear();

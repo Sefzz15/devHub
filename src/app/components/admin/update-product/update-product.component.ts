@@ -20,13 +20,13 @@ export class UpdateProductComponent implements OnInit {
   generalError: string = '';
 
   constructor(
-    private productService: ProductService,
-    private route: ActivatedRoute,
-    private router: Router
+    private _productService: ProductService,
+    private _route: ActivatedRoute,
+    private _router: Router
   ) { }
 
   ngOnInit(): void {
-    const pid = this.route.snapshot.paramMap.get('id');
+    const pid = this._route.snapshot.paramMap.get('id');
     console.log('Route ID:', pid); // Debugging the raw route parameter
 
     if (!pid) {
@@ -40,7 +40,7 @@ export class UpdateProductComponent implements OnInit {
       return;
     }
 
-    this.productService.getProduct(productId).subscribe(
+    this._productService.getProduct(productId).subscribe(
       (data: IProduct) => {
         this.product = data;
       },
@@ -72,7 +72,7 @@ export class UpdateProductComponent implements OnInit {
       return; // Stop if there are validation errors
     }
 
-    this.productService.updateProduct(this.product.pid, this.product).subscribe(
+    this._productService.updateProduct(this.product.pid, this.product).subscribe(
       () => {
         this.errorMessage = '';
         this.successMessage = 'Product updated successfully. Redirecting...';
@@ -80,7 +80,7 @@ export class UpdateProductComponent implements OnInit {
         // Set a delay before redirecting
         setTimeout(() => {
           // After the delay, navigate to the admin page
-          this.router.navigate(['/adminpage']);
+          this._router.navigate(['/adminpage']);
         }, 1500);
       },
       (error: any) => {

@@ -21,8 +21,8 @@ export class CreateOrderComponent {
   generalError: string = '';
 
   constructor(
-    private orderService: OrderService,
-    private router: Router
+    private _orderService: OrderService,
+    private _router: Router
   ) { }
 
   ngOnInit(): void {
@@ -38,7 +38,7 @@ export class CreateOrderComponent {
     }
 
     // Call the service to create the order
-    this.orderService.createOrder(this.order).subscribe(
+    this._orderService.createOrder(this.order).subscribe(
       (response: any) => {
         this.errorMessage = '';
         this.successMessage = 'Order created successfully. Redirecting...';
@@ -46,7 +46,7 @@ export class CreateOrderComponent {
         // Set a delay before redirecting
         setTimeout(() => {
           // After 1,5 seconds, navigate to the admin page
-          this.router.navigate(['/adminpage']);
+          this._router.navigate(['/adminpage']);
         }, 1500);
       },
       (error: any) => {

@@ -11,7 +11,7 @@ import { SessionService } from '../../../services/session.service';
 export class ChatComponent implements OnInit, OnDestroy {
   @ViewChild('chatWindow') private chatWindowRef!: ElementRef;
 
-  private connection!: signalR.HubConnection;
+  private _connection!: signalR.HubConnection;
 
   messages: { text: string; isSender: boolean }[] = [];
   messageInput: string = '';
@@ -42,22 +42,22 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
 
     // Create SignalR connection
-    this.connection = new signalR.HubConnectionBuilder()
+    this._connection = new signalR.HubConnectionBuilder()
       .withUrl('http://localhost:5001/chathub')
       .withAutomaticReconnect()
       .build();
 
     // Start the connection
-    this.connection
+    this._connection
       .start()
       .then(() => {
         console.log('SignalR Connected.');
-        this.connection.invoke('UserConnected', this.username); // Register the user on the server
+        this._connection.invoke('UserConnected', this.username); // Register the user on the server
       })
       .catch((err) => console.error('SignalR Connection Error: ', err));
 
     // Receive messages and update the list of connected users
-    this.connection.on('ReceiveMessage', (user: string, message: string) => {
+    this._connection.on('ReceiveMessage', (user: string, message: string) => {
       if (user !== this.username) {
         this.messages.push({ text: `${user}: ${message}`, isSender: false });
         this.unreadCount++;
@@ -66,7 +66,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
 
     // Add a user to the list of connected users
-    this.connection.on('UserConnected', (user: string) => {
+    this._connection.on('UserConnected', (user: string) => {
       if (!this.connectedUsers.includes(user)) {
         this.connectedUsers.push(user);
       }
@@ -75,14 +75,14 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
 
     // Remove a user from the list of connected users
-    this.connection.on('UserDisconnected', (user: string) => {
+    this._connection.on('UserDisconnected', (user: string) => {
       this.connectedUsers = this.connectedUsers.filter((u) => u !== user);
       this.messages.push({ text: `A wild ${user} disappeared!`, isSender: false });
       this.scrollToBottom();
     });
 
     // Save the list of connected users to sessionStorage
-    this.connection.on('ReceiveConnectedUsers', (users: string[]) => {
+    this._connection.on('ReceiveConnectedUsers', (users: string[]) => {
       this.connectedUsers = users;
     });
   }
@@ -90,7 +90,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   sendMessage() {
     if (this.messageInput.trim()) {
       const user = this.username;
-      this.connection
+      this._connection
         .invoke('SendMessage', user, this.messageInput)
         .then(() => {
           this.messages.push({ text: `${user}: ${this.messageInput}`, isSender: true });
@@ -123,9 +123,9 @@ export class ChatComponent implements OnInit, OnDestroy {
     sessionStorage.setItem('messages', JSON.stringify(this.messages));
     sessionStorage.setItem('connectedUsers', JSON.stringify(this.connectedUsers));
 
-    if (this.connection) {
-      this.connection.invoke('UserDisconnected', this.username); // Notify the server about the disconnection
-      this.connection.stop().catch((err) => console.error('Error while stopping connection: ', err));
+    if (this._connection) {
+      this._connection.invoke('UserDisconnected', this.username); // Notify the server about the disconnection
+      this._connection.stop().catch((err) => console.error('Error while stopping connection: ', err));
     }
   }
 }

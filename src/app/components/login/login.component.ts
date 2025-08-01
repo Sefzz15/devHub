@@ -24,7 +24,6 @@ export class LoginComponent {
     private _router: Router,
     private _authService: AuthService,
     private _sessionService: SessionService,
-    private userService: UserService
   ) { }
 
   onSubmit() {

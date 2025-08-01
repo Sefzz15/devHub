@@ -17,13 +17,13 @@ export class UpdateUserComponent implements OnInit {
   successMessage: string = '';
 
   constructor(
-    private userService: UserService, 
-    private route: ActivatedRoute, 
-    private router: Router
+    private _userService: UserService, 
+    private _route: ActivatedRoute, 
+    private _router: Router
   ) { }
 
   ngOnInit(): void {
-    const uid = this.route.snapshot.paramMap.get('id');
+    const uid = this._route.snapshot.paramMap.get('id');
     console.log('Route ID:', uid); // Debugging the raw route parameter
 
     if (!uid) {
@@ -37,7 +37,7 @@ export class UpdateUserComponent implements OnInit {
       return;
     }
 
-    this.userService.getUser(userId).subscribe(
+    this._userService.getUser(userId).subscribe(
       (data: IUser) => {
         this.user = data;
       },
@@ -64,7 +64,7 @@ export class UpdateUserComponent implements OnInit {
       return; // Stop if there are validation errors
     }
 
-    this.userService.updateUser(this.user.uid, this.user).subscribe(
+    this._userService.updateUser(this.user.uid, this.user).subscribe(
       () => {
         this.errorMessage = '';
         this.successMessage = 'User updated successfully. Redirecting...';
@@ -72,7 +72,7 @@ export class UpdateUserComponent implements OnInit {
         // Set a delay before redirecting
         setTimeout(() => {
           // After the delay, navigate to the admin page
-          this.router.navigate(['/adminpage']);
+          this._router.navigate(['/adminpage']);
         }, 1500);
       },
       (error: any) => {
