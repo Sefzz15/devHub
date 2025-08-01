@@ -22,7 +22,7 @@ import { ShoppageComponent } from './components/shop/shop.component';
 import { OrderHistoryComponent } from './components/order-history/order-history';
 
 import { ChatComponent } from './components/chat/chat.component';
-import { MultistepformComponent } from './components/multistepform/multistepform.component';
+import { FeedbackComponent } from './components/feedback/feedback.component';
 import { SpotifyComponent } from './components/spotify/spotify.component';
 import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.component';
 
@@ -44,7 +44,7 @@ const routes: Routes = [
   { path: 'spotify', component: SpotifyComponent, canActivate: [AuthGuard] },
   { path: 'rubiks-cube', component: RubiksCubeComponent, canActivate: [AuthGuard] },
 
-  { path: 'multistepform', component: MultistepformComponent, canActivate: [AuthGuard] },
+  { path: 'feedback', component: FeedbackComponent, canActivate: [AuthGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
 ];
 

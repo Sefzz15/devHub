@@ -30,7 +30,7 @@ import { ShoppageComponent } from './components/shop/shop.component';
 import { OrderHistoryComponent } from './components/order-history/order-history';
 import { ChatComponent } from './components/chat/chat.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { MultistepformComponent } from './components/multistepform/multistepform.component';
+import { FeedbackComponent } from './components/feedback/feedback.component';
 import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.component';
 import { SpotifyComponent } from './components/spotify/spotify.component';
 
@@ -51,7 +51,7 @@ import { SpotifyComponent } from './components/spotify/spotify.component';
     ShoppageComponent,
     CreateOrderComponent,
     UpdateOrderComponent,
-    MultistepformComponent,
+    FeedbackComponent,
     RubiksCubeComponent,
     SpotifyComponent,
   ],
