@@ -32,6 +32,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MultistepformComponent } from './components/multistepform/multistepform.component';
 import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.component';
+import { SpotifyComponent } from './components/spotify/spotify.component';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.compon
     UpdateOrderComponent,
     MultistepformComponent,
     RubiksCubeComponent,
+    SpotifyComponent,
   ],
   imports: [
     RouterModule,

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IOrderDetails, IOrderDetailsValues, IOrderDetailsValuesFormatted } from '../app/Models/IOrderDetails';
+// import { IOrderDetails, IOrderDetailsValues, IOrderDetailsValuesFormatted } from '../interfaces/IOrderDetails';
 import { IOrderValuesResponse } from '../interfaces/IOrder';
+import { IOrderDetailsValues, IOrderDetailsValuesFormatted } from '../interfaces/IOrderDetail';
 
 @Injectable({
     providedIn: 'root'

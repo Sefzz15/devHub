@@ -23,6 +23,7 @@ import { OrderHistoryComponent } from './components/order-history/order-history'
 
 import { ChatComponent } from './components/chat/chat.component';
 import { MultistepformComponent } from './components/multistepform/multistepform.component';
+import { SpotifyComponent } from './components/spotify/spotify.component';
 import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.component';
 
 
@@ -40,6 +41,7 @@ const routes: Routes = [
   { path: 'adminpage/update-order/:id', component: UpdateOrderComponent, canActivate: [AuthGuard] },
   { path: 'shop', component: ShoppageComponent, canActivate: [AuthGuard] },
   { path: 'order-history', component: OrderHistoryComponent, canActivate: [AuthGuard] },
+  { path: 'spotify', component: SpotifyComponent, canActivate: [AuthGuard] },
   { path: 'rubiks-cube', component: RubiksCubeComponent, canActivate: [AuthGuard] },
 
   { path: 'multistepform', component: MultistepformComponent, canActivate: [AuthGuard] },

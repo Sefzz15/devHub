@@ -42,3 +42,29 @@ export interface IProduct {
     price: number;
     stock: number;
 }
+
+export interface IOrderDetailsValuesFormatted {
+    oid: number;
+    date: string;
+    productName: string;
+    quantity: number;
+    price: number;
+    order: {
+        user: {
+            uname: string;
+        };
+    };
+}
+
+
+export interface IGroupedOrder {
+    orderId: number;
+    date: string;
+    totalAmount: number;
+    items: {
+        product: string;
+        quantity: number;
+        price: number;
+        totalPrice: number;
+    }[];
+}

@@ -4,7 +4,7 @@ import { SessionService } from '../../../services/session.service';
 import { UserService } from '../../../services/user.service';
 import { IUserResponse } from '../../../interfaces/IUser';
 import { OrderDetailService } from '../../../services/orderDetail.service';
-import { IGroupedOrder, IinternalOrderView, IOrderDetails, IOrderDetailsValues, IOrderDetailsValuesFormatted, IUser } from '../../Models/IOrderDetails';
+import { IGroupedOrder, IinternalOrderView, IOrderDetailsValuesFormatted } from '../../../interfaces/IOrderDetail';
 
 @Component({
   standalone: false,
@@ -53,7 +53,8 @@ export class OrderHistoryComponent implements OnInit {
         const groupedOrders: IGroupedOrder[] = [];
 
         const userOrders = data.filter(item => item.order?.user?.uname === selectedClientName);
-
+        userOrders.sort((a, b) => b.oid - a.oid);
+        
         if (userOrders.length === 0) {
           this.groupedOrderDetails = [];
           this.noOrders = true;
@@ -88,7 +89,7 @@ export class OrderHistoryComponent implements OnInit {
         });
 
         this.groupedOrderDetails = Array.from(orderMap.values());
-        this.noOrders = false; 
+        this.noOrders = false;
       }
     );
   }
