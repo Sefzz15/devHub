@@ -4,8 +4,10 @@
   flex-direction: column;
   user-select: none;
   align-items: center;
-  min-height: 94vh;
+  min-height: 88vh;
+  max-height: 88vh;
   gap: 1.5em;
+  overflow-y: auto;
 }
 
 .container h1 {
@@ -74,4 +76,11 @@
 
 .table td a {
   margin-right: 0.5em;
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    max-height: 100vh;
+    height: 100vh;
+  }
 }

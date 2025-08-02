@@ -29,10 +29,4 @@ export class DashboardComponent {
 
   }
 
-  LogOut(): void {
-    alert("You successfully logged out...");
-    this._authService.logout();
-    this._router.navigate(['/']);
-
-  }
 }

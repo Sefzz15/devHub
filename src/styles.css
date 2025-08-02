@@ -1,6 +1,7 @@
 html,
 body {
-  height: 94vh;
+  height: 88vh;
+  max-height: 88vh;
   margin: 0;
   /* overflow: hidden; */
 }
@@ -14,7 +15,8 @@ body {
 
 html,
 body {
-  height: 94vh;
+  height: 88vh;
+  max-height: 88vh;
 }
 
 body {

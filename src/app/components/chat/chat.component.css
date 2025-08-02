@@ -29,9 +29,9 @@
 }
 
 .chat-window {
-  height: 400px; /* or any fixed value that works for your layout */
+  height: 400px; 
   overflow-y: auto;
-  border: 1px solid #ccc; /* optional: just for visual clarity */
+  border: 1px solid #ccc;
   padding: 10px;
   box-sizing: border-box;
 }
@@ -43,8 +43,6 @@
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
-
-
 
 .bubble {
   padding: 0px 15px;
@@ -124,7 +122,7 @@ button:hover {
   padding: 10px;
   background-color: #f4f4f4;
   border: 1px solid #ddd;
-  margin-bottom: 20px;
+  margin-top: 15px;
   border-radius: 4px;
 }
 .connected-users h3 {

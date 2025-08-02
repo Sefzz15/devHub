@@ -33,6 +33,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.component';
 import { SpotifyComponent } from './components/spotify/spotify.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { SpotifyComponent } from './components/spotify/spotify.component';
     FeedbackComponent,
     RubiksCubeComponent,
     SpotifyComponent,
+    FooterComponent,
   ],
   imports: [
     RouterModule,

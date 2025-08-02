@@ -1,37 +1,19 @@
-/* General Container Styling */
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 94vh;
+  min-height: 88vh;
+  max-height: 88vh;
   gap: 1em;
   background-color: #b6ebfc;
+  overflow-y: auto;
 }
 
-/* Header Styling */
 .container h1 {
   font-size: 2em;
   font-weight: bold;
   color: #3e4684;
   text-align: center;
-}
-
-/* Button Styling for container and other areas */
-.container .btn-danger {
-  padding: 0.8em 1.2em;
-  font-size: 1em;
-  border-radius: 8px;
-  text-decoration: none;
-  text-align: center;
-  cursor: pointer;
-  background-color: #c23535;
-  color: white;
-  border: none;
-  transition: background-color 0.3s ease;
-}
-
-.container .btn-danger:hover {
-  background-color: #b92e2e;
 }
 
 section {
@@ -41,4 +23,11 @@ section {
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #fff;
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    max-height: 100vh;
+    height: 100vh;
+  }
 }
