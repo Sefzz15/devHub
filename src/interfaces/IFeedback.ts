@@ -5,12 +5,22 @@ export interface IFeedback {
 }
 
 export interface IFeedbackResponse {
-  $id: string,
+  $id?: string;
   $values: IFeedbackValuesResponse[];
 }
 
 export interface IFeedbackValuesResponse {
-  $id: string;
+  fid: number;
+  uid: number;
+  message: string;
+  name: string | null;
+  address: string | null;
+  phone: string | null;
+  date: string;
+  user: IUser;
+}
+
+export interface IUser {
   uid: number;
   uname: string;
   upass: string;

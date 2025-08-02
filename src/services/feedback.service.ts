@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IFeedback } from '../interfaces/IFeedback';
+import { IFeedback, IFeedbackValuesResponse } from '../interfaces/IFeedback';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +15,13 @@ export class FeedbackService {
   ) { }
 
   // Get all feedbacks
-  getFeedbacks(): Observable<any[]> {
-    return this._http.get<any[]>(`${this._url}`);
+  getFeedbacks(): Observable<IFeedbackValuesResponse[]> {
+    return this._http.get<IFeedbackValuesResponse[]>(`${this._url}`);
   }
 
   // Get a specific feedback by ID
-  getFeedback(id: number): Observable<any> {
-    return this._http.get<any>(`${this._url}/${id}`);
+  getFeedback(id: number): Observable<IFeedback> {
+    return this._http.get<IFeedback>(`${this._url}/${id}`);
   }
 
 

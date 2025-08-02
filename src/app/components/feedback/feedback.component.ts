@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SessionService } from '../../../services/session.service';
 import { FeedbackService } from '../../../services/feedback.service';
+import { IFeedback, IFeedbackValuesResponse } from '../../../interfaces/IFeedback';
+import { get } from 'http';
 
 @Component({
   selector: 'stepper-responsive-example',
@@ -22,6 +24,7 @@ export class FeedbackComponent implements OnInit {
   userID?: number;
   private _formBuilder = inject(FormBuilder);
   errorMessage: string = '';
+  feedbacks: IFeedbackValuesResponse[] = [];
 
 
   nameFormGroup = this._formBuilder.group({
@@ -52,6 +55,8 @@ export class FeedbackComponent implements OnInit {
 
   ngOnInit(): void {
     this.userID = this._sessionService.userID;
+    this.getFeedbacks();
+    console.log('a', this.getFeedbacks());
     console.log('UserID in feedback page:', this.userID);
   }
 
@@ -73,7 +78,7 @@ export class FeedbackComponent implements OnInit {
       this._feedbackService.createFeedback(payload).subscribe({
         next: (res) => {
           console.log('Feedback submitted successfully:', res);
-          // Optionally reset form or show success message
+        this.getFeedbacks(); 
         },
         error: (err) => {
           console.error('Failed to submit feedback:', err);
@@ -81,6 +86,27 @@ export class FeedbackComponent implements OnInit {
         }
       });
 
+    }
+  }
+
+  getFeedbacks(): void {
+    this._feedbackService.getFeedbacks().subscribe(
+      (data: IFeedbackValuesResponse[]) => {
+        this.feedbacks = data;
+        console.log('Fetched feedbacks:', this.feedbacks); 
+      },
+      (error: any) => {
+        console.error('Error fetching feedbacks:', error);
+      }
+    );
+  }
+
+  // Delete a feedback
+  deleteFeedback(id: number): void {
+    if (confirm('Are you sure you want to delete this user?')) {
+      this._feedbackService.deleteFeedback(id).subscribe(() => {
+        this.getFeedbacks(); 
+      });
     }
   }
 }

@@ -75,4 +75,41 @@
         </mat-stepper>
 
     </section>
+
+    <div class="header-actions">
+        <h1>Feedbacks List</h1>
+        <div class="actions">
+            <button class="btn btn-secondary" (click)="getFeedbacks()">Load Feedbacks</button>
+        </div>
+    </div>
+
+    <table *ngIf="feedbacks.length > 0" class="table">
+        <thead>
+            <tr>
+                <th>fid</th>
+                <th>message</th>
+                <th>name</th>
+                <th>address</th>
+                <th>phone</th>
+                <!-- <th>date</th> -->
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let feedback of feedbacks">
+                <td>{{ feedback.fid }}</td>
+                <td>{{ feedback.message }}</td>
+                <td>{{ feedback.name }}</td>
+                <td>{{ feedback.address }}</td>
+                <td>{{ feedback.phone }}</td>
+                <!-- <td>{{ feedback.date }}</td> -->
+                <td>
+                    <!-- <a class="btn btn-primary btn-sm"
+                        [routerLink]="['/adminpage/update-feedback', feedback.uid]">Update</a> -->
+                    <a class="btn btn-danger btn-sm" (click)="deleteFeedback(feedback.fid)">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
 </nav>

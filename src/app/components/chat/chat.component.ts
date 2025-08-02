@@ -31,6 +31,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (savedUnreadCount) {
       this.unreadCount = JSON.parse(savedUnreadCount);
     }
+    
     // Retrieve messages and connected users from sessionStorage
     const savedMessages = sessionStorage.getItem('messages');
     const savedUsers = sessionStorage.getItem('connectedUsers');

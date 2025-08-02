@@ -23,5 +23,4 @@ export class FooterComponent {
     this._router.navigate(['/']);
   }
 
-
 }
