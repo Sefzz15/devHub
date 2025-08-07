@@ -5,12 +5,25 @@
 }
 
 .table-wrapper table {
-  min-width: 2000px; /* force wide tables to overflow */
+  min-width: 2000px;
+  /* force wide tables to overflow */
   table-layout: auto;
   border-collapse: collapse;
 }
 
 .table-wrapper th,
 .table-wrapper td {
-  white-space: nowrap; /* prevent wrapping */
+  white-space: nowrap;
+  /* prevent wrapping */
+}
+
+.column-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.presets {
+  margin-bottom: 1rem;
 }

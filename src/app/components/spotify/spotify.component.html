@@ -5,77 +5,60 @@
         <button class="btn btn-primary" (click)="loadPage(1, pageSize)">Refresh</button>
         <span class="total-items">Total Items: {{ totalItems }}</span>
 
-        <!-- ✅ Horizontal scroll wrapper -->
+        <!-- Column toggles -->
+        <div class="column-filters">
+            <label *ngFor="let column of columns">
+                <input type="checkbox" [(ngModel)]="column.visible" />
+                {{ column.label }}
+            </label>
+        </div>
+
+        <!-- Preset buttons -->
+        <div class="presets">
+            <button (click)="applyPreset('simple')">Simple</button>
+            <button (click)="applyPreset('songs')">Songs</button>
+            <button (click)="applyPreset('podcasts')">Podcasts</button>
+        </div>
+
+
         <div class="table-wrapper">
             <table *ngIf="spotifyList.length > 0" class="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Timestamp</th>
-                        <th>trackName</th>
-                        <th>albumArtistName</th>
-                        <th>albumName</th>
-                        <th>spotifyTrackUri</th>
-                        <th>Platform</th>
-                        <th>msPlayed</th>
-                        <th>connCountry</th>
-                        <th>ipAddr</th>
-                        <th>episodeName</th>
-                        <th>episodeShowName</th>
-                        <th>spotifyEpisodeUri</th>
-                        <th>audiobookTitle</th>
-                        <th>audiobookUri</th>
-                        <th>audiobookChapterUri</th>
-                        <th>audiobookChapterTitle</th>
-                        <th>reasonStart</th>
-                        <th>reasonEnd</th>
-                        <th>shuffle</th>
-                        <th>skipped</th>
-                        <th>offline</th>
-                        <th>offlineTimestamp</th>
-                        <th>incognitoMode</th>
+                        <th *ngFor="let col of columns" [hidden]="!col.visible" (click)="onSort(col.key)">
+                            {{ col.label }}
+                        </th>
                         <th>Actions</th>
                     </tr>
+
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of spotifyList">
-                        <td>{{ item.id }}</td>
-                        <td>{{ item.ts | date: 'short' }}</td>
+                        <td *ngFor="let col of columns" [hidden]="!col.visible">
+                            <span *ngIf="col.key === 'spotify_track_uri' && item[col.key]">
+                                <a [href]="'https://open.spotify.com/track/' + extractSpotifyId(item[col.key] || '')"
+                                    target="_blank" rel="noopener noreferrer">
+                                    {{ item[col.key] }}
+                                </a>
+                            </span>
 
-                        <td>{{ item.master_metadata_track_name || '-' }}</td>
-                        <td>{{ item.master_metadata_album_artist_name || '-' }}</td>
-                        <td>{{ item.master_metadata_album_album_name || '-' }}</td>
-                        <td>
-                            <a *ngIf="item.spotify_track_uri"
-                                [href]="'https://open.spotify.com/track/' + extractSpotifyId(item.spotify_track_uri)"
-                                target="_blank">
-                                {{ item.spotify_track_uri }}
-                            </a>
-                            <span *ngIf="!item.spotify_track_uri">-</span>
+                            <span *ngIf="col.key === 'spotify_episode_uri' && item[col.key]">
+                                <a [href]="'https://open.spotify.com/episode/' + extractSpotifyId(item[col.key] || '')"
+`                                    target="_blank" rel="noopener noreferrer">
+                                    {{ item[col.key] }}
+                                </a>
+                            </span>
+
+                            <span *ngIf="col.key !== 'spotify_track_uri' && col.key !== 'spotify_episode_uri'">
+                                {{ item[col.key] || '-' }}
+                            </span>
                         </td>
-                        <td>{{ item.platform || '-' }}</td>
-                        <td>{{ item.ms_played || '-' }}</td>
-                        <td>{{ item.conn_country || '-' }}</td>
-                        <td>{{ item.ip_addr || '-' }}</td>
-                        <td>{{ item.episode_name || '-' }}</td>
-                        <td>{{ item.episode_show_name || '-' }}</td>
-                        <td>{{ item.spotify_episode_uri || '-' }}</td>
-                        <td>{{ item.audiobook_title || '-' }}</td>
-                        <td>{{ item.audiobook_uri || '-' }}</td>
-                        <td>{{ item.audiobook_chapter_uri || '-' }}</td>
-                        <td>{{ item.audiobook_chapter_title || '-' }}</td>
-                        <td>{{ item.reason_start || '-' }}</td>
-                        <td>{{ item.reason_end || '-' }}</td>
-                        <td>{{ item.shuffle || '-' }}</td>
-                        <td>{{ item.skipped || '-' }}</td>
-                        <td>{{ item.offline || '-' }}</td>
-                        <td>{{ item.offline_timestamp || '-' }}</td>
-                        <td>{{ item.incognito_mode || '-' }}</td>
                         <td>
-                            <button class="btn btn-sm btn-primary" (click)="onInspect(item)">Inspect</button>
+                            <button (click)="onInspect(item)">Inspect</button>
                         </td>
                     </tr>
                 </tbody>
+
             </table>
         </div>
 

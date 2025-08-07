@@ -33,3 +33,8 @@ export interface ISpotifyValuesResponse {
     incognito_mode: boolean;
 }
 
+export interface Column {
+  key: keyof ISpotifyValuesResponse;
+  label: string;
+  visible: boolean;
+}

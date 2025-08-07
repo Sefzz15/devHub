@@ -15,7 +15,7 @@ export class SpotifyService {
     ) { }
 
     // Get all spotifies
-    getSpotifies(): Observable<ISpotifyValuesResponse[]> {
+    getAllSpotify(): Observable<ISpotifyValuesResponse[]> {
         return this.http.get<ISpotifyValuesResponse[]>(`${this._url}`);
     }
 
