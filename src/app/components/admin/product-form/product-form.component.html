@@ -1,0 +1,48 @@
+<div class="adminpage-container">
+    <div class="form-container">
+        <h1 class="form-header">{{ mode === 'create' ? 'Create Product' : 'Update Product' }}</h1>
+
+        <form (ngSubmit)="onSubmit()">
+            <div class="form-group" *ngIf="mode === 'edit'">
+                <label for="uid">Product ID</label>
+                <input id="uid" class="form-control" [(ngModel)]="product.pid" name="pid" readonly />
+            </div>
+
+            <!-- Product Name Field -->
+            <div class="form-group">
+                <label for="pname">Product Name</label>
+                <input id="pname" class="form-control" [(ngModel)]="product.pname" name="pname" required />
+                <span *ngIf="productNameError" class="text-danger">{{ productNameError }}</span>
+            </div>
+
+            <!-- Price Field -->
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input id="price" class="form-control" [(ngModel)]="product.price" name="price" required />
+                <span *ngIf="productPriceError" class="text-danger">{{ productPriceError }}</span>
+            </div>
+
+            <!-- Quantity Field -->
+            <div class="form-group">
+                <label for="stock">Stock Quantity</label>
+                <input id="stock" class="form-control" [(ngModel)]="product.stock" name="stock" required />
+                <span *ngIf="productStockError" class="text-danger">{{ productStockError }}</span>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">
+                    {{ mode === 'create' ? 'Create' : 'Update' }}
+                </button>
+                <a class="btn btn-outline-primary" routerLink="/adminpage">Cancel</a>
+            </div>
+        </form>
+
+        <div *ngIf="successMessage" class="alert alert-success">
+            {{ successMessage }}
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+        </div>
+    </div>
+</div>

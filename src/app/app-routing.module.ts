@@ -7,16 +7,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 import { AdminpageComponent } from './components/admin/admin.component';
 
-import { CreateUserComponent } from './components/admin/create-user/create-user.component';
-import { UpdateUserComponent } from './components/admin/update-user/update-user.component';
-
-
-import { CreateProductComponent } from './components/admin/create-product/create-product.component';
-import { UpdateProductComponent } from './components/admin/update-product/update-product.component';
-
-import { CreateOrderComponent } from './components/admin/create-order/create-order.component';
-import { UpdateOrderComponent } from './components/admin/update-order/update-order.component';
-
+import { UserFormComponent } from './components/admin/user-form/user-form.component';
+import { ProductFormComponent } from './components/admin/product-form/product-form.component';
+import { OrderFormComponent } from './components/admin/order-form/order-form.component';
 
 import { ShoppageComponent } from './components/shop/shop.component';
 import { OrderHistoryComponent } from './components/order-history/order-history';
@@ -33,16 +26,17 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'adminpage', component: AdminpageComponent, canActivate: [AuthGuard] },
-  { path: 'adminpage/create-user', component: CreateUserComponent },
-  { path: 'adminpage/update-user/:id', component: UpdateUserComponent, canActivate: [AuthGuard] },
-  { path: 'adminpage/create-product', component: CreateProductComponent, canActivate: [AuthGuard] },
-  { path: 'adminpage/update-product/:id', component: UpdateProductComponent, canActivate: [AuthGuard] },
-  { path: 'adminpage/create-order', component: CreateOrderComponent, canActivate: [AuthGuard] },
-  { path: 'adminpage/update-order/:id', component: UpdateOrderComponent, canActivate: [AuthGuard] },
   { path: 'shop', component: ShoppageComponent, canActivate: [AuthGuard] },
   { path: 'order-history', component: OrderHistoryComponent, canActivate: [AuthGuard] },
   { path: 'spotify', component: SpotifyComponent, canActivate: [AuthGuard] },
   { path: 'rubiks-cube', component: RubiksCubeComponent, canActivate: [AuthGuard] },
+  { path: 'adminpage/user-form', component: UserFormComponent, canActivate: [AuthGuard] },
+  { path: 'adminpage/user-form/:id', component: UserFormComponent, canActivate: [AuthGuard] },
+  { path: 'adminpage/product-form', component: ProductFormComponent, canActivate: [AuthGuard] },
+  { path: 'adminpage/product-form/:id', component: ProductFormComponent, canActivate: [AuthGuard] },
+  { path: 'adminpage/order-form', component: OrderFormComponent, canActivate: [AuthGuard] },
+  { path: 'adminpage/order-form/:id', component: OrderFormComponent, canActivate: [AuthGuard] },
+
 
   { path: 'feedback', component: FeedbackComponent, canActivate: [AuthGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },

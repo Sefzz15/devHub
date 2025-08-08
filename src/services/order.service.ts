@@ -11,31 +11,31 @@ export class OrderService {
   private _url = 'https://localhost:5000/api/orders';
 
   constructor(
-    private http: HttpClient
+    private _http: HttpClient
   ) { }
 
   // Get all orders
   getOrders(): Observable<IOrderValuesResponse[]> {
-    return this.http.get<IOrderValuesResponse[]>(`${this._url}`);
+    return this._http.get<IOrderValuesResponse[]>(`${this._url}`);
   }
 
   // Get a specific order by ID
   getOrder(id: number): Observable<IOrder> {
-    return this.http.get<IOrder>(`${this._url}/${id}`);
+    return this._http.get<IOrder>(`${this._url}/${id}`);
   }
 
   // Create a new order
   createOrder(order: IOrder): Observable<IOrder> {
-    return this.http.post<IOrder>(`${this._url}`, order);
+    return this._http.post<IOrder>(`${this._url}`, order);
   }
 
   // Update an existing order
   updateOrder(id: number, order: IOrder): Observable<IOrder> {
-    return this.http.put<IOrder>(`${this._url}/${id}`, order);
+    return this._http.put<IOrder>(`${this._url}/${id}`, order);
   }
 
   // Delete a order
   deleteOrder(id: number): Observable<any> {
-    return this.http.delete<any>(`${this._url}/${id}`);
+    return this._http.delete<any>(`${this._url}/${id}`);
   }
 }

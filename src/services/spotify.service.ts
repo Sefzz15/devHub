@@ -11,31 +11,31 @@ export class SpotifyService {
     private _url = 'https://localhost:5000/api/spotify';
 
     constructor(
-        private http: HttpClient
+        private _http: HttpClient
     ) { }
 
     // Get all spotifies
     getAllSpotify(): Observable<ISpotifyValuesResponse[]> {
-        return this.http.get<ISpotifyValuesResponse[]>(`${this._url}`);
+        return this._http.get<ISpotifyValuesResponse[]>(`${this._url}`);
     }
 
     // Get a specific spotify by ID
     getSpotify(id: number): Observable<ISpotifyPaginated> {
-        return this.http.get<ISpotifyPaginated>(`${this._url}/${id}`);
+        return this._http.get<ISpotifyPaginated>(`${this._url}/${id}`);
     }
 
     // Create a new spotify
     createSpotify(spotify: ISpotifyPaginated): Observable<ISpotifyPaginated> {
-        return this.http.post<ISpotifyPaginated>(`${this._url}`, spotify);
+        return this._http.post<ISpotifyPaginated>(`${this._url}`, spotify);
     }
 
     // Update an existing spotify
     updateSpotify(id: number, spotify: ISpotifyPaginated): Observable<ISpotifyPaginated> {
-        return this.http.put<ISpotifyPaginated>(`${this._url}/${id}`, spotify);
+        return this._http.put<ISpotifyPaginated>(`${this._url}/${id}`, spotify);
     }
 
     // Delete a spotify
     deleteSpotify(id: number): Observable<any> {
-        return this.http.delete<any>(`${this._url}/${id}`);
+        return this._http.delete<any>(`${this._url}/${id}`);
     }
 }

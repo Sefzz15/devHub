@@ -14,16 +14,16 @@ export class OrderDetailService {
     private _url1 = 'https://localhost:5000/api/orderdetails/formatted';
 
     constructor(
-        private http: HttpClient
+        private _http: HttpClient
     ) { }
 
     // Get all order details
     getOrderDetails(): Observable<IOrderDetailsValues[]> {
-        return this.http.get<IOrderDetailsValues[]>(`${this._url}`);
+        return this._http.get<IOrderDetailsValues[]>(`${this._url}`);
     }
 
        GetAllOrderDetailsFormatted(): Observable<IOrderDetailsValuesFormatted[]> {
-        return this.http.get<IOrderDetailsValuesFormatted[]>(`${this._url1}`);
+        return this._http.get<IOrderDetailsValuesFormatted[]>(`${this._url1}`);
     }
 
 }

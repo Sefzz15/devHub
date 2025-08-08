@@ -22,12 +22,9 @@ import { LoginComponent } from './components/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminpageComponent } from './components/admin/admin.component';
-import { CreateUserComponent } from './components/admin/create-user/create-user.component';
-import { UpdateUserComponent } from './components/admin/update-user/update-user.component';
-import { CreateProductComponent } from './components/admin/create-product/create-product.component';
-import { UpdateProductComponent } from './components/admin/update-product/update-product.component';
-import { CreateOrderComponent } from './components/admin/create-order/create-order.component';
-import { UpdateOrderComponent } from './components/admin/update-order/update-order.component';
+import { UserFormComponent } from './components/admin/user-form/user-form.component';
+import { ProductFormComponent } from './components/admin/product-form/product-form.component';
+
 import { ShoppageComponent } from './components/shop/shop.component';
 import { OrderHistoryComponent } from './components/order-history/order-history';
 import { ChatComponent } from './components/chat/chat.component';
@@ -36,6 +33,7 @@ import { FeedbackComponent } from './components/feedback/feedback.component';
 import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.component';
 import { SpotifyComponent } from './components/spotify/spotify.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { OrderFormComponent } from './components/admin/order-form/order-form.component';
 
 
 @NgModule({
@@ -45,19 +43,16 @@ import { FooterComponent } from './components/footer/footer.component';
     DashboardComponent,
     AdminpageComponent,
     NavbarComponent,
-    CreateUserComponent,
-    UpdateUserComponent,
     ChatComponent,
     OrderHistoryComponent,
-    CreateProductComponent,
-    UpdateProductComponent,
     ShoppageComponent,
-    CreateOrderComponent,
-    UpdateOrderComponent,
     FeedbackComponent,
     RubiksCubeComponent,
     SpotifyComponent,
     FooterComponent,
+    UserFormComponent,
+    ProductFormComponent,
+    OrderFormComponent,
   ],
   imports: [
     RouterModule,

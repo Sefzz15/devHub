@@ -11,31 +11,31 @@ export class ProductService {
   private _url = 'https://localhost:5000/api/products';
 
   constructor(
-    private http: HttpClient
+    private _http: HttpClient
   ) { }
 
   // Get all products
   getProducts(): Observable<IProductValuesResponse[]> {
-    return this.http.get<IProductValuesResponse[]>(`${this._url}`);
+    return this._http.get<IProductValuesResponse[]>(`${this._url}`);
   }
 
   // Get a specific product by ID
   getProduct(pid: number): Observable<IProduct> {
-    return this.http.get<IProduct>(`${this._url}/${pid}`);
+    return this._http.get<IProduct>(`${this._url}/${pid}`);
   }
 
   // Create a new product
   createProduct(product: IProduct): Observable<IProduct> {
-    return this.http.post<IProduct>(`${this._url}`, product);
+    return this._http.post<IProduct>(`${this._url}`, product);
   }
 
   // Update an existing product
   updateProduct(pid: number, product: IProduct): Observable<IProduct> {
-    return this.http.put<IProduct>(`${this._url}/${pid}`, product);
+    return this._http.put<IProduct>(`${this._url}/${pid}`, product);
   }
 
   // Delete a product
   deleteProduct(pid: number): Observable<any> {
-    return this.http.delete<any>(`${this._url}/${pid}`);
+    return this._http.delete<any>(`${this._url}/${pid}`);
   }
 }

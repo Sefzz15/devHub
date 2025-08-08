@@ -1,0 +1,39 @@
+<div class="adminpage-container">
+    <div class="form-container">
+        <h1 class="form-header">{{ mode === 'create' ? 'Create User' : 'Update User' }}</h1>
+
+        <form (ngSubmit)="onSubmit()">
+            <div class="form-group" *ngIf="mode === 'edit'">
+                <label for="uid">User ID</label>
+                <input id="uid" class="form-control" [(ngModel)]="user.uid" name="uid" readonly />
+            </div>
+
+            <div class="form-group">
+                <label for="uname">Username</label>
+                <input id="uname" class="form-control" [(ngModel)]="user.uname" name="uname" required />
+                <span *ngIf="usernameError" class="text-danger">{{ usernameError }}</span>
+            </div>
+
+            <div class="form-group">
+                <label for="upass">Password</label>
+                <input id="upass" type="password" class="form-control" [(ngModel)]="user.upass" name="upass" required />
+                <span *ngIf="passwordError" class="text-danger">{{ passwordError }}</span>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">
+                    {{ mode === 'create' ? 'Create' : 'Update' }}
+                </button>
+                <a class="btn btn-outline-primary" routerLink="/adminpage">Cancel</a>
+            </div>
+        </form>
+
+        <div *ngIf="successMessage" class="alert alert-success">
+            {{ successMessage }}
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+        </div>
+    </div>
+</div>
