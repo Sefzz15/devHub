@@ -1,0 +1,33 @@
+<div class="adminpage-container">
+    <div class="form-container">
+        <h1 class="form-header">
+            {{ mode === 'create' ? 'Create ' + (config?.title || 'Entity') : 'Update ' + (config?.title || 'Entity') }}
+        </h1>
+
+        <form (ngSubmit)="onSubmit()" *ngIf="config">
+            <!-- Loop through fields from config -->
+            <div class="form-group" *ngFor="let field of config.fields">
+                <label [for]="field.key">{{ field.label }}</label>
+                <input [id]="field.key" class="form-control" [(ngModel)]="entity[field.key]" [name]="field.key"
+                    [readonly]="field.readonly || false" [type]="field.type || 'text'"
+                    [required]="field.required || false" />
+                <span *ngIf="errors[field.key]" class="text-danger">{{ errors[field.key] }}</span>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">
+                    {{ mode === 'create' ? 'Create' : 'Update' }}
+                </button>
+                <a class="btn btn-outline-primary" routerLink="/adminpage">Cancel</a>
+            </div>
+        </form>
+
+        <!-- Success / Error Messages -->
+        <div *ngIf="successMessage" class="alert alert-success">
+            {{ successMessage }}
+        </div>
+        <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+        </div>
+    </div>
+</div>

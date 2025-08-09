@@ -18,6 +18,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { SpotifyComponent } from './components/spotify/spotify.component';
 import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.component';
+import { EntityFormComponent } from './components/entity-form/entity-form.component';
 
 
 const routes: Routes = [
@@ -26,10 +27,6 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'adminpage', component: AdminpageComponent, canActivate: [AuthGuard] },
-  { path: 'shop', component: ShoppageComponent, canActivate: [AuthGuard] },
-  { path: 'order-history', component: OrderHistoryComponent, canActivate: [AuthGuard] },
-  { path: 'spotify', component: SpotifyComponent, canActivate: [AuthGuard] },
-  { path: 'rubiks-cube', component: RubiksCubeComponent, canActivate: [AuthGuard] },
   { path: 'adminpage/user-form', component: UserFormComponent, canActivate: [AuthGuard] },
   { path: 'adminpage/user-form/:id', component: UserFormComponent, canActivate: [AuthGuard] },
   { path: 'adminpage/product-form', component: ProductFormComponent, canActivate: [AuthGuard] },
@@ -37,9 +34,16 @@ const routes: Routes = [
   { path: 'adminpage/order-form', component: OrderFormComponent, canActivate: [AuthGuard] },
   { path: 'adminpage/order-form/:id', component: OrderFormComponent, canActivate: [AuthGuard] },
 
+  { path: 'shop', component: ShoppageComponent, canActivate: [AuthGuard] },
+  { path: 'order-history', component: OrderHistoryComponent, canActivate: [AuthGuard] },
+  { path: 'spotify', component: SpotifyComponent, canActivate: [AuthGuard] },
+  { path: 'rubiks-cube', component: RubiksCubeComponent, canActivate: [AuthGuard] },
 
   { path: 'feedback', component: FeedbackComponent, canActivate: [AuthGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
+
+  { path: 'entity-form/:type', component: EntityFormComponent, canActivate: [AuthGuard] },
+  { path: 'entity-form/:type/:id', component: EntityFormComponent, canActivate: [AuthGuard] },
 ];
 
 

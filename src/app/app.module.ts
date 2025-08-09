@@ -34,6 +34,7 @@ import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.compon
 import { SpotifyComponent } from './components/spotify/spotify.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { OrderFormComponent } from './components/admin/order-form/order-form.component';
+import { EntityFormComponent } from './components/entity-form/entity-form.component';
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import { OrderFormComponent } from './components/admin/order-form/order-form.com
     UserFormComponent,
     ProductFormComponent,
     OrderFormComponent,
+    EntityFormComponent,
   ],
   imports: [
     RouterModule,
