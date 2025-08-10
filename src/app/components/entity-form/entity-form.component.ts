@@ -8,7 +8,7 @@ import { OrderService } from '../../../services/order.service';
   standalone: false,
   selector: 'app-entity-form',
   templateUrl: './entity-form.component.html',
-  styleUrls: ['./entity-form.component.css', '../admin/user-form/user-form.component.css']
+  styleUrls: ['./entity-form.component.css']
 })
 export class EntityFormComponent implements OnInit {
   entity: any = {};
@@ -20,24 +20,36 @@ export class EntityFormComponent implements OnInit {
 
   constructor(
     private _route: ActivatedRoute,
-    private _router: Router,
-    private userService: UserService,
-    private productService: ProductService,
-    private orderService: OrderService
+    public _router: Router,
+    private _userService: UserService,
+    private _productService: ProductService,
+    private _orderService: OrderService
   ) { }
 
   ngOnInit(): void {
-    const type = this._route.snapshot.paramMap.get('type') || '';
-    this.config = this.getConfig(type);
+    const typeParam = this._route.snapshot.paramMap.get('type');
+    console.log('Type param:', typeParam);
+
+    if (!typeParam) {
+      this.errorMessage = 'Invalid entity type.';
+      return;
+    }
+
+    this.config = this.getConfig(typeParam);
+
+    if (!this.config) {
+      this.errorMessage = `Unknown entity type: ${typeParam}`;
+      return;
+    }
 
     const idParam = this._route.snapshot.paramMap.get('id');
     if (idParam) {
       this.mode = 'edit';
       const id = Number(idParam);
       if (!isNaN(id) && id > 0) {
-        this.config.service.get(id).subscribe({
-          next: (data: any) => this.entity = data,
-          error: () => this.errorMessage = `Unable to fetch ${type} data.`
+        this.config.get(id).subscribe({
+          next: (data: any) => (this.entity = data),
+          error: () => (this.errorMessage = `Unable to fetch ${this.config.title} data.`)
         });
       }
     }
@@ -52,7 +64,9 @@ export class EntityFormComponent implements OnInit {
           { key: 'uname', label: 'Username', required: true },
           { key: 'upass', label: 'Password', required: true, type: 'password' }
         ],
-        service: this.userService
+        create: (entity: any) => this._userService.createUser(entity),
+        update: (id: number, entity: any) => this._userService.updateUser(id, entity),
+        get: (id: number) => this._userService.getUser(id)
       },
       product: {
         title: 'Product',
@@ -62,33 +76,53 @@ export class EntityFormComponent implements OnInit {
           { key: 'price', label: 'Price', required: true, type: 'number' },
           { key: 'stock', label: 'Stock Quantity', required: true, type: 'number' }
         ],
-        service: this.productService
+        create: (entity: any) => this._productService.createProduct(entity),
+        update: (id: number, entity: any) => this._productService.updateProduct(id, entity),
+        get: (id: number) => this._productService.getProduct(id)
       },
       order: {
         title: 'Order',
         fields: [
           { key: 'oid', label: 'Order ID', readonly: true },
           { key: 'uid', label: 'User ID', required: true, type: 'number' },
-          { key: 'date', label: 'Date', required: true, type: 'date' }
+          { key: 'date', label: 'Date', required: true, type: 'datetime-local' }
         ],
-        service: this.orderService
+        create: (entity: any) => this._orderService.createOrder(entity),
+        update: (id: number, entity: any) => this._orderService.updateOrder(id, entity),
+        get: (id: number) => this._orderService.getOrder(id)
       }
+
     };
     return configs[type];
   }
 
-
   onSubmit(): void {
+    if (!this.config) {
+      this.errorMessage = 'Invalid entity configuration.';
+      return;
+    }
+
     if (!this.validate()) return;
-    const action$ = this.mode === 'create'
-      ? this.config.service.create(this.entity)
-      : this.config.service.update(this.entity[this.config.fields[0].key], this.entity);
+
+    if (this.config.title === 'Order') {
+      if (!this.entity.date) {
+        const now = new Date();
+        const pad = (n: number) => n.toString().padStart(2, '0');
+        this.entity.date = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+      }
+    }
+
+    const action$ =
+      this.mode === 'create'
+        ? this.config.create(this.entity)
+        : this.config.update(this.entity[this.config.fields[0].key], this.entity);
 
     action$.subscribe({
       next: () => this.handleSuccess(`${this.mode === 'create' ? 'Created' : 'Updated'} successfully.`),
-      error: () => this.errorMessage = `Failed to ${this.mode} ${this._route.snapshot.paramMap.get('type')}.`
+      error: () => (this.errorMessage = `Failed to ${this.mode} ${this.config.title}.`)
     });
   }
+
 
   validate(): boolean {
     let isValid = true;

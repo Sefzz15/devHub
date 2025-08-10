@@ -22,8 +22,6 @@ import { LoginComponent } from './components/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminpageComponent } from './components/admin/admin.component';
-import { UserFormComponent } from './components/admin/user-form/user-form.component';
-import { ProductFormComponent } from './components/admin/product-form/product-form.component';
 
 import { ShoppageComponent } from './components/shop/shop.component';
 import { OrderHistoryComponent } from './components/order-history/order-history';
@@ -33,7 +31,6 @@ import { FeedbackComponent } from './components/feedback/feedback.component';
 import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.component';
 import { SpotifyComponent } from './components/spotify/spotify.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { OrderFormComponent } from './components/admin/order-form/order-form.component';
 import { EntityFormComponent } from './components/entity-form/entity-form.component';
 
 
@@ -51,9 +48,6 @@ import { EntityFormComponent } from './components/entity-form/entity-form.compon
     RubiksCubeComponent,
     SpotifyComponent,
     FooterComponent,
-    UserFormComponent,
-    ProductFormComponent,
-    OrderFormComponent,
     EntityFormComponent,
   ],
   imports: [

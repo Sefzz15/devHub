@@ -7,9 +7,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 import { AdminpageComponent } from './components/admin/admin.component';
 
-import { UserFormComponent } from './components/admin/user-form/user-form.component';
-import { ProductFormComponent } from './components/admin/product-form/product-form.component';
-import { OrderFormComponent } from './components/admin/order-form/order-form.component';
 
 import { ShoppageComponent } from './components/shop/shop.component';
 import { OrderHistoryComponent } from './components/order-history/order-history';
@@ -27,12 +24,6 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'adminpage', component: AdminpageComponent, canActivate: [AuthGuard] },
-  { path: 'adminpage/user-form', component: UserFormComponent, canActivate: [AuthGuard] },
-  { path: 'adminpage/user-form/:id', component: UserFormComponent, canActivate: [AuthGuard] },
-  { path: 'adminpage/product-form', component: ProductFormComponent, canActivate: [AuthGuard] },
-  { path: 'adminpage/product-form/:id', component: ProductFormComponent, canActivate: [AuthGuard] },
-  { path: 'adminpage/order-form', component: OrderFormComponent, canActivate: [AuthGuard] },
-  { path: 'adminpage/order-form/:id', component: OrderFormComponent, canActivate: [AuthGuard] },
 
   { path: 'shop', component: ShoppageComponent, canActivate: [AuthGuard] },
   { path: 'order-history', component: OrderHistoryComponent, canActivate: [AuthGuard] },

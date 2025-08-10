@@ -4,7 +4,7 @@
     <h1>Users List</h1>
     <div class="actions">
       <button class="btn btn-secondary" (click)="getUsers()">Load Users</button>
-      <a class="btn btn-primary" routerLink="/adminpage/user-form">New User</a>
+      <a class="btn btn-primary" [routerLink]="['/entity-form', 'user']">New User</a>
     </div>
   </div>
 
@@ -23,7 +23,7 @@
         <td>{{ user.uname }}</td>
         <td>{{ user.upass }}</td>
         <td>
-          <a class="btn btn-primary btn-sm" [routerLink]="['/adminpage/user-form', user.uid]">Update</a>
+          <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'user', user.uid]">Update</a>
           <a class="btn btn-danger btn-sm" (click)="deleteUser(user.uid)">Delete</a>
         </td>
       </tr>
@@ -34,7 +34,7 @@
     <h1>Products List</h1>
     <div class="actions">
       <button class="btn btn-secondary" (click)="getProducts()">Load Products</button>
-      <a class="btn btn-primary" routerLink="/adminpage/product-form">New Product</a>
+      <a class="btn btn-primary" [routerLink]="['/entity-form', 'product']">New Product</a>
     </div>
   </div>
 
@@ -55,7 +55,7 @@
         <td>{{ product.price }}</td>
         <td>{{ product.stock }}</td>
         <td>
-          <a class="btn btn-primary btn-sm" [routerLink]="['/adminpage/product-form', product.pid]">Update</a>
+          <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'product', product.pid]">Update</a>
           <a class="btn btn-danger btn-sm" (click)="deleteProduct(product.pid)">Delete</a>
         </td>
       </tr>
@@ -67,7 +67,7 @@
     <h1>Orders List</h1>
     <div class="actions">
       <button class="btn btn-secondary" (click)="getOrders()">Load Orders</button>
-      <a class="btn btn-primary" routerLink="/adminpage/order-form">New Order</a>
+      <a class="btn btn-primary" [routerLink]="['/entity-form', 'order']">Create Order</a>
     </div>
   </div>
 
@@ -86,18 +86,17 @@
         <td>{{ order.uid }}</td>
         <td>{{ order.date }}</td>
         <td>
-          <a class="btn btn-primary btn-sm" [routerLink]="['/adminpage/order-form', order.oid]">Update</a>
+          <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'order', order.oid]">Edit</a>
           <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">Delete</a>
         </td>
       </tr>
     </tbody>
   </table>
 
-    <div class="header-actions">
+  <div class="header-actions">
     <h1>OrdersDetails List</h1>
     <div class="actions">
       <button class="btn btn-secondary" (click)="getOrderDetails()">Load Order Details</button>
-      <!-- <a class="btn btn-primary" routerLink="/adminpage/create-order">New Order</a> -->
     </div>
   </div>
 
