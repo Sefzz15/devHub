@@ -5,7 +5,7 @@ import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular
   standalone: false,
 
   templateUrl: './rubiks-cube.component.html',
-    styleUrls: [
+  styleUrls: [
     '../admin/admin.component.css',
     './rubiks-cube.component.css'],
 })

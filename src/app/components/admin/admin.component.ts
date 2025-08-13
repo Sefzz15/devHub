@@ -4,10 +4,10 @@ import { ProductService } from '../../../services/product.service';
 import { OrderService } from '../../../services/order.service';
 import { OrderDetailService } from '../../../services/orderDetail.service';
 import { SessionService } from '../../../services/session.service';
-import { IUser, IUserResponse, IUserValuesResponse } from '../../../interfaces/IUser';
+import { IUser, IUserValuesResponse } from '../../../interfaces/IUser';
 import { IProduct, IProductValuesResponse } from '../../../interfaces/IProduct';
 import { IOrder, IOrderValuesResponse } from '../../../interfaces/IOrder';
-import { IOrderDetail, IOrderDetailsValues } from '../../../interfaces/IOrderDetail';
+import { IOrderDetailsValues } from '../../../interfaces/IOrderDetail';
 
 @Component({
   standalone: false,

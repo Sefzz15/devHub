@@ -54,7 +54,7 @@ export class OrderHistoryComponent implements OnInit {
 
         const userOrders = data.filter(item => item.order?.user?.uname === selectedClientName);
         userOrders.sort((a, b) => b.oid - a.oid);
-        
+
         if (userOrders.length === 0) {
           this.groupedOrderDetails = [];
           this.noOrders = true;

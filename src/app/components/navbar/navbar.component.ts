@@ -12,7 +12,7 @@ export class NavbarComponent implements OnInit {
   isAuthenticated: boolean = false;
 
   constructor(
-    private _authService: AuthService, 
+    private _authService: AuthService,
     private _router: Router
   ) {
 

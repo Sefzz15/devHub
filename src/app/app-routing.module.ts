@@ -33,7 +33,7 @@ const routes: Routes = [
   { path: 'feedback', component: FeedbackComponent, canActivate: [AuthGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
 
-  { path: 'entity-form/:type', component: EntityFormComponent, canActivate: [AuthGuard] },
+  { path: 'entity-form/:type', component: EntityFormComponent },
   { path: 'entity-form/:type/:id', component: EntityFormComponent, canActivate: [AuthGuard] },
 ];
 

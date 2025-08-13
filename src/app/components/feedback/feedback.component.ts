@@ -6,8 +6,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SessionService } from '../../../services/session.service';
 import { FeedbackService } from '../../../services/feedback.service';
-import { IFeedback, IFeedbackValuesResponse } from '../../../interfaces/IFeedback';
-import { get } from 'http';
+import { IFeedbackValuesResponse } from '../../../interfaces/IFeedback';
 
 @Component({
   selector: 'stepper-responsive-example',
@@ -78,7 +77,7 @@ export class FeedbackComponent implements OnInit {
       this._feedbackService.createFeedback(payload).subscribe({
         next: (res) => {
           console.log('Feedback submitted successfully:', res);
-        this.getFeedbacks(); 
+          this.getFeedbacks();
         },
         error: (err) => {
           console.error('Failed to submit feedback:', err);
@@ -93,7 +92,7 @@ export class FeedbackComponent implements OnInit {
     this._feedbackService.getFeedbacks().subscribe(
       (data: IFeedbackValuesResponse[]) => {
         this.feedbacks = data;
-        console.log('Fetched feedbacks:', this.feedbacks); 
+        console.log('Fetched feedbacks:', this.feedbacks);
       },
       (error: any) => {
         console.error('Error fetching feedbacks:', error);
@@ -105,7 +104,7 @@ export class FeedbackComponent implements OnInit {
   deleteFeedback(id: number): void {
     if (confirm('Are you sure you want to delete this user?')) {
       this._feedbackService.deleteFeedback(id).subscribe(() => {
-        this.getFeedbacks(); 
+        this.getFeedbacks();
       });
     }
   }
