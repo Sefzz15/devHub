@@ -24,12 +24,16 @@ export class AuthService {
   ) { }
 
   authenticate(username: string, password: string): Observable<boolean> {
-    return this._http.post<{ message: string; token?: string; $id?: number; user: { $id: string; uid: number; uname: string } }>(this._url, { username, password }).pipe(
+    return this._http.post<{ message: string; accessToken?: string; $id?: number; user: { $id: string; uid: number; uname: string } }>(this._url, { username, password }).pipe(
       map(response => {
         console.log('Server response:', response);
         if (response.message === 'Login successful!') {
-          const token = response.token;
-          //  console.log('Raw response.user.uid:', response.user?.uid);
+          const token = response.accessToken;   // <--- από accessToken
+          if (!token) {
+            throw new Error('JWT token missing in response');
+          }
+          this._sessionService.token = token;   // <-- νέο
+
           this.userID = response.user.uid;          // Extract userID
           this._isAuthenticatedSubject.next(true);
 
@@ -62,6 +66,10 @@ export class AuthService {
         return throwError(error);
       })
     );
+  }
+
+  getToken(): string | null {
+    return this._token || localStorage.getItem('accessToken');
   }
 
   get isAuthenticated(): Observable<boolean> {
