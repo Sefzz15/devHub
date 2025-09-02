@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 })
 export class IdleService {
     private timeout: any;
-    private idleTime = 15000; // 15 δευτερόλεπτα
+    private idleTime = 120000; // 2 minutes
 
     constructor(
         private authService: AuthService,
@@ -18,12 +18,12 @@ export class IdleService {
     }
 
     private startWatching() {
-        // Τρέχει μόνο αν είμαστε σε browser
+        // Server-side rendering check
         if (typeof window === 'undefined') {
             return;
         }
 
-        // Τυλίγουμε με NgZone για να μη δημιουργεί memory leaks
+        //  Listen to user activity events
         this.ngZone.runOutsideAngular(() => {
             ['mousemove', 'keydown', 'click'].forEach(event =>
                 window.addEventListener(event, () => this.resetTimer())
