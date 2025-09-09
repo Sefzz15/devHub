@@ -8,6 +8,13 @@
     </ul>
   </div>
 
+  <div class="group-controls">
+    <input type="text" [(ngModel)]="currentGroup" placeholder="Enter group name..." />
+    <button (click)="joinGroup(currentGroup)" [disabled]="!currentGroup.trim()">Join</button>
+    <button (click)="leaveGroup(currentGroup)" [disabled]="!currentGroup.trim()">Leave</button>
+  </div>
+
+
   <div class="chat-window" #chatWindow>
     <div *ngFor="let message of messages" [class]="message.isSender ? 'bubble sender' : 'bubble receiver'">
       <p>{{ message.text }}</p>
@@ -18,11 +25,7 @@
     <div class="unread-count" *ngIf="unreadCount > 0">
       {{ unreadCount }}
     </div>
-    <input
-      type="text"
-      placeholder="Type your message..."
-      [(ngModel)]="messageInput"
-      (keydown.enter)="sendMessage()"
+    <input type="text" placeholder="Type your message..." [(ngModel)]="messageInput" (keydown.enter)="sendMessage()"
       (focus)="onInputFocus()" /> <!-- Καλέστε την μέθοδο onInputFocus -->
     <button class="btn btn-primary" (click)="sendMessage()">Send</button>
   </div>
