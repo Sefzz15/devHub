@@ -1,34 +1,50 @@
 <div class="container">
   <!-- <h1>Chat Application</h1> -->
-
-  <div class="connected-users">
-    <h3>Connected Users:</h3>
-    <ul>
-      <li *ngFor="let user of connectedUsers">{{ user }}</li>
-    </ul>
-  </div>
-
-  <div class="group-controls">
-    <input type="text" [(ngModel)]="currentGroup" placeholder="Enter group name..." />
-    <button (click)="joinGroup(currentGroup)" [disabled]="!currentGroup.trim()">Join</button>
-    <button (click)="leaveGroup(currentGroup)" [disabled]="!currentGroup.trim()">Leave</button>
-  </div>
+  <div class="chat-container">
 
 
-  <div class="chat-window" #chatWindow>
-    <div *ngFor="let message of messages" [class]="message.isSender ? 'bubble sender' : 'bubble receiver'">
-      <p>{{ message.text }}</p>
+    <div class="chatInfo">
+      <div class="connected-users">
+        <h3>Connected Users:</h3>
+        <ul>
+          <li *ngFor="let user of connectedUsers">{{ user }}</li>
+        </ul>
+      </div>
+
+      <div class="groups-list">
+        <h3>Available Groups:</h3>
+        <ul>
+          <li *ngFor="let group of chatGroups" [class.active]="group === currentGroup">
+            <span (click)="joinGroup(group)">{{ group }}</span>
+            <button *ngIf="currentGroup === group" (click)="leaveGroup(group)">Leave</button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group-controls">
+        <input type="text" [(ngModel)]="currentGroup" placeholder="Enter group name..." />
+        <button (click)="joinGroup(currentGroup)" [disabled]="!currentGroup.trim()">Join</button>
+        <button (click)="leaveGroup(currentGroup)" [disabled]="!currentGroup.trim()">Leave</button>
+      </div>
+
+    </div>
+
+    <div class="b">
+      <div class="chat-window" #chatWindow>
+        <div *ngFor="let message of messages" [class]="message.isSender ? 'bubble sender' : 'bubble receiver'">
+          <p>{{ message.text }}</p>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="unread-count" *ngIf="unreadCount > 0">
+          {{ unreadCount }}
+        </div>
+        <input type="text" placeholder="Type your message..." [(ngModel)]="messageInput" (keydown.enter)="sendMessage()"
+          (focus)="onInputFocus()" />
+        <button class="btn btn-primary" (click)="sendMessage()">Send</button>
+      </div>
     </div>
   </div>
-
-  <div class="input-area">
-    <div class="unread-count" *ngIf="unreadCount > 0">
-      {{ unreadCount }}
-    </div>
-    <input type="text" placeholder="Type your message..." [(ngModel)]="messageInput" (keydown.enter)="sendMessage()"
-      (focus)="onInputFocus()" /> <!-- Καλέστε την μέθοδο onInputFocus -->
-    <button class="btn btn-primary" (click)="sendMessage()">Send</button>
-  </div>
-
 
 </div>

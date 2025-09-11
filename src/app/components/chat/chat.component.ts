@@ -18,10 +18,13 @@ export class ChatComponent implements OnInit, OnDestroy {
   messages: { text: string; isSender: boolean }[] = [];
   messageInput: string = '';
   username: string = '';
-  connectedUsers: string[] = []; // List of connected users
+  connectedUsers: string[] = [];
   unreadCount: number = 0;
   inactivityTimeout: any = null;
   currentGroup: string = '';
+  chatGroups: string[] = [];
+  newGroup: string = '';
+
 
   constructor(
     private _sessionService: SessionService,
@@ -43,11 +46,15 @@ export class ChatComponent implements OnInit, OnDestroy {
     // Retrieve messages and connected users from sessionStorage
     const savedMessages = sessionStorage.getItem('messages');
     const savedUsers = sessionStorage.getItem('connectedUsers');
+    const chatGroups = sessionStorage.getItem('chatGroups');
     if (savedMessages) {
       this.messages = JSON.parse(savedMessages);
     }
     if (savedUsers) {
       this.connectedUsers = JSON.parse(savedUsers);
+    }
+    if (chatGroups) {
+      this.chatGroups = JSON.parse(chatGroups);
     }
 
     // Create SignalR connection
@@ -57,13 +64,20 @@ export class ChatComponent implements OnInit, OnDestroy {
       .build();
 
     // Start the connection
-    this._connection
-      .start()
+    this._connection.start()
       .then(() => {
         console.log('SignalR Connected.');
-        this._connection.invoke('UserConnected', this.username); // Register the user on the server
+        this._connection.invoke('UserConnected', this.username);
+
+        // Explicitly request groups on load
+        this._connection.invoke('GetGroups')
+          .then((groups: string[]) => {
+            this.chatGroups = groups;
+            sessionStorage.setItem('chatGroups', JSON.stringify(groups));
+          })
+          .catch(err => console.error('Error getting groups: ', err));
       })
-      .catch((err) => console.error('SignalR Connection Error: ', err));
+      .catch(err => console.error('SignalR Connection Error: ', err));
 
     // Receive messages and update the list of connected users
     this._connection.on('ReceiveMessage', (user: string, message: string) => {
@@ -103,6 +117,11 @@ export class ChatComponent implements OnInit, OnDestroy {
     this._connection.on('UserLeftGroup', (user: string, group: string) => {
       this.messages.push({ text: `${user} left ${group}`, isSender: false });
       this.scrollToBottom();
+    });
+
+    this._connection.on('ReceiveGroups', (groups: string[]) => {
+      this.chatGroups = [...groups];
+      sessionStorage.setItem('chatGroups', JSON.stringify(this.chatGroups));
     });
 
   }
@@ -154,7 +173,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       alert('You have been logged out due to inactivity.');
       this._authService.logout();
       this._router.navigate(['/']);
-    }, 5 * 60 * 1000); // 5 minutes
+    }, 5 * 60 * 1000); // 5 minutes (5 min * 60 sec * 1000 ms)
   }
 
   resetInactivityTimer = () => {

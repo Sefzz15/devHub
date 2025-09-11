@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 })
 export class IdleService {
     private timeout: any;
-    private idleTime = 120000; // 2 minutes
+    private idleTime = 10 * 60 * 1000; // 10 minutes (10 min * 60 sec * 1000 ms)
 
     constructor(
         private authService: AuthService,

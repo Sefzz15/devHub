@@ -4,6 +4,7 @@
   flex-direction: column;
   user-select: none;
   align-items: center;
+  justify-content: center;
   min-height: 100%;
   gap: 1.5em;
 }
@@ -19,26 +20,20 @@
   flex-direction: column;
   gap: 5px;
   background-color: white;
-  padding: 20px;
-  width: 70%;
+  width: 80%;
   box-shadow: 0 0 2em #e6e9f9;
   border-radius: 15px;
   overflow-y: auto;
-  flex-grow: 1;
-  max-height: 70%;
-}
-
-.chat-window {
-  height: 400px; 
-  overflow-y: auto;
   border: 1px solid #ccc;
   padding: 10px;
-  box-sizing: border-box;
+  min-height: 70vh;
+  max-height: 70vh;
 }
 
 .chat-window::-webkit-scrollbar {
   width: 8px;
 }
+
 .chat-window::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
@@ -69,7 +64,7 @@
   display: flex;
   box-shadow: 0 0 2em #e6e9f9;
   border-radius: 15px;
-  width: 70%;
+  width: 80%;
   background-color: white;
   padding: 15px;
   gap: 10px;
@@ -125,16 +120,75 @@ button:hover {
   border: 1px solid #ddd;
   margin-top: 15px;
   border-radius: 4px;
+  max-height: 20vh;
+  overflow-y: auto;
 }
+
 .connected-users h3 {
   margin: 0;
   font-size: 1.2em;
 }
+
 .connected-users ul {
   list-style-type: none;
   padding-left: 0;
 }
+
 .connected-users li {
   padding: 5px 0;
   font-size: 1em;
+}
+
+.chat-container {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  max-width: 90vw;
+}
+
+/* Sidebar (connected users + groups) */
+.chat-container .chatInfo {
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main chat area */
+.chat-container .b {
+  flex: 1;
+  /* take the rest of the space */
+  display: flex;
+  flex-direction: column;
+}
+
+.groups-list {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 6px;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.groups-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.groups-list li {
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.groups-list li span {
+  cursor: pointer;
+  color: #3e4684;
+}
+
+.groups-list li.active span {
+  font-weight: bold;
+  color: #2c3561;
 }
