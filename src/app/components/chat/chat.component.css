@@ -22,12 +22,12 @@
   background-color: white;
   width: 80%;
   box-shadow: 0 0 2em #e6e9f9;
-  border-radius: 15px;
   overflow-y: auto;
   border: 1px solid #ccc;
   padding: 10px;
   min-height: 70vh;
   max-height: 70vh;
+  margin-bottom: 5px;
 }
 
 .chat-window::-webkit-scrollbar {
@@ -62,14 +62,12 @@
 
 .input-area {
   display: flex;
-  box-shadow: 0 0 2em #e6e9f9;
   border-radius: 15px;
   width: 80%;
   background-color: white;
   padding: 15px;
   gap: 10px;
   position: relative;
-  margin-bottom: 10px;
 }
 
 .unread-count {
@@ -127,6 +125,8 @@ button:hover {
 .connected-users h3 {
   margin: 0;
   font-size: 1.2em;
+  padding: 10px;
+  overflow-y: auto;
 }
 
 .connected-users ul {
@@ -151,6 +151,7 @@ button:hover {
   width: 220px;
   display: flex;
   flex-direction: column;
+  gap: 20px;
 }
 
 /* Main chat area */
