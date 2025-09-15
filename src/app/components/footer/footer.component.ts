@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -9,7 +9,9 @@ import { Router } from '@angular/router';
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css'
 })
-export class FooterComponent {
+export class FooterComponent implements OnInit {
+  isAuthenticated: boolean = false;
+
 
   constructor(
     private _authService: AuthService,
@@ -17,6 +19,13 @@ export class FooterComponent {
   ) {
 
   }
+
+  ngOnInit(): void {
+    this._authService.isAuthenticated.subscribe(token => {
+      this.isAuthenticated = token; // Update local state
+    });
+  }
+
   LogOut(): void {
     alert("You successfully logged out...");
     this._authService.logout();
