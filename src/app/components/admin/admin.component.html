@@ -8,27 +8,31 @@
     </div>
   </div>
 
-  <table *ngIf="users.length > 0" class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Password</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of users">
-        <td>{{ user.uid }}</td>
-        <td>{{ user.uname }}</td>
-        <td>{{ user.upass }}</td>
-        <td>
-          <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'user', user.uid]">Update</a>
-          <a class="btn btn-danger btn-sm" (click)="deleteUser(user.uid)">Delete</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  @if (users.length > 0) {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Password</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users; track user) {
+          <tr>
+            <td>{{ user.uid }}</td>
+            <td>{{ user.uname }}</td>
+            <td>{{ user.upass }}</td>
+            <td>
+              <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'user', user.uid]">Update</a>
+              <a class="btn btn-danger btn-sm" (click)="deleteUser(user.uid)">Delete</a>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
 
   <div class="header-actions">
     <h1>Products List</h1>
@@ -38,29 +42,33 @@
     </div>
   </div>
 
-  <table *ngIf="products.length > 0" class="table">
-    <thead>
-      <tr>
-        <th>product id</th>
-        <th>product Name</th>
-        <th>price</th>
-        <th>stock</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let product  of products">
-        <td>{{ product.pid }}</td>
-        <td>{{ product.pname }}</td>
-        <td>{{ product.price }}</td>
-        <td>{{ product.stock }}</td>
-        <td>
-          <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'product', product.pid]">Update</a>
-          <a class="btn btn-danger btn-sm" (click)="deleteProduct(product.pid)">Delete</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  @if (products.length > 0) {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>product id</th>
+          <th>product Name</th>
+          <th>price</th>
+          <th>stock</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (product  of products; track product ) {
+          <tr>
+            <td>{{ product.pid }}</td>
+            <td>{{ product.pname }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.stock }}</td>
+            <td>
+              <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'product', product.pid]">Update</a>
+              <a class="btn btn-danger btn-sm" (click)="deleteProduct(product.pid)">Delete</a>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
 
 
   <div class="header-actions">
@@ -71,27 +79,31 @@
     </div>
   </div>
 
-  <table *ngIf="orders.length > 0" class="table">
-    <thead>
-      <tr>
-        <th>Order ID</th>
-        <th>User ID</th>
-        <th>Date</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let order of orders">
-        <td>{{ order.oid }}</td>
-        <td>{{ order.uid }}</td>
-        <td>{{ order.date }}</td>
-        <td>
-          <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'order', order.oid]">Edit</a>
-          <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">Delete</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  @if (orders.length > 0) {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>User ID</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (order of orders; track order) {
+          <tr>
+            <td>{{ order.oid }}</td>
+            <td>{{ order.uid }}</td>
+            <td>{{ order.date }}</td>
+            <td>
+              <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'order', order.oid]">Edit</a>
+              <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">Delete</a>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
 
   <div class="header-actions">
     <h1>OrdersDetails List</h1>
@@ -100,26 +112,30 @@
     </div>
   </div>
 
-  <table *ngIf="orderDetails.length > 0" class="table">
-    <thead>
-      <tr>
-        <th>Order ID</th>
-        <th>Product ID</th>
-        <th>Quantity</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let orderDetail of orderDetails">
-        <td>{{ orderDetail.oid }}</td>
-        <td>{{ orderDetail.pid }}</td>
-        <td>{{ orderDetail.quantity }}</td>
-        <td>
-          <!-- <a class="btn btn-primary btn-sm" [routerLink]="['/adminpage/update-order', order.oid]">Update</a> -->
-          <!-- <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">Delete</a> -->
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  @if (orderDetails.length > 0) {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Product ID</th>
+          <th>Quantity</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (orderDetail of orderDetails; track orderDetail) {
+          <tr>
+            <td>{{ orderDetail.oid }}</td>
+            <td>{{ orderDetail.pid }}</td>
+            <td>{{ orderDetail.quantity }}</td>
+            <td>
+              <!-- <a class="btn btn-primary btn-sm" [routerLink]="['/adminpage/update-order', order.oid]">Update</a> -->
+              <!-- <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">Delete</a> -->
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
 
 </nav>

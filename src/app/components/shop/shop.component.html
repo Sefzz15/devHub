@@ -13,20 +13,22 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let product of products">
-        <td>{{ product.pid }}</td>
-        <td>{{ product.pname }}</td>
-        <td>{{ product.price }}</td>
-        <td>{{ product.stock }}</td>
-        <td>
-          <button class="btn btn-sm btn-danger" (click)="decreaseQuantity(product)">-</button>
-          <input type="number" [(ngModel)]="product.quantity" (ngModelChange)="onQuantityChange(product)"
-            class="mx-2 quantity-input" min="0" (keydown)="validateNumber($event)" />
-          <button class="btn btn-sm btn-success" (click)="increaseQuantity(product)">+</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      @for (product of products; track product) {
+        <tr>
+          <td>{{ product.pid }}</td>
+          <td>{{ product.pname }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.stock }}</td>
+          <td>
+            <button class="btn btn-sm btn-danger" (click)="decreaseQuantity(product)">-</button>
+            <input type="number" [(ngModel)]="product.quantity" (ngModelChange)="onQuantityChange(product)"
+              class="mx-2 quantity-input" min="0" (keydown)="validateNumber($event)" />
+              <button class="btn btn-sm btn-success" (click)="increaseQuantity(product)">+</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
 
-  <button class="btn btn-primary" (click)="buyProducts()">Buy</button>
-</div>
+    <button class="btn btn-primary" (click)="buyProducts()">Buy</button>
+  </div>

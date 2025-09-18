@@ -1,73 +1,85 @@
 <div class="container">
-    <h1>Website Features Overview</h1>
+  <h1>Website Features Overview</h1>
 
-    <div class="header-actions">
-        <button class="btn btn-primary" (click)="loadPage(1, pageSize)">Refresh</button>
-        <span class="total-items">Total Items: {{ totalItems }}</span>
+  <div class="header-actions">
+    <button class="btn btn-primary" (click)="loadPage(1, pageSize)">Refresh</button>
+    <span class="total-items">Total Items: {{ totalItems }}</span>
 
-        <!-- Column toggles -->
-        <div class="column-filters">
-            <label *ngFor="let column of columns">
-                <input type="checkbox" [(ngModel)]="column.visible" />
-                {{ column.label }}
-            </label>
-        </div>
-
-        <!-- Preset buttons -->
-        <div class="presets">
-            <button (click)="applyPreset('simple')">Simple</button>
-            <button (click)="applyPreset('songs')">Songs</button>
-            <button (click)="applyPreset('podcasts')">Podcasts</button>
-        </div>
-
-
-        <div class="table-wrapper">
-            <table *ngIf="spotifyList.length > 0" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th *ngFor="let col of columns" [hidden]="!col.visible" (click)="onSort(col.key)">
-                            {{ col.label }}
-                        </th>
-                        <th>Actions</th>
-                    </tr>
-
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of spotifyList">
-                        <td *ngFor="let col of columns" [hidden]="!col.visible">
-                            <span *ngIf="col.key === 'spotify_track_uri' && item[col.key]">
-                                <a [href]="'https://open.spotify.com/track/' + extractSpotifyId(item[col.key] || '')"
-                                    target="_blank" rel="noopener noreferrer">
-                                    {{ item[col.key] }}
-                                </a>
-                            </span>
-
-                            <span *ngIf="col.key === 'spotify_episode_uri' && item[col.key]">
-                                <a [href]="'https://open.spotify.com/episode/' + extractSpotifyId(item[col.key] || '')"
-`                                    target="_blank" rel="noopener noreferrer">
-                                    {{ item[col.key] }}
-                                </a>
-                            </span>
-
-                            <span *ngIf="col.key !== 'spotify_track_uri' && col.key !== 'spotify_episode_uri'">
-                                {{ item[col.key] || '-' }}
-                            </span>
-                        </td>
-                        <td>
-                            <button (click)="onInspect(item)">Inspect</button>
-                        </td>
-                    </tr>
-                </tbody>
-
-            </table>
-        </div>
-
-        <!-- Pagination -->
-        <div class="pagination-controls">
-            <button [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">Previous</button>
-            <span>Page {{ currentPage }}</span>
-            <button [disabled]="(currentPage * pageSize) >= totalItems"
-                (click)="onPageChange(currentPage + 1)">Next</button>
-        </div>
+    <!-- Column toggles -->
+    <div class="column-filters">
+      @for (column of columns; track column) {
+        <label>
+          <input type="checkbox" [(ngModel)]="column.visible" />
+          {{ column.label }}
+        </label>
+      }
     </div>
+
+    <!-- Preset buttons -->
+    <div class="presets">
+      <button (click)="applyPreset('simple')">Simple</button>
+      <button (click)="applyPreset('songs')">Songs</button>
+      <button (click)="applyPreset('podcasts')">Podcasts</button>
+    </div>
+
+
+    <div class="table-wrapper">
+      @if (spotifyList.length > 0) {
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              @for (col of columns; track col) {
+                <th [hidden]="!col.visible" (click)="onSort(col.key)">
+                  {{ col.label }}
+                </th>
+              }
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of spotifyList; track item) {
+              <tr>
+                @for (col of columns; track col) {
+                  <td [hidden]="!col.visible">
+                    @if (col.key === 'spotify_track_uri' && item[col.key]) {
+                      <span>
+                        <a [href]="'https://open.spotify.com/track/' + extractSpotifyId(item[col.key] || '')"
+                          target="_blank" rel="noopener noreferrer">
+                          {{ item[col.key] }}
+                        </a>
+                      </span>
+                    }
+                    @if (col.key === 'spotify_episode_uri' && item[col.key]) {
+                      <span>
+                        <a [href]="'https://open.spotify.com/episode/' + extractSpotifyId(item[col.key] || '')"
+                          `                                    target="_blank" rel="noopener noreferrer">
+                          {{ item[col.key] }}
+                        </a>
+                      </span>
+                    }
+                    @if (col.key !== 'spotify_track_uri' && col.key !== 'spotify_episode_uri') {
+                      <span>
+                        {{ item[col.key] || '-' }}
+                      </span>
+                    }
+                  </td>
+                }
+                <td>
+                  <button (click)="onInspect(item)">Inspect</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-controls">
+      <button [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">Previous</button>
+      <span>Page {{ currentPage }}</span>
+      <button [disabled]="(currentPage * pageSize) >= totalItems"
+      (click)="onPageChange(currentPage + 1)">Next</button>
+    </div>
+  </div>
 </div>

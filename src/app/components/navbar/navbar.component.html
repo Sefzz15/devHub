@@ -1,23 +1,25 @@
-<nav *ngIf="isAuthenticated" class="navbar">
-  <img src="/favicon.ico" alt="DevHub Logo" class="logo">
-  <ul class="navbar-links">
-    <li><a routerLink="/dashboard" (click)="onLinkClick($event)">Dashboard</a></li>
-    <li><a routerLink="/adminpage" (click)="onLinkClick($event)">Admin Page</a></li>
-    <li><a routerLink="/shop" (click)="onLinkClick($event)">Shop</a></li>
-    <li><a routerLink="/order-history" (click)="onLinkClick($event)">Order History</a></li>
-    <li><a routerLink="/rubiks-cube" (click)="onLinkClick($event)">Rubiks Cube</a></li>
-    <li><a routerLink="/chat" (click)="onLinkClick($event)">Chat Room</a></li>
-    <li><a routerLink="/spotify" (click)="onLinkClick($event)">Spotify</a></li>
-    <li><a routerLink="/feedback" (click)="onLinkClick($event)">Feedback</a></li>
-  </ul>
+@if (isAuthenticated) {
+  <nav class="navbar">
+    <img src="/favicon.ico" alt="DevHub Logo" class="logo">
+    <ul class="navbar-links">
+      <li><a routerLink="/dashboard" (click)="onLinkClick($event)">Dashboard</a></li>
+      <li><a routerLink="/adminpage" (click)="onLinkClick($event)">Admin Page</a></li>
+      <li><a routerLink="/shop" (click)="onLinkClick($event)">Shop</a></li>
+      <li><a routerLink="/order-history" (click)="onLinkClick($event)">Order History</a></li>
+      <li><a routerLink="/rubiks-cube" (click)="onLinkClick($event)">Rubiks Cube</a></li>
+      <li><a routerLink="/chat" (click)="onLinkClick($event)">Chat Room</a></li>
+      <li><a routerLink="/spotify" (click)="onLinkClick($event)">Spotify</a></li>
+      <li><a routerLink="/feedback" (click)="onLinkClick($event)">Feedback</a></li>
+    </ul>
+    <a class="logout-button" routerLink="/" (click)="LogOut()">Log Out</a>
+  </nav>
+}
 
-  <a class="logout-button" routerLink="/" (click)="LogOut()">Log Out</a>
-
-</nav>
-
-<nav *ngIf="!isAuthenticated" class="navbar">
-  <img src="/favicon.ico" alt="DevHub Logo" class="logo">
-  <ul class="navbar-links">
-    <li><a routerLink="/login">Login</a></li>
-  </ul>
-</nav>
+@if (!isAuthenticated) {
+  <nav class="navbar">
+    <img src="/favicon.ico" alt="DevHub Logo" class="logo">
+    <ul class="navbar-links">
+      <li><a routerLink="/login">Login</a></li>
+    </ul>
+  </nav>
+}

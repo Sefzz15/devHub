@@ -1,115 +1,119 @@
 <nav class="container">
-    <section>
+  <section>
 
-        @switch (stepperOrientation | async) {
-        @case ('horizontal') {
+    @switch (stepperOrientation | async) {
+      @case ('horizontal') {
         <div>Make your screen smaller to see a vertical stepper</div>
-        }
-        @case ('vertical') {
+      }
+      @case ('vertical') {
         <div>Make your screen larger to see a horizontal stepper</div>
-        }
-        }
+      }
+    }
 
-        <mat-stepper class="example-stepper" [orientation]="(stepperOrientation | async)!">
+    <mat-stepper class="example-stepper" [orientation]="(stepperOrientation | async)!">
 
-            <mat-step [stepControl]="nameFormGroup" label="Fill out name">
-                <form [formGroup]="nameFormGroup">
-                    <mat-form-field>
-                        <mat-label>Name</mat-label>
-                        <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
-                    </mat-form-field>
-                    <div>
-                        <button mat-button matStepperNext>Next</button>
-                    </div>
-                </form>
-            </mat-step>
+      <mat-step [stepControl]="nameFormGroup" label="Fill out name">
+        <form [formGroup]="nameFormGroup">
+          <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+          </mat-form-field>
+          <div>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
 
-            <mat-step [stepControl]="addressFormGroup" label="Fill out address">
-                <form [formGroup]="addressFormGroup">
-                    <mat-form-field>
-                        <mat-label>Address</mat-label>
-                        <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
-                    </mat-form-field>
-                    <div>
-                        <button mat-button matStepperPrevious>Back</button>
-                        <button mat-button matStepperNext>Next</button>
-                    </div>
-                </form>
-            </mat-step>
+      <mat-step [stepControl]="addressFormGroup" label="Fill out address">
+        <form [formGroup]="addressFormGroup">
+          <mat-form-field>
+            <mat-label>Address</mat-label>
+            <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
+          </mat-form-field>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
 
-            <mat-step [stepControl]="phoneFormGroup" label="Fill out phone number">
-                <form [formGroup]="phoneFormGroup">
-                    <mat-form-field>
-                        <mat-label>Phone number</mat-label>
-                        <input matInput formControlName="thirdCtrl" placeholder="Ex. 12345678" required>
-                    </mat-form-field>
-                    <div>
-                        <button mat-button matStepperPrevious>Back</button>
-                        <button mat-button matStepperNext>Next</button>
-                    </div>
-                </form>
-            </mat-step>
+      <mat-step [stepControl]="phoneFormGroup" label="Fill out phone number">
+        <form [formGroup]="phoneFormGroup">
+          <mat-form-field>
+            <mat-label>Phone number</mat-label>
+            <input matInput formControlName="thirdCtrl" placeholder="Ex. 12345678" required>
+          </mat-form-field>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
 
-            <mat-step [stepControl]="messageFormGroup" label="Fill out Message">
-                <form [formGroup]="messageFormGroup">
-                    <mat-form-field>
-                        <mat-label>Message</mat-label>
-                        <input matInput formControlName="fourthCtrl"
-                            placeholder="Ex. Everything is perfect. Have a nice day :P" required>
-                    </mat-form-field>
-                    <div>
-                        <button mat-button matStepperPrevious>Back</button>
-                        <button mat-button matStepperNext>Next</button>
-                    </div>
-                </form>
-            </mat-step>
+      <mat-step [stepControl]="messageFormGroup" label="Fill out Message">
+        <form [formGroup]="messageFormGroup">
+          <mat-form-field>
+            <mat-label>Message</mat-label>
+            <input matInput formControlName="fourthCtrl"
+              placeholder="Ex. Everything is perfect. Have a nice day :P" required>
+            </mat-form-field>
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
 
-            <mat-step>
-                <ng-template matStepLabel>Done</ng-template>
-                <p>You are now done.</p>
-                <div>
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button (click)="submitFeedback()">Submit</button>
-                </div>
-            </mat-step>
-        </mat-stepper>
+        <mat-step>
+          <ng-template matStepLabel>Done</ng-template>
+          <p>You are now done.</p>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="submitFeedback()">Submit</button>
+          </div>
+        </mat-step>
+      </mat-stepper>
 
     </section>
 
     <div class="header-actions">
-        <h1>Feedbacks List</h1>
-        <div class="actions">
-            <button class="btn btn-secondary" (click)="getFeedbacks()">Load Feedbacks</button>
-        </div>
+      <h1>Feedbacks List</h1>
+      <div class="actions">
+        <button class="btn btn-secondary" (click)="getFeedbacks()">Load Feedbacks</button>
+      </div>
     </div>
 
-    <table *ngIf="feedbacks.length > 0" class="table">
+    @if (feedbacks.length > 0) {
+      <table class="table">
         <thead>
-            <tr>
-                <th>fid</th>
-                <th>message</th>
-                <th>name</th>
-                <th>address</th>
-                <th>phone</th>
-                <!-- <th>date</th> -->
-                <th>Actions</th>
-            </tr>
+          <tr>
+            <th>fid</th>
+            <th>message</th>
+            <th>name</th>
+            <th>address</th>
+            <th>phone</th>
+            <!-- <th>date</th> -->
+            <th>Actions</th>
+          </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let feedback of feedbacks">
-                <td>{{ feedback.fid }}</td>
-                <td>{{ feedback.message }}</td>
-                <td>{{ feedback.name }}</td>
-                <td>{{ feedback.address }}</td>
-                <td>{{ feedback.phone }}</td>
-                <!-- <td>{{ feedback.date }}</td> -->
-                <td>
-                    <!-- <a class="btn btn-primary btn-sm"
-                        [routerLink]="['/adminpage/update-feedback', feedback.uid]">Update</a> -->
-                    <a class="btn btn-danger btn-sm" (click)="deleteFeedback(feedback.fid)">Delete</a>
-                </td>
-            </tr>
-        </tbody>
+          @for (feedback of feedbacks; track feedback) {
+            <tr>
+              <td>{{ feedback.fid }}</td>
+              <td>{{ feedback.message }}</td>
+              <td>{{ feedback.name }}</td>
+              <td>{{ feedback.address }}</td>
+              <td>{{ feedback.phone }}</td>
+              <!-- <td>{{ feedback.date }}</td> -->
+              <td>
+                <!-- <a class="btn btn-primary btn-sm"
+              [routerLink]="['/adminpage/update-feedback', feedback.uid]">Update</a> -->
+              <a class="btn btn-danger btn-sm" (click)="deleteFeedback(feedback.fid)">Delete</a>
+            </td>
+          </tr>
+        }
+      </tbody>
     </table>
+  }
 
 </nav>

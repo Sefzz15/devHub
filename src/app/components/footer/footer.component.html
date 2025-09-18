@@ -1,10 +1,14 @@
-<nav *ngIf="isAuthenticated" class="footer">
+@if (isAuthenticated) {
+  <nav class="footer">
     <h4 class="copyright">© Sefzz15</h4>
     <a class="logout-button" routerLink="/" (click)="LogOut()">Log Out</a>
-</nav>
+  </nav>
+}
 
 
 
-<nav *ngIf="!isAuthenticated" class="footer">
+@if (!isAuthenticated) {
+  <nav class="footer">
     <h4 class="copyright">© Sefzz15</h4>
-</nav>
+  </nav>
+}
