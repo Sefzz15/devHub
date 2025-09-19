@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
-import { ServerModule } from '@angular/platform-server';
 import { withRoutes, provideServerRendering } from '@angular/ssr';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { serverRoutes } from './app.routes.server';
 
 @NgModule({
-  imports: [AppModule, ServerModule],
+  imports: [AppModule],
   providers: [
     provideServerRendering(withRoutes(serverRoutes)),
   ],
