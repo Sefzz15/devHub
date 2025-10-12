@@ -38,3 +38,28 @@ export interface Column {
   label: string;
   visible: boolean;
 }
+
+export type SpotifyType = 'all' | 'songs' | 'podcasts' | 'audiobooks';
+
+export interface ISpotifyFilters {
+  query?: string;
+  type: SpotifyType;          // default 'all'
+  dateFrom?: string | null;   // ISO yyyy-MM-dd
+  dateTo?: string | null;     // ISO yyyy-MM-dd
+  minMs?: number | null;      // e.g. 30000 to ignore tiny plays
+}
+
+export interface ITopTrackDto {
+  trackName: string;
+  artistName: string;
+  spotifyTrackUri: string;
+  plays: number;
+  totalMs: number;
+}
+
+export interface ITopArtistDto {
+  artistName: string;
+  plays: number;
+  totalMs: number;
+  uniqueTracks: number;
+}

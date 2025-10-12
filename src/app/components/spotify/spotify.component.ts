@@ -3,7 +3,8 @@ import { ISpotifyPaginated, ISpotifyValuesResponse } from '../../../interfaces/I
 import { SessionService } from '../../../services/session.service';
 import { SpotifyService } from '../../../services/spotify.service';
 import { HttpClient } from '@angular/common/http';
-import { Column } from '../../../interfaces/ISpotify'; 
+import { Column } from '../../../interfaces/ISpotify';
+import { ISpotifyFilters, ITopArtistDto, ITopTrackDto } from '../../../interfaces/ISpotify';
 
 @Component({
   selector: 'app-spotify',
@@ -41,6 +42,11 @@ export class SpotifyComponent implements OnInit {
     { key: 'incognito_mode', label: 'Incognito', visible: false },
   ];
 
+filters: ISpotifyFilters = { type: 'all', dateFrom: null, dateTo: null, minMs: 0, query: '' };
+topTracks: ITopTrackDto[] = [];
+topArtists: ITopArtistDto[] = [];
+countBy: 'time' | 'plays' = 'time';
+
   totalItems = 0;
   pageSize = 100;
   currentPage = 1;
@@ -57,33 +63,24 @@ export class SpotifyComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPage(this.currentPage, this.pageSize);
+    this.loadInsights();
   }
 
-  getAllSpotify(): void {
-    this._spotifyService.getAllSpotify().subscribe(
-      (data: ISpotifyValuesResponse[]) => {
-        this.spotifyList = data;
-        console.log('Fetched spotify history:', this.spotifyList);
-      },
-      (error: any) => {
-        console.error('Error fetching spotify history:', error);
-      }
-    );
-  }
+  // getAllSpotify(): void {
+  //   this._spotifyService.getAllSpotify().subscribe(
+  //     (data: ISpotifyValuesResponse[]) => {
+  //       this.spotifyList = data;
+  //       console.log('Fetched spotify history:', this.spotifyList);
+  //     },
+  //     (error: any) => {
+  //       console.error('Error fetching spotify history:', error);
+  //     }
+  //   );
+  // }
 
   loadPage(page: number, pageSize: number): void {
-    const params = [
-      `page=${page}`,
-      `pageSize=${pageSize}`,
-    ];
-
-    if (this.currentSortColumn) {
-      params.push(`sortColumn=${this.currentSortColumn}`);
-      params.push(`sortDirection=${this.currentSortDirection}`);
-    }
-
-    this._http
-      .get<ISpotifyPaginated>(`https://localhost:5000/api/spotify?${params.join('&')}`)
+    this._spotifyService
+      .getPage(page, pageSize, this.currentSortColumn || undefined, this.currentSortDirection, this.filters)
       .subscribe((response) => {
         this.spotifyList = response.items;
         this.totalItems = response.totalItems;
@@ -94,6 +91,7 @@ export class SpotifyComponent implements OnInit {
 
   onPageChange(newPage: number) {
     this.loadPage(newPage, this.pageSize);
+    this.loadInsights();
   }
 
   onInspect(item: ISpotifyValuesResponse): void {
@@ -107,14 +105,13 @@ export class SpotifyComponent implements OnInit {
 
   onSort(column: string): void {
     if (this.currentSortColumn === column) {
-      // Toggle direction if same column clicked again
       this.currentSortDirection = this.currentSortDirection === 'asc' ? 'desc' : 'asc';
-      console.log(`Sorting by ${column} in ${this.currentSortDirection} order`);
     } else {
       this.currentSortColumn = column;
       this.currentSortDirection = 'asc';
     }
-    this.loadPage(1, this.pageSize); // reload data with new sort
+    this.loadPage(1, this.pageSize);
+    this.loadInsights();
   }
 
   applyPreset(preset: string) {
@@ -144,6 +141,48 @@ export class SpotifyComponent implements OnInit {
     });
   }
 
+  setRange(range: '4w' | '6m' | '12m') {
+  const today = new Date();
+  const to = today.toISOString().slice(0,10);
+  const fromDate = new Date(today);
+  if (range === '4w') fromDate.setDate(today.getDate() - 28);
+  if (range === '6m') fromDate.setMonth(today.getMonth() - 6);
+  if (range === '12m') fromDate.setFullYear(today.getFullYear() - 1);
+
+  this.filters.dateFrom = fromDate.toISOString().slice(0,10);
+  this.filters.dateTo = to;
+  this.loadPage(1, this.pageSize);
+  this.loadInsights();
+}
+
+toggleCountBy() {
+  this.countBy = this.countBy === 'time' ? 'plays' : 'time';
+  this.loadInsights();
+}
+
+// small formatter for durations (if you want to show TotalMs per item)
+fmtMs(ms: number): string {
+  const s = Math.floor(ms / 1000);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  return h ? `${h}:${m.toString().padStart(2, '0')}:${sec.toString().padStart(2,'0')}` : `${m}:${sec.toString().padStart(2,'0')}`;
+}
+
+// update loadInsights to use countBy
+loadInsights(): void {
+  this._spotifyService.topTracks(10, this.countBy, this.filters).subscribe((d: ITopTrackDto[]) => this.topTracks = d);
+  this._spotifyService.topArtists(10, this.countBy, this.filters).subscribe((d: ITopArtistDto[]) => this.topArtists = d);
+}
+
+// handy: clear everything
+resetFilters() {
+  this.filters = { type: 'all', dateFrom: null, dateTo: null, minMs: 0, query: '' };
+  this.countBy = 'time';
+  this.loadPage(1, this.pageSize);
+  this.loadInsights();
+}
+
   isColumnVisible(key: string): boolean {
     return this.columns.find(c => c.key === key)?.visible ?? false;
   }
@@ -153,7 +192,3 @@ export class SpotifyComponent implements OnInit {
     if (col) col.visible = !col.visible;
   }
 }
-
-
-
-
