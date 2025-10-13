@@ -160,15 +160,12 @@
 
 /* horizontal scroll for wide tables; let vertical overflow bubble to container */
 .table-wrapper {
-  max-height: var(--history-max-h);
-  overflow-y: scroll;                 /* <— force visible scrollbar track */
-  overflow-x: auto;                   /* keep horizontal scroll when needed */
-  scrollbar-gutter: stable both-edges;
-  background: #fff;                   /* ensure contrast behind the track */
-
-  /* Firefox scrollbar styling */
-  scrollbar-width: thin;              /* auto | thin | none */
-  scrollbar-color: #b7bef5 #e6e9f9;   /* thumb | track */
+  width: min(1100px, 92vw);
+  max-height: 420px;          /* or whatever height you like */
+  overflow: auto;             /* show scrollbars only when needed (both axes) */
+  background: #fff;
+  overscroll-behavior: contain;   /* stop scroll chaining to .container */
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Chrome/Edge/Safari scrollbar styling */
@@ -194,16 +191,16 @@
 .table thead th {
   position: sticky;
   top: 0;
-  z-index: 2;
-  background-color: #3e4684;
+  z-index: 1;
+  background-color: #3e4684;  /* matches admin header color */
   color: #fff;
 }
+
 .table thead tr { box-shadow: 0 1px 0 #e6e9f9; }
 
 /* sane width so we still get horizontal scrolling when needed */
 .table-wrapper table {
   width: 100%;
-  min-width: 1200px;              /* adjust if you want earlier/later wrap */
   table-layout: auto;
   border-collapse: collapse;
 }
@@ -211,7 +208,7 @@
 /* keep cells on one line to preserve column width behavior */
 .table-wrapper th,
 .table-wrapper td {
-  white-space: nowrap;
+  white-space: normal;
 }
 
 /* Admin look for the table */
