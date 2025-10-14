@@ -15,12 +15,10 @@ export class SpotifyService {
 
     constructor(private _http: HttpClient) { }
 
-    // ---- existing methods (unchanged) ----
     getAllSpotify(): Observable<ISpotifyValuesResponse[]> {
         return this._http.get<ISpotifyValuesResponse[]>(`${this._url}`);
     }
 
-    // (Optional: this endpoint returns a single item; adjust type if your API returns the entity)
     getSpotify(id: number): Observable<ISpotifyValuesResponse> {
         return this._http.get<ISpotifyValuesResponse>(`${this._url}/${id}`);
     }
@@ -35,7 +33,7 @@ export class SpotifyService {
         return this._http.delete<any>(`${this._url}/${id}`);
     }
 
-    // ---- NEW: paging with filters/sort ----
+    // ---- paging with filters/sort ----
     getPage(
         page: number,
         pageSize: number,
@@ -52,13 +50,11 @@ export class SpotifyService {
         if (filters?.dateFrom) params = params.set('from', filters.dateFrom);
         if (filters?.dateTo) params = params.set('to', filters.dateTo);
         if (filters?.type && filters.type !== 'all') params = params.set('type', filters.type);
-        if (filters?.minMs != null) params = params.set('minMs', String(filters.minMs));
         if (filters?.query) params = params.set('query', filters.query);
 
         return this._http.get<ISpotifyPaginated>(`${this._url}`, { params });
     }
 
-    // ---- NEW: summaries ----
     topTracks(
         limit = 10,
         countBy: 'time' | 'plays' = 'time',
@@ -68,7 +64,6 @@ export class SpotifyService {
         if (filters?.dateFrom) params = params.set('from', filters.dateFrom);
         if (filters?.dateTo) params = params.set('to', filters.dateTo);
         if (filters?.type && filters.type !== 'all') params = params.set('type', filters.type);
-        if (filters?.minMs != null) params = params.set('minMs', String(filters.minMs));
         if (filters?.query) params = params.set('query', filters.query);
 
         return this._http.get<ITopTrackDto[]>(`${this._url}/summary/top-tracks`, { params });
@@ -83,7 +78,6 @@ export class SpotifyService {
         if (filters?.dateFrom) params = params.set('from', filters.dateFrom);
         if (filters?.dateTo) params = params.set('to', filters.dateTo);
         if (filters?.type && filters.type !== 'all') params = params.set('type', filters.type);
-        if (filters?.minMs != null) params = params.set('minMs', String(filters.minMs));
         if (filters?.query) params = params.set('query', filters.query);
 
         return this._http.get<ITopArtistDto[]>(`${this._url}/summary/top-artists`, { params });

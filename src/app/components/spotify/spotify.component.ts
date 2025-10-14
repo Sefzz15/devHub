@@ -42,7 +42,7 @@ export class SpotifyComponent implements OnInit {
     { key: 'incognito_mode', label: 'Incognito', visible: false },
   ];
 
-filters: ISpotifyFilters = { type: 'all', dateFrom: null, dateTo: null, minMs: 0, query: '' };
+filters: ISpotifyFilters = { type: 'all', dateFrom: null, dateTo: null, query: '' };
 topTracks: ITopTrackDto[] = [];
 topArtists: ITopArtistDto[] = [];
 countBy: 'time' | 'plays' = 'time';
@@ -65,18 +65,6 @@ countBy: 'time' | 'plays' = 'time';
     this.loadPage(this.currentPage, this.pageSize);
     this.loadInsights();
   }
-
-  // getAllSpotify(): void {
-  //   this._spotifyService.getAllSpotify().subscribe(
-  //     (data: ISpotifyValuesResponse[]) => {
-  //       this.spotifyList = data;
-  //       console.log('Fetched spotify history:', this.spotifyList);
-  //     },
-  //     (error: any) => {
-  //       console.error('Error fetching spotify history:', error);
-  //     }
-  //   );
-  // }
 
   loadPage(page: number, pageSize: number): void {
     this._spotifyService
@@ -160,7 +148,7 @@ toggleCountBy() {
   this.loadInsights();
 }
 
-// small formatter for durations (if you want to show TotalMs per item)
+// formatter for durations
 fmtMs(ms: number): string {
   const s = Math.floor(ms / 1000);
   const h = Math.floor(s / 3600);
@@ -177,12 +165,11 @@ loadInsights(): void {
 
 // handy: clear everything
 resetFilters() {
-  this.filters = { type: 'all', dateFrom: null, dateTo: null, minMs: 0, query: '' };
+  this.filters = { type: 'all', dateFrom: null, dateTo: null, query: '' };
   this.countBy = 'time';
   this.loadPage(1, this.pageSize);
   this.loadInsights();
 }
-
   isColumnVisible(key: string): boolean {
     return this.columns.find(c => c.key === key)?.visible ?? false;
   }

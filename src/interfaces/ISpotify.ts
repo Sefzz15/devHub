@@ -43,10 +43,9 @@ export type SpotifyType = 'all' | 'songs' | 'podcasts' | 'audiobooks';
 
 export interface ISpotifyFilters {
   query?: string;
-  type: SpotifyType;          // default 'all'
-  dateFrom?: string | null;   // ISO yyyy-MM-dd
-  dateTo?: string | null;     // ISO yyyy-MM-dd
-  minMs?: number | null;      // e.g. 30000 to ignore tiny plays
+  type: SpotifyType;        // default 'all'
+  dateFrom?: string | null; // ISO yyyy-MM-dd
+  dateTo?: string | null;   // ISO yyyy-MM-dd
 }
 
 export interface ITopTrackDto {

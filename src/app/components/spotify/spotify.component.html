@@ -1,5 +1,4 @@
-<nav class="container">
-  <!-- Header like Admin page -->
+<nav class="container spotify">
   <div class="header-actions">
     <h1>Spotify</h1>
     <div class="actions">
@@ -8,13 +7,11 @@
     </div>
   </div>
 
-  <!-- Filters row (kept compact) -->
   <div class="filters-row">
-    <input class="form-control" placeholder="Search (track / artist / show)"
-           [(ngModel)]="filters.query" (ngModelChange)="loadPage(1, pageSize); loadInsights()" />
+    <input class="form-control" placeholder="Search (track / artist / show)" [(ngModel)]="filters.query"
+      (ngModelChange)="loadPage(1, pageSize); loadInsights()" />
 
-    <select class="form-select"
-            [(ngModel)]="filters.type" (ngModelChange)="loadPage(1, pageSize); loadInsights()">
+    <select class="form-select" [(ngModel)]="filters.type" (ngModelChange)="loadPage(1, pageSize); loadInsights()">
       <option value="all">All</option>
       <option value="songs">Songs</option>
       <option value="podcasts">Podcasts</option>
@@ -22,15 +19,13 @@
     </select>
 
     <input type="date" class="form-control" [(ngModel)]="filters.dateFrom"
-           (ngModelChange)="loadPage(1, pageSize); loadInsights()" />
+      (ngModelChange)="loadPage(1, pageSize); loadInsights()" />
     <input type="date" class="form-control" [(ngModel)]="filters.dateTo"
-           (ngModelChange)="loadPage(1, pageSize); loadInsights()" />
+      (ngModelChange)="loadPage(1, pageSize); loadInsights()" />
 
-    <input type="number" class="form-control" placeholder="Min ms" [(ngModel)]="filters.minMs"
-           (ngModelChange)="loadPage(1, pageSize); loadInsights()" />
   </div>
 
-  <!-- Range tabs like “Stats for Spotify” -->
+  <!-- Range tabs -->
   <div class="stats-toolbar">
     <div class="tabs">
       <button class="tab" (click)="setRange('4w')">last 4 weeks</button>
@@ -45,18 +40,18 @@
       <div class="card-header">Top Tracks ({{ countBy }})</div>
       <ol class="toplist">
         @for (t of topTracks; track t.spotifyTrackUri) {
-          <li class="toplist-item">
-            <div class="left">
-              <div class="title">{{ t.trackName }}</div>
-              <div class="subtitle">{{ t.artistName }}</div>
-            </div>
-            <div class="right">
-              <a class="open" target="_blank" rel="noopener"
-                 [href]="'https://open.spotify.com/track/' + extractSpotifyId(t.spotifyTrackUri)">OPEN</a>
-              <div class="metric" *ngIf="countBy==='time'">{{ fmtMs(t.totalMs) }}</div>
-              <div class="metric" *ngIf="countBy==='plays'">{{ t.plays }} plays</div>
-            </div>
-          </li>
+        <li class="toplist-item">
+          <div class="left">
+            <div class="title">{{ t.trackName }}</div>
+            <div class="subtitle">{{ t.artistName }}</div>
+          </div>
+          <div class="right">
+            <a class="open" target="_blank" rel="noopener"
+              [href]="'https://open.spotify.com/track/' + extractSpotifyId(t.spotifyTrackUri)">OPEN</a>
+            <div class="metric" *ngIf="countBy==='time'">{{ fmtMs(t.totalMs) }}</div>
+            <div class="metric" *ngIf="countBy==='plays'">{{ t.plays }} plays</div>
+          </div>
+        </li>
         }
       </ol>
     </div>
@@ -65,22 +60,21 @@
       <div class="card-header">Top Artists ({{ countBy }})</div>
       <ol class="toplist">
         @for (a of topArtists; track a.artistName) {
-          <li class="toplist-item">
-            <div class="left">
-              <div class="title">{{ a.artistName }}</div>
-              <div class="subtitle">Tracks: {{ a.uniqueTracks }}</div>
-            </div>
-            <div class="right">
-              <div class="metric" *ngIf="countBy==='time'">{{ fmtMs(a.totalMs) }}</div>
-              <div class="metric" *ngIf="countBy==='plays'">{{ a.plays }} plays</div>
-            </div>
-          </li>
+        <li class="toplist-item">
+          <div class="left">
+            <div class="title">{{ a.artistName }}</div>
+            <div class="subtitle">Tracks: {{ a.uniqueTracks }}</div>
+          </div>
+          <div class="right">
+            <div class="metric" *ngIf="countBy==='time'">{{ fmtMs(a.totalMs) }}</div>
+            <div class="metric" *ngIf="countBy==='plays'">{{ a.plays }} plays</div>
+          </div>
+        </li>
         }
       </ol>
     </div>
   </div>
 
-  <!-- Keep your table exactly as-is, below the cards -->
   <div class="header-actions">
     <h1>History</h1>
     <div class="actions">
@@ -89,56 +83,56 @@
     </div>
   </div>
 
-  <!-- your existing table wrapper + pagination stay unchanged -->
   <div class="table-wrapper">
     @if (spotifyList.length > 0) {
-      <table class="table">
-        <thead>
-          <tr>
-            @for (col of columns; track col) {
-              <th [hidden]="!col.visible" (click)="onSort(col.key)">
-                {{ col.label }}
-              </th>
-            }
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (item of spotifyList; track item) {
-            <tr>
-              @for (col of columns; track col) {
-                <td [hidden]="!col.visible">
-                  @if (col.key === 'spotify_track_uri' && item[col.key]) {
-                    <span>
-                      <a [href]="'https://open.spotify.com/track/' + extractSpotifyId(item[col.key] || '')"
-                         target="_blank" rel="noopener noreferrer">{{ item[col.key] }}</a>
-                    </span>
-                  }
-                  @if (col.key === 'spotify_episode_uri' && item[col.key]) {
-                    <span>
-                      <a [href]="'https://open.spotify.com/episode/' + extractSpotifyId(item[col.key] || '')"
-                         target="_blank" rel="noopener noreferrer">{{ item[col.key] }}</a>
-                    </span>
-                  }
-                  @if (col.key !== 'spotify_track_uri' && col.key !== 'spotify_episode_uri') {
-                    <span>{{ item[col.key] || '-' }}</span>
-                  }
-                </td>
-              }
-              <td>
-                <button class="btn btn-primary btn-sm" (click)="onInspect(item)">Inspect</button>
-              </td>
-            </tr>
+    <table class="table">
+      <thead>
+        <tr>
+          @for (col of columns; track col) {
+          <th [hidden]="!col.visible" (click)="onSort(col.key)">
+            {{ col.label }}
+          </th>
           }
-        </tbody>
-      </table>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of spotifyList; track item) {
+        <tr>
+          @for (col of columns; track col) {
+          <td [hidden]="!col.visible">
+            @if (col.key === 'spotify_track_uri' && item[col.key]) {
+            <span>
+              <a [href]="'https://open.spotify.com/track/' + extractSpotifyId(item[col.key] || '')" target="_blank"
+                rel="noopener noreferrer">{{ item[col.key] }}</a>
+            </span>
+            }
+            @if (col.key === 'spotify_episode_uri' && item[col.key]) {
+            <span>
+              <a [href]="'https://open.spotify.com/episode/' + extractSpotifyId(item[col.key] || '')" target="_blank"
+                rel="noopener noreferrer">{{ item[col.key] }}</a>
+            </span>
+            }
+            @if (col.key !== 'spotify_track_uri' && col.key !== 'spotify_episode_uri') {
+            <span>{{ item[col.key] || '-' }}</span>
+            }
+          </td>
+          }
+          <td>
+            <button class="btn btn-primary btn-sm" (click)="onInspect(item)">Inspect</button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
     }
   </div>
 
   <div class="pagination-controls">
-    <button class="btn btn-secondary btn-sm" [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">Previous</button>
+    <button class="btn btn-secondary btn-sm" [disabled]="currentPage === 1"
+      (click)="onPageChange(currentPage - 1)">Previous</button>
     <span>Page {{ currentPage }}</span>
     <button class="btn btn-primary btn-sm" [disabled]="(currentPage * pageSize) >= totalItems"
-            (click)="onPageChange(currentPage + 1)">Next</button>
+      (click)="onPageChange(currentPage + 1)">Next</button>
   </div>
 </nav>
