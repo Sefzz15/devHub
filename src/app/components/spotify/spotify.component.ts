@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ISpotifyPaginated, ISpotifyValuesResponse } from '../../../interfaces/ISpotify';
+import { Component, OnInit } from '@angular/core';
+import { ISpotifyValuesResponse, ITopGenreDto } from '../../../interfaces/ISpotify';
 import { SessionService } from '../../../services/session.service';
 import { SpotifyService } from '../../../services/spotify.service';
 import { HttpClient } from '@angular/common/http';
@@ -42,15 +42,17 @@ export class SpotifyComponent implements OnInit {
     { key: 'incognito_mode', label: 'Incognito', visible: false },
   ];
 
-filters: ISpotifyFilters = { type: 'all', dateFrom: null, dateTo: null, query: '' };
-topTracks: ITopTrackDto[] = [];
-topArtists: ITopArtistDto[] = [];
-countBy: 'time' | 'plays' = 'time';
+  spotifyList: ISpotifyValuesResponse[] = [];
+  filters: ISpotifyFilters = { type: 'all', dateFrom: null, dateTo: null, query: '' };
+  topTracks: ITopTrackDto[] = [];
+  topArtists: ITopArtistDto[] = [];
+  topGenres: ITopGenreDto[] = [];
 
+  years: number[] = [];
+  countBy: 'time' | 'plays' = 'time';
   totalItems = 0;
   pageSize = 100;
   currentPage = 1;
-  spotifyList: ISpotifyValuesResponse[] = [];
   currentSortColumn: string = '';
   currentSortDirection: 'asc' | 'desc' = 'asc';
 
@@ -62,6 +64,7 @@ countBy: 'time' | 'plays' = 'time';
   ) { }
 
   ngOnInit(): void {
+    this.years = this.buildYears(2016);          // tweak start year as you like
     this.loadPage(this.currentPage, this.pageSize);
     this.loadInsights();
   }
@@ -102,80 +105,70 @@ countBy: 'time' | 'plays' = 'time';
     this.loadInsights();
   }
 
-  applyPreset(preset: string) {
-    this.columns.forEach(col => {
-      if (preset === 'simple') {
-        col.visible = ['id', 'ts', 'master_metadata_track_name'].includes(col.key);
-      } else if (preset === 'songs') {
-        col.visible = [
-          'id',
-          'ts',
-          'master_metadata_track_name',
-          'master_metadata_album_artist_name',
-          'master_metadata_album_album_name',
-          'spotify_track_uri',
-          'ms_played',
-        ].includes(col.key);
-      } else if (preset === 'podcasts') {
-        col.visible = [
-          'id',
-          'ts',
-          'episode_name',
-          'episode_show_name',
-          'spotify_episode_uri',
-          'ms_played',
-        ].includes(col.key);
-      }
-    });
-  }
 
   setRange(range: '4w' | '6m' | '12m') {
-  const today = new Date();
-  const to = today.toISOString().slice(0,10);
-  const fromDate = new Date(today);
-  if (range === '4w') fromDate.setDate(today.getDate() - 28);
-  if (range === '6m') fromDate.setMonth(today.getMonth() - 6);
-  if (range === '12m') fromDate.setFullYear(today.getFullYear() - 1);
+    const today = new Date();
+    const to = today.toISOString().slice(0, 10);
+    const fromDate = new Date(today);
+    if (range === '4w') fromDate.setDate(today.getDate() - 28);
+    if (range === '6m') fromDate.setMonth(today.getMonth() - 6);
+    if (range === '12m') fromDate.setFullYear(today.getFullYear() - 1);
 
-  this.filters.dateFrom = fromDate.toISOString().slice(0,10);
-  this.filters.dateTo = to;
-  this.loadPage(1, this.pageSize);
-  this.loadInsights();
-}
-
-toggleCountBy() {
-  this.countBy = this.countBy === 'time' ? 'plays' : 'time';
-  this.loadInsights();
-}
-
-// formatter for durations
-fmtMs(ms: number): string {
-  const s = Math.floor(ms / 1000);
-  const h = Math.floor(s / 3600);
-  const m = Math.floor((s % 3600) / 60);
-  const sec = s % 60;
-  return h ? `${h}:${m.toString().padStart(2, '0')}:${sec.toString().padStart(2,'0')}` : `${m}:${sec.toString().padStart(2,'0')}`;
-}
-
-// update loadInsights to use countBy
-loadInsights(): void {
-  this._spotifyService.topTracks(10, this.countBy, this.filters).subscribe((d: ITopTrackDto[]) => this.topTracks = d);
-  this._spotifyService.topArtists(10, this.countBy, this.filters).subscribe((d: ITopArtistDto[]) => this.topArtists = d);
-}
-
-// handy: clear everything
-resetFilters() {
-  this.filters = { type: 'all', dateFrom: null, dateTo: null, query: '' };
-  this.countBy = 'time';
-  this.loadPage(1, this.pageSize);
-  this.loadInsights();
-}
-  isColumnVisible(key: string): boolean {
-    return this.columns.find(c => c.key === key)?.visible ?? false;
+    this.filters.dateFrom = fromDate.toISOString().slice(0, 10);
+    this.filters.dateTo = to;
+    this.loadPage(1, this.pageSize);
+    this.loadInsights();
   }
 
-  toggleColumn(key: string) {
-    const col = this.columns.find(c => c.key === key);
-    if (col) col.visible = !col.visible;
+  private buildYears(startYear = 2016): number[] {
+    const now = new Date().getFullYear();
+    const out: number[] = [];
+    for (let y = now; y >= startYear; y--) out.push(y);
+    return out;
+  }
+
+  setYearRange(year: number) {
+    if (!year) return;
+    const from = new Date(Date.UTC(year, 0, 1));      // Jan 1, 00:00 UTC
+    const to = new Date(Date.UTC(year + 1, 0, 1));  // Jan 1 next year (exclusive)
+
+    this.filters.dateFrom = from.toISOString().slice(0, 10);
+    this.filters.dateTo = to.toISOString().slice(0, 10);
+
+    this.loadPage(1, this.pageSize);
+    this.loadInsights();
+  }
+
+  toggleCountBy() {
+    this.countBy = this.countBy === 'time' ? 'plays' : 'time';
+    this.loadInsights();
+  }
+
+  // formatter for durations
+  fmtMs(ms: number): string {
+    const s = Math.floor(ms / 1000);
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sec = s % 60;
+    return h ? `${h}:${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}` : `${m}:${sec.toString().padStart(2, '0')}`;
+  }
+
+  loadInsights(): void {
+    this._spotifyService.topTracks(10, this.countBy, this.filters)
+      .subscribe((d: ITopTrackDto[]) => this.topTracks = d);
+
+    this._spotifyService.topArtists(10, this.countBy, this.filters)
+      .subscribe((d: ITopArtistDto[]) => this.topArtists = d);
+
+    const genreFilters: ISpotifyFilters = { ...this.filters, type: 'songs' };
+    this._spotifyService.topGenres(10, this.countBy, genreFilters)
+      .subscribe(d => this.topGenres = d);
+  }
+
+  resetFilters() {
+    this.filters = { type: 'all', dateFrom: null, dateTo: null, query: '' };
+    this.countBy = 'time';
+    this.loadPage(1, this.pageSize);
+    this.loadInsights();
   }
 }

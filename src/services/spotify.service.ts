@@ -6,7 +6,8 @@ import {
     ISpotifyValuesResponse,
     ISpotifyFilters,
     ITopTrackDto,
-    ITopArtistDto
+    ITopArtistDto,
+    ITopGenreDto
 } from '../interfaces/ISpotify';
 
 @Injectable({ providedIn: 'root' })
@@ -81,5 +82,18 @@ export class SpotifyService {
         if (filters?.query) params = params.set('query', filters.query);
 
         return this._http.get<ITopArtistDto[]>(`${this._url}/summary/top-artists`, { params });
+    }
+    topGenres(
+        limit = 10,
+        countBy: 'time' | 'plays' = 'time',
+        filters?: ISpotifyFilters
+    ): Observable<ITopGenreDto[]> {
+        let params = new HttpParams().set('limit', limit).set('countBy', countBy);
+        if (filters?.dateFrom) params = params.set('from', filters.dateFrom);
+        if (filters?.dateTo) params = params.set('to', filters.dateTo);
+        if (filters?.type === 'songs') params = params.set('type', 'songs');
+        if (filters?.query) params = params.set('query', filters.query);
+
+        return this._http.get<ITopGenreDto[]>(`${this._url}/summary/top-genres`, { params });
     }
 }

@@ -1,6 +1,6 @@
 .filters-row {
   display: grid;
-  grid-template-columns: 1.2fr .6fr .6fr .6fr;
+  grid-template-columns: 2fr 1fr 1fr; /* or 1.2fr .6fr .6fr */
   gap: .5rem;
 }
 
@@ -28,8 +28,8 @@
 
 .stats-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: .75rem;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .card {
@@ -94,7 +94,6 @@
 .table-wrapper,
 .pagination-controls {
   width: min(92vw);
-
 }
 
 .table-wrapper {
@@ -175,4 +174,17 @@
   min-height: 50vh;
   max-height: 50vh;
   overflow-y: auto;
+}
+
+.tab-select {
+  border: 1px solid #c7cbe9;
+  background: #fff;
+  color: #3e4684;
+  padding: .35rem .6rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tab-select:focus {
+  outline: none;
 }

@@ -8,15 +8,8 @@
   </div>
 
   <div class="filters-row">
-    <input class="form-control" placeholder="Search (track / artist / show)" [(ngModel)]="filters.query"
+    <input class="form-control" placeholder="Search (track / artist )" [(ngModel)]="filters.query"
       (ngModelChange)="loadPage(1, pageSize); loadInsights()" />
-
-    <select class="form-select" [(ngModel)]="filters.type" (ngModelChange)="loadPage(1, pageSize); loadInsights()">
-      <option value="all">All</option>
-      <option value="songs">Songs</option>
-      <option value="podcasts">Podcasts</option>
-      <option value="audiobooks">Audiobooks</option>
-    </select>
 
     <input type="date" class="form-control" [(ngModel)]="filters.dateFrom"
       (ngModelChange)="loadPage(1, pageSize); loadInsights()" />
@@ -31,6 +24,12 @@
       <button class="tab" (click)="setRange('4w')">last 4 weeks</button>
       <button class="tab" (click)="setRange('6m')">last 6 months</button>
       <button class="tab" (click)="setRange('12m')">last 12 months</button>
+      <select class="tab-select" (change)="setYearRange(+$any($event.target).value)">
+        <option value="" selected disabled>Year…</option>
+        @for (y of years; track y) {
+        <option [value]="y">{{ y }}</option>
+        }
+      </select>
     </div>
   </div>
 
@@ -73,7 +72,27 @@
         }
       </ol>
     </div>
+
+    <div class="card" *ngIf="topGenres.length">
+      <div class="card-header">Top Genres ({{ countBy }})</div>
+      <ol class="toplist">
+        @for (g of topGenres; track g.genre) {
+        <li class="toplist-item">
+          <div class="left">
+            <div class="title">{{ g.genre }}</div>
+          </div>
+          <div class="right">
+            <div class="metric" *ngIf="countBy==='time'">{{ fmtMs(g.totalMsWeighted) }}</div>
+            <div class="metric" *ngIf="countBy==='plays'">{{ g.playsWeighted | number:'1.0-1' }}</div>
+          </div>
+        </li>
+        }
+      </ol>
+    </div>
+
   </div>
+
+
 
   <div class="header-actions">
     <h1>History</h1>
