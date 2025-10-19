@@ -1,7 +1,5 @@
 export interface IFeedback {
   uid: number;
-  uname: string;
-  upass: string;
 }
 
 export interface IFeedbackResponse {
@@ -22,6 +20,4 @@ export interface IFeedbackValuesResponse {
 
 export interface IUser {
   uid: number;
-  uname: string;
-  upass: string;
 }

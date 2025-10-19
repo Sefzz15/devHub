@@ -25,29 +25,26 @@ export class FeedbackComponent implements OnInit {
   errorMessage: string = '';
   feedbacks: IFeedbackValuesResponse[] = [];
 
-
   nameFormGroup = this._formBuilder.group({
     firstCtrl: ['', Validators.required],
   });
   addressFormGroup = this._formBuilder.group({
-    secondCtrl: [''], // Optional field
+    secondCtrl: [''],
   });
   phoneFormGroup = this._formBuilder.group({
-    thirdCtrl: [''], // Optional field
+    thirdCtrl: [''],
   });
   messageFormGroup = this._formBuilder.group({
-    fourthCtrl: ['', Validators.required], // 
+    fourthCtrl: ['', Validators.required],
   });
-  stepperOrientation: Observable<StepperOrientation>;
+  stepperOrientation!: Observable<StepperOrientation>;
 
   constructor(
     private _sessionService: SessionService,
     private _feedbackService: FeedbackService,
+    private breakpointObserver: BreakpointObserver
   ) {
-
-    const breakpointObserver = inject(BreakpointObserver);
-
-    this.stepperOrientation = breakpointObserver
+    this.stepperOrientation = this.breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
   }
@@ -55,57 +52,38 @@ export class FeedbackComponent implements OnInit {
   ngOnInit(): void {
     this.userID = this._sessionService.userID;
     this.getFeedbacks();
-    console.log('a', this.getFeedbacks());
-    console.log('UserID in feedback page:', this.userID);
+    console.log(this.getFeedbacks());
   }
 
   submitFeedback(): void {
     if (this.messageFormGroup.valid) {
       const payload = {
         uid: this.userID ?? 0,
-        uname: this.nameFormGroup.value.firstCtrl || '',
-        upass: '', // Provide a default or actual password if needed
-        date: new Date().toISOString(),
         name: this.nameFormGroup.value.firstCtrl || null,
         address: this.addressFormGroup.value.secondCtrl || null,
         phone: this.phoneFormGroup.value.thirdCtrl || null,
         message: this.messageFormGroup.value.fourthCtrl || null,
       };
 
-      console.log('Feedback payload to send to backend:', payload);
-
       this._feedbackService.createFeedback(payload).subscribe({
-        next: (res) => {
-          console.log('Feedback submitted successfully:', res);
-          this.getFeedbacks();
-        },
-        error: (err) => {
-          console.error('Failed to submit feedback:', err);
-          this.errorMessage = 'Failed to submit feedback. Please try again later.';
-        }
+        next: () => this.getFeedbacks(),
+        error: () => (this.errorMessage = 'Failed to submit feedback. Please try again later.'),
       });
-
     }
   }
 
   getFeedbacks(): void {
-    this._feedbackService.getFeedbacks().subscribe(
-      (data: IFeedbackValuesResponse[]) => {
-        this.feedbacks = data;
-        console.log('Fetched feedbacks:', this.feedbacks);
+    this._feedbackService.getFeedbacks().subscribe({
+      next: (data: IFeedbackValuesResponse[]) => {
+        this.feedbacks = data ?? [];
       },
-      (error: any) => {
-        console.error('Error fetching feedbacks:', error);
-      }
-    );
+      error: (e) => console.error('Error fetching feedbacks:', e),
+    });
   }
 
-  // Delete a feedback
   deleteFeedback(id: number): void {
     if (confirm('Are you sure you want to delete this user?')) {
-      this._feedbackService.deleteFeedback(id).subscribe(() => {
-        this.getFeedbacks();
-      });
+      this._feedbackService.deleteFeedback(id).subscribe(() => this.getFeedbacks());
     }
   }
 }
