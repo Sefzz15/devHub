@@ -1,6 +1,6 @@
 .filters-row {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr; /* or 1.2fr .6fr .6fr */
+  grid-template-columns: 2fr 1fr 1fr;
   gap: .5rem;
 }
 
@@ -36,6 +36,7 @@
   background: #fff;
   box-shadow: 0 0 2em #e6e9f9;
   border-radius: 15px;
+  overflow: hidden;
 }
 
 .card-header {
@@ -90,7 +91,6 @@
   font-size: .85rem;
 }
 
-
 .table-wrapper,
 .pagination-controls {
   width: min(92vw);
@@ -98,23 +98,21 @@
 
 .table-wrapper {
   border-radius: 15px;
-  background: #fff;
+  background: transparent;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
+  height: 50vh;
+  min-height: 50vh;
+  max-height: 50vh;
+  overflow: hidden auto;
 }
 
-.table {
-  border-radius: 0;
-  overflow: visible !important;
-}
 
 .table thead th {
   position: sticky;
   top: 0;
   z-index: 2;
-  background-color: #3e4684;
-  color: #fff;
 }
 
 .table thead tr {
@@ -167,13 +165,6 @@
 
 .table-wrapper::-webkit-scrollbar-thumb:hover {
   background: #8f98f0;
-}
-
-.table-wrapper {
-  height: 50vh;
-  min-height: 50vh;
-  max-height: 50vh;
-  overflow-y: auto;
 }
 
 .tab-select {
