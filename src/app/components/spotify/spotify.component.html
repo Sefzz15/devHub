@@ -92,7 +92,35 @@
 
   </div>
 
+  <!-- Daily popularity (pick a single date) -->
+  <div class="stats-toolbar">
+    <div class="tabs" style="align-items:center; gap: .75rem;">
+      <strong>Daily popularity:</strong>
+      <input type="date" class="form-control" [(ngModel)]="selectedDate" (ngModelChange)="onSelectedDateChange()" />
+      <span class="badge" *ngIf="selectedDate">({{ selectedDate }})</span>
+    </div>
+  </div>
 
+  <!-- Donut charts for the selected date -->
+  <div class="chart-grid" *ngIf="selectedDate">
+    <div class="card">
+      <div class="card-header">Top Songs — {{ countBy }}</div>
+      <apx-chart [series]="songSeries" [labels]="songLabels" [chart]="donutChart" [legend]="legend" [tooltip]="tooltip"
+        [responsive]="donutResponsive"></apx-chart>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Top Artists — {{ countBy }}</div>
+      <apx-chart [series]="artistSeries" [labels]="artistLabels" [chart]="donutChart" [legend]="legend"
+        [tooltip]="tooltip" [responsive]="donutResponsive"></apx-chart>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Top Genres — {{ countBy }}</div>
+      <apx-chart [series]="genreSeries" [labels]="genreLabels" [chart]="donutChart" [legend]="legend"
+        [tooltip]="tooltip" [responsive]="donutResponsive"></apx-chart>
+    </div>
+  </div>
 
   <div class="header-actions">
     <h1>History</h1>

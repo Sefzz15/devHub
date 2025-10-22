@@ -5,6 +5,7 @@ import { SpotifyService } from '../../../services/spotify.service';
 import { HttpClient } from '@angular/common/http';
 import { Column } from '../../../interfaces/ISpotify';
 import { ISpotifyFilters, ITopArtistDto, ITopTrackDto } from '../../../interfaces/ISpotify';
+import { ApexChart, ApexLegend, ApexResponsive, ApexTooltip, } from "ng-apexcharts";
 
 @Component({
   selector: 'app-spotify',
@@ -64,7 +65,7 @@ export class SpotifyComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.years = this.buildYears(2016);          // tweak start year as you like
+    this.years = this.buildYears(2016);
     this.loadPage(this.currentPage, this.pageSize);
     this.loadInsights();
   }
@@ -142,6 +143,7 @@ export class SpotifyComponent implements OnInit {
   toggleCountBy() {
     this.countBy = this.countBy === 'time' ? 'plays' : 'time';
     this.loadInsights();
+    if (this.selectedDate) this.loadDailyCharts();
   }
 
   // formatter for durations
@@ -171,4 +173,87 @@ export class SpotifyComponent implements OnInit {
     this.loadPage(1, this.pageSize);
     this.loadInsights();
   }
+
+  selectedDate: string | null = null;
+
+  donutChart: ApexChart = { type: 'donut', height: 320 };
+  legend: ApexLegend = { position: 'bottom', horizontalAlign: 'center', fontSize: '12px' };
+  tooltip: ApexTooltip = {
+    y: {
+      formatter: (val: number) => this.countBy === 'time' ? this.fmtMsNumber(val) : `${val} plays`
+    }
+  };
+  donutResponsive: ApexResponsive[] = [
+    { breakpoint: 768, options: { chart: { height: 280 }, legend: { fontSize: '11px' } } }
+  ];
+
+  songSeries: number[] = [];
+  songLabels: string[] = [];
+  artistSeries: number[] = [];
+  artistLabels: string[] = [];
+  genreSeries: number[] = [];
+  genreLabels: string[] = [];
+
+  onSelectedDateChange() {
+    if (!this.selectedDate) {
+      this.clearDailyCharts();
+      return;
+    }
+    this.loadDailyCharts();
+  }
+
+  private clearDailyCharts() {
+    this.songSeries = [];
+    this.songLabels = [];
+    this.artistSeries = [];
+    this.artistLabels = [];
+    this.genreSeries = [];
+    this.genreLabels = [];
+  }
+
+  // Build an ISO date string for +N days (exclusive upper bound for daily range)
+  private addDaysStr(isoDateYYYYMMDD: string, days: number): string {
+    const d = new Date(isoDateYYYYMMDD + 'T00:00:00Z');
+    d.setUTCDate(d.getUTCDate() + days);
+    return d.toISOString().slice(0, 10);
+  }
+
+  // Human formatter that takes a number (ms)
+  private fmtMsNumber(ms: number): string {
+    return this.fmtMs(ms);
+  }
+
+  private loadDailyCharts(): void {
+    const day = this.selectedDate!;
+    const next = this.addDaysStr(day, 1);
+
+    const baseFilters: ISpotifyFilters = {
+      ...this.filters,
+      dateFrom: day,
+      dateTo: next,
+    };
+
+    this._spotifyService
+      .topTracks(10, this.countBy, baseFilters)
+      .subscribe((rows: ITopTrackDto[]) => {
+        this.songLabels = rows.map(r => `${r.trackName} — ${r.artistName}`);
+        this.songSeries = rows.map(r => this.countBy === 'time' ? r.totalMs : r.plays);
+      });
+
+    this._spotifyService
+      .topArtists(10, this.countBy, baseFilters)
+      .subscribe((rows: ITopArtistDto[]) => {
+        this.artistLabels = rows.map(r => r.artistName);
+        this.artistSeries = rows.map(r => this.countBy === 'time' ? r.totalMs : r.plays);
+      });
+
+    const genreFilters: ISpotifyFilters = { ...baseFilters, type: 'songs' };
+    this._spotifyService
+      .topGenres(10, this.countBy, genreFilters)
+      .subscribe((rows: ITopGenreDto[]) => {
+        this.genreLabels = rows.map(r => r.genre);
+        this.genreSeries = rows.map(r => this.countBy === 'time' ? r.totalMsWeighted : r.playsWeighted);
+      });
+  }
+
 }

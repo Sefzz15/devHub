@@ -32,6 +32,7 @@ import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.compon
 import { SpotifyComponent } from './components/spotify/spotify.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { EntityFormComponent } from './components/entity-form/entity-form.component';
+import { NgApexchartsModule } from "ng-apexcharts";
 
 
 @NgModule({
@@ -67,6 +68,7 @@ import { EntityFormComponent } from './components/entity-form/entity-form.compon
     MatIconModule,
     MatPaginatorModule,
     MatTableModule,
+    NgApexchartsModule,
   ],
   providers: [
     provideClientHydration(withEventReplay()),
