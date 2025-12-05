@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { IUserValuesResponse } from '../../../interfaces/IUser';
 import { SessionService } from '../../../services/session.service';
 import { UserService } from '../../../services/user.service';
-import { IUserResponse } from '../../../interfaces/IUser';
 import { OrderDetailService } from '../../../services/orderDetail.service';
-import { IGroupedOrder, IinternalOrderView, IOrderDetailsValuesFormatted } from '../../../interfaces/IOrderDetail';
+import { IGroupedOrder, IOrderDetailsValuesFormatted } from '../../../interfaces/IOrderDetail';
 
 @Component({
   standalone: false,
@@ -14,9 +13,7 @@ import { IGroupedOrder, IinternalOrderView, IOrderDetailsValuesFormatted } from 
 })
 export class OrderHistoryComponent implements OnInit {
   userID?: number;
-  users: IUserResponse[] = [];
   clientNames: string[] = [];
-  orderDetails?: IinternalOrderView[];
   groupedOrderDetails: IGroupedOrder[] = [];
   noOrders: boolean = false;
 
@@ -50,7 +47,6 @@ export class OrderHistoryComponent implements OnInit {
 
     this._orderDetailService.GetAllOrderDetailsFormatted().subscribe(
       (data: IOrderDetailsValuesFormatted[]) => {
-        const groupedOrders: IGroupedOrder[] = [];
 
         const userOrders = data.filter(item => item.order?.user?.uname === selectedClientName);
         userOrders.sort((a, b) => b.oid - a.oid);

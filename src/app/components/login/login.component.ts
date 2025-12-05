@@ -11,7 +11,6 @@ import { SessionService } from '../../../services/session.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  userID: number = 0;
   username: string = '';
   password: string = '';
   usernameError: string = '';

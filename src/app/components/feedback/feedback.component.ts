@@ -52,7 +52,6 @@ export class FeedbackComponent implements OnInit {
   ngOnInit(): void {
     this.userID = this._sessionService.userID;
     this.getFeedbacks();
-    console.log(this.getFeedbacks());
   }
 
   submitFeedback(): void {
