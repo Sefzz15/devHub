@@ -193,7 +193,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   onInputFocus() {
-    this.unreadCount = 0;
+    this.markAsRead();
   }
 
   ngOnDestroy() {

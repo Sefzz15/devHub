@@ -28,9 +28,9 @@
       </div>
 
       <div class="group-controls">
-        <input type="text" [(ngModel)]="currentGroup" placeholder="Enter group name..." />
-        <button (click)="joinGroup(currentGroup)" [disabled]="!currentGroup.trim()">Join</button>
-        <button (click)="leaveGroup(currentGroup)" [disabled]="!currentGroup.trim()">Leave</button>
+        <input type="text" [(ngModel)]="newGroup" placeholder="Enter group name..." />
+        <button (click)="joinGroup(newGroup)" [disabled]="!newGroup.trim()"> Join </button>
+        <button (click)="leaveGroup(newGroup)" [disabled]="!newGroup.trim()"> Leave </button>
       </div>
 
     </div>
@@ -46,7 +46,7 @@
 
       <div class="input-area">
         @if (unreadCount > 0) {
-          <div class="unread-count">
+          <div class="unread-count" (click)="markAsRead()">
             {{ unreadCount }}
           </div>
         }
