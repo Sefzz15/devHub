@@ -79,8 +79,8 @@
   .logout-button {
     display: block;
     margin-top: auto;
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 0;
+    padding-right: 0;
     width: 100%;
     text-align: center;
   }
