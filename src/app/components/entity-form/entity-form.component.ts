@@ -138,6 +138,6 @@ export class EntityFormComponent implements OnInit {
 
   handleSuccess(message: string) {
     this.successMessage = message + ' Redirecting...';
-    setTimeout(() => this._router.navigate(['/adminpage']), 1500);
+    setTimeout(() => this._router.navigate(['/admin']), 1500);
   }
 }

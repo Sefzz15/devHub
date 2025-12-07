@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
+import {Component, OnInit} from '@angular/core';
 import { SessionService } from '../../../services/session.service';
 
 @Component({
@@ -10,23 +8,19 @@ import { SessionService } from '../../../services/session.service';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   userID: number = 0;
   username: string = '';
 
   constructor(
-    private _router: Router,
-    private _authService: AuthService,
     private _sessionService: SessionService,
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.username = this._sessionService.username;
     this.userID = this._sessionService.userID;
 
     console.log('Username in Dashboard:', this.username);
     console.log('UserID in Dashboard:', this.userID);
-
   }
-
 }

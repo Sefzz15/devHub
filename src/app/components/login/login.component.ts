@@ -40,22 +40,22 @@ export class LoginComponent {
     }
 
     // Proceed with authentication
-    this._authService.authenticate(this.username, this.password).subscribe(
-      (isAuthenticated) => {
+    this._authService.authenticate(this.username, this.password).subscribe({
+      next: (isAuthenticated: boolean) => {
         if (isAuthenticated) {
           this._sessionService.username = this.username;
           this._sessionService.userID = this._authService.userID;
-          this._router.navigate(['/dashboard']);
+          void this._router.navigate(['/dashboard']);
           console.log('You successfully logged in...');
         } else {
           this.generalError = this._authService.generalError;
           console.log('Invalid Username and/or password...');
         }
       },
-      (error) => {
+      error: (error: any) => {
         this.generalError = this._authService.generalError;
         console.error('Authentication failed due to an error:', error);
       }
-    );
+    });
   }
 }

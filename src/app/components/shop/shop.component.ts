@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
+import {Component, OnInit} from '@angular/core';
 import { SessionService } from '../../../services/session.service';
 import { ProductService } from '../../../services/product.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -15,14 +13,12 @@ import { IProductValuesResponse } from '../../../interfaces/IProduct';
     '../admin/admin.component.css',
     './shop.component.css'],
 })
-export class ShoppageComponent {
+export class ShopComponent implements OnInit{
   userID: number = 0;
   username: string = '';
   uid: number = 0;
 
   constructor(
-    private _router: Router,
-    private _authService: AuthService,
     private _sessionService: SessionService,
     private _productService: ProductService,
     private _http: HttpClient
@@ -35,25 +31,24 @@ export class ShoppageComponent {
 
     console.log('Username :', this.username);
     console.log('UserID :', this.userID);
-
   }
 
   products: any[] = [];
   productQuantities: Map<number, number> = new Map(); // Map to track product quantity changes
 
   getProducts(): void {
-    this._productService.getProducts().subscribe(
-      (data: IProductValuesResponse[]) => {
-        console.log("Fetched products:", data);
-        this.products = data.map((product: any) => ({
+    this._productService.getProducts().subscribe({
+      next: (data: IProductValuesResponse[]) => {
+        console.log('Fetched products:', data);
+        this.products = data.map((product) => ({
           ...product,
           quantity: 0,
         }));
       },
-      (error: any) => {
+      error: (error: any) => {
         console.error('Error fetching products:', error);
       }
-    );
+    });
   }
 
   increaseQuantity(product: any) {
@@ -90,10 +85,9 @@ export class ShoppageComponent {
   }
 
   buyProducts() {
-    const userID = this._sessionService.userID;  // The UID of the user from the Session Service
 
     const orderDetails = Array.from(this.productQuantities)
-      .filter(([pid, quantity]) => quantity > 0) // Only include items with quantity > 0
+      .filter(([quantity]) => quantity > 0) // Only include items with quantity > 0
       .map(([pid, quantity]) => ({
         pid: pid,
         quantity: quantity
@@ -101,10 +95,8 @@ export class ShoppageComponent {
 
     console.log('Order details:', orderDetails);
     const payload = {
-
       "uid": this._sessionService.userID,
       "orderDetails": orderDetails
-
     };
 
     console.log('Payload to be sent:', JSON.stringify(payload, null, 2));
@@ -126,11 +118,5 @@ export class ShoppageComponent {
         alert(message);
       }
     });
-  }
-
-  LogOut(): void {
-    alert("You successfully logged out...");
-    this._authService.logout();
-    this._router.navigate(['/']);
   }
 }

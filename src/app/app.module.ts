@@ -21,9 +21,9 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { AdminpageComponent } from './components/admin/admin.component';
+import { AdminComponent } from './components/admin/admin.component';
 
-import { ShoppageComponent } from './components/shop/shop.component';
+import { ShopComponent } from './components/shop/shop.component';
 import { OrderHistoryComponent } from './components/order-history/order-history';
 import { ChatComponent } from './components/chat/chat.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -40,11 +40,11 @@ import { NgApexchartsModule } from "ng-apexcharts";
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    AdminpageComponent,
+    AdminComponent,
     NavbarComponent,
     ChatComponent,
     OrderHistoryComponent,
-    ShoppageComponent,
+    ShopComponent,
     FeedbackComponent,
     RubiksCubeComponent,
     SpotifyComponent,

@@ -5,10 +5,10 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from '../services/auth.guard';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
-import { AdminpageComponent } from './components/admin/admin.component';
+import { AdminComponent } from './components/admin/admin.component';
 
 
-import { ShoppageComponent } from './components/shop/shop.component';
+import { ShopComponent } from './components/shop/shop.component';
 import { OrderHistoryComponent } from './components/order-history/order-history';
 
 import { ChatComponent } from './components/chat/chat.component';
@@ -23,9 +23,9 @@ const routes: Routes = [
   // { path: 'navbar', component: NavbarComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'adminpage', component: AdminpageComponent, canActivate: [AuthGuard] },
+  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
 
-  { path: 'shop', component: ShoppageComponent, canActivate: [AuthGuard] },
+  { path: 'shop', component: ShopComponent, canActivate: [AuthGuard] },
   { path: 'order-history', component: OrderHistoryComponent, canActivate: [AuthGuard] },
   { path: 'spotify', component: SpotifyComponent, canActivate: [AuthGuard] },
   { path: 'rubiks-cube', component: RubiksCubeComponent, canActivate: [AuthGuard] },

@@ -16,7 +16,7 @@ import { IOrderDetailsValues } from '../../../interfaces/IOrderDetail';
   styleUrl: './admin.component.css'
 })
 
-export class AdminpageComponent implements OnInit {
+export class AdminComponent implements OnInit {
   userID?: number;
   users: IUser[] = [];
   products: IProduct[] = [];
@@ -34,7 +34,7 @@ export class AdminpageComponent implements OnInit {
 
   ngOnInit(): void {
     this.userID = this._sessionService.userID;
-    console.log('UserID in adminpage:', this.userID);
+    console.log('UserID in admin:', this.userID);
   }
 
   getUsers(): void {
@@ -55,11 +55,6 @@ export class AdminpageComponent implements OnInit {
         this.getUsers();  // Refresh the user list
       });
     }
-  }
-
-  // Utility function to get product by ID
-  getProductById(pid: number): any {
-    return this.products.find(product => product.pid === pid) || null;
   }
 
   // Delete a product

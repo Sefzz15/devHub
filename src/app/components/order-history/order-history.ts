@@ -30,15 +30,15 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   getUsers(): void {
-    this._userService.getUsers().subscribe(
-      (data: IUserValuesResponse[]) => {
+    this._userService.getUsers().subscribe({
+      next: (data: IUserValuesResponse[]) => {
         this.clientNames = data.map(i => i.uname);
         console.log('Fetched users:', this.clientNames);
       },
-      (error: any) => {
+      error: (error: any) => {
         console.error('Error fetching users:', error);
       }
-    );
+    });
   }
 
   selectClient(event: Event): void {

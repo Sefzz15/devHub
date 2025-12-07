@@ -26,10 +26,19 @@ export class FooterComponent implements OnInit {
     });
   }
 
-  LogOut(): void {
-    alert("You successfully logged out...");
+  async LogOut(): Promise<void> {
     this._authService.logout();
-    this._router.navigate(['/']);
-  }
 
+    try {
+      const ok = await this._router.navigate(['/login']);
+      if (ok) {
+        alert('You successfully logged out...');
+      } else {
+        alert('You are logged out, but redirect failed.');
+      }
+    } catch (err) {
+      console.error('Navigation error:', err);
+      alert('You are logged out, but something went wrong while redirecting.');
+    }
+  }
 }
