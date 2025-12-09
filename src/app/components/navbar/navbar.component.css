@@ -28,10 +28,6 @@
 }
 
 .logout-button {
-  display: none;
-}
-
-.logout-button {
   margin-left: auto;
   text-decoration: none;
   color: white;
