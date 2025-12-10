@@ -1,4 +1,4 @@
-<div class="adminpage-container">
+<div class="admin-container">
   <div class="form-container">
     <h1 class="form-header">
       {{ mode === 'create' ? 'Create ' + (config?.title || 'Entity') : 'Update ' + (config?.title || 'Entity') }}
@@ -22,7 +22,7 @@
             <button type="submit" class="btn btn-primary">
               {{ mode === 'create' ? 'Create' : 'Update' }}
             </button>
-            <a class="btn btn-outline-primary" routerLink="/adminpage">Cancel</a>
+            <a class="btn btn-outline-primary" routerLink="/admin">Cancel</a>
           </div>
         </form>
       }
