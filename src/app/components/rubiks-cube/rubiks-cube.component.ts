@@ -22,9 +22,25 @@ interface Move {
 interface ActiveRotation {
   pivot: THREE.Group;
   axis: Axis;
+  fromAngle: number;
   toAngle: number;
   start: number;
   duration: number;
+}
+
+/** An in-progress live drag where the slice follows the cursor. */
+interface Turn {
+  axis: Axis;
+  layer: number;
+  pivot: THREE.Group;
+  /** Normalised screen-space direction the user is dragging along. */
+  screenDir: THREE.Vector2;
+  /** Pixels of screen travel per world unit along that direction. */
+  pixelsPerWorld: number;
+  /** Distance of the grabbed sticker from the rotation axis. */
+  radius: number;
+  /** +1 / -1: maps drag-along-screenDir to a positive/negative pivot angle. */
+  angleSign: number;
 }
 
 interface DragState {
@@ -34,7 +50,8 @@ interface DragState {
   normal: THREE.Vector3;
   /** Grid position of the clicked cubie. */
   point: THREE.Vector3;
-  committed: boolean;
+  /** Set once the drag passes the threshold and a slice is grabbed. */
+  turn: Turn | null;
 }
 
 @Component({
@@ -206,7 +223,7 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
     const a = this.active;
     const t = Math.min((performance.now() - a.start) / a.duration, 1);
     const e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; // easeInOutQuad
-    a.pivot.rotation[a.axis] = a.toAngle * e;
+    a.pivot.rotation[a.axis] = a.fromAngle + (a.toAngle - a.fromAngle) * e;
     if (t >= 1) this.finalizeRotation();
   }
 
@@ -235,23 +252,31 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
   }
 
   private dequeue(): void {
-    if (this.active || this.queue.length === 0) return;
+    // hold off while a live drag owns a detached slice
+    if (this.active || this.drag?.turn || this.queue.length === 0) return;
     this.startMove(this.queue.shift()!);
   }
 
   private startMove(move: Move): void {
-    const pivot = new THREE.Group();
-    this.scene.add(pivot);
-    for (const c of this.cubies) {
-      if (Math.round(c.position[move.axis]) === move.layer) pivot.attach(c);
-    }
+    const pivot = this.grabLayer(move.axis, move.layer);
     this.active = {
       pivot,
       axis: move.axis,
+      fromAngle: 0,
       toAngle: (move.dir * Math.PI) / 2,
       start: performance.now(),
       duration: this.duration,
     };
+  }
+
+  /** Detach a slice's cubies onto a fresh pivot at the origin. */
+  private grabLayer(axis: Axis, layer: number): THREE.Group {
+    const pivot = new THREE.Group();
+    this.scene.add(pivot);
+    for (const c of this.cubies) {
+      if (Math.round(c.position[axis]) === layer) pivot.attach(c);
+    }
+    return pivot;
   }
 
   // ---------------------------------------------------------------- input
@@ -276,22 +301,37 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
       hit.face!.normal.clone().transformDirection(hit.object.matrixWorld),
     );
     const point = (hit.object as THREE.Mesh).position.clone().round();
-    this.drag = {startX: event.clientX, startY: event.clientY, normal, point, committed: false};
+    this.drag = {startX: event.clientX, startY: event.clientY, normal, point, turn: null};
   }
 
   private handlePointerMove(event: PointerEvent): void {
-    if (!this.drag || this.drag.committed) return;
+    if (!this.drag) return;
     const dx = event.clientX - this.drag.startX;
     const dy = event.clientY - this.drag.startY;
-    if (Math.hypot(dx, dy) < 10) return;
 
-    const move = this.resolveDragMove(dx, dy);
-    this.drag.committed = true;
-    if (move) this.enqueue(move);
+    if (this.drag.turn) {
+      this.applyLiveAngle(dx, dy); // already grabbed: follow the cursor
+    } else if (Math.hypot(dx, dy) >= 8) {
+      this.beginTurn(dx, dy); // far enough to know which slice & direction
+    }
   }
 
   private handlePointerUp(): void {
     this.controls.enabled = true;
+    const turn = this.drag?.turn;
+    if (turn) {
+      // snap whatever angle we're at to the nearest quarter turn
+      const from = turn.pivot.rotation[turn.axis];
+      const to = Math.round(from / (Math.PI / 2)) * (Math.PI / 2);
+      this.active = {
+        pivot: turn.pivot,
+        axis: turn.axis,
+        fromAngle: from,
+        toAngle: to,
+        start: performance.now(),
+        duration: 140,
+      };
+    }
     this.drag = null;
   }
 
@@ -367,50 +407,72 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
     return 'z';
   }
 
+  private unitAxis(axis: Axis): THREE.Vector3 {
+    return new THREE.Vector3(axis === 'x' ? 1 : 0, axis === 'y' ? 1 : 0, axis === 'z' ? 1 : 0);
+  }
+
   /**
-   * Given a screen-space drag, work out which slice to turn and in which
-   * direction. The clicked face has normal `n`; the slice rotates about the
-   * in-plane axis perpendicular to the drag, so the sticker follows the cursor.
+   * The drag has cleared the threshold, so decide which slice was grabbed.
+   * The clicked face has normal `n`; we pick the in-plane direction whose
+   * screen projection best matches the drag, then rotate the slice about the
+   * perpendicular in-plane axis so the sticker tracks the cursor.
    */
-  private resolveDragMove(dx: number, dy: number): Move | null {
+  private beginTurn(dx: number, dy: number): void {
     const n = this.drag!.normal;
     const p = this.drag!.point;
-    const allAxes = [
-      new THREE.Vector3(1, 0, 0),
-      new THREE.Vector3(0, 1, 0),
-      new THREE.Vector3(0, 0, 1),
-    ];
+    const allAxes = [this.unitAxis('x'), this.unitAxis('y'), this.unitAxis('z')];
     const normalAxis = this.vecAxis(n);
     const tangents = allAxes.filter((a) => this.vecAxis(a) !== normalAxis);
 
-    // pick the in-plane direction whose screen projection best matches the drag
     const dragLen = Math.hypot(dx, dy);
-    let best: THREE.Vector3 | null = null;
+    let bestDir: THREE.Vector3 | null = null;
+    let bestScreen = new THREE.Vector2();
+    let bestPixelsPerWorld = 0;
     let bestScore = -Infinity;
     for (const t of tangents) {
       for (const sign of [1, -1]) {
         const dir = t.clone().multiplyScalar(sign);
         const s = this.worldDirToScreen(p, dir);
-        const len = Math.hypot(s.x, s.y);
+        const len = s.length();
         if (len < 1e-6) continue;
         const score = (dx * s.x + dy * s.y) / (dragLen * len); // cosine similarity
         if (score > bestScore) {
           bestScore = score;
-          best = dir;
+          bestDir = dir;
+          bestScreen = s.clone();
+          bestPixelsPerWorld = len;
         }
       }
     }
-    if (!best) return null;
+    if (!bestDir) return;
 
-    const d = best; // world drag direction (a unit axis)
-    const axisVec = this.snapToAxis(new THREE.Vector3().crossVectors(n, d));
-    const axis = this.vecAxis(axisVec);
+    const d = bestDir; // world drag direction (a unit axis)
+    const axis = this.vecAxis(new THREE.Vector3().crossVectors(n, d));
     const layer = Math.round(p[axis]);
 
-    // direction so the clicked cubie moves toward the drag
-    const motion = new THREE.Vector3().crossVectors(axisVec, p);
-    const dirSign = motion.dot(d) >= 0 ? 1 : -1;
-    return {axis, layer, dir: dirSign as 1 | -1};
+    // motion of the grabbed point per +1 rad about the positive axis
+    const motion = new THREE.Vector3().crossVectors(this.unitAxis(axis), p);
+    const radius = Math.max(motion.length(), 0.5);
+    const angleSign = motion.dot(d) >= 0 ? 1 : -1;
+
+    this.drag!.turn = {
+      axis,
+      layer,
+      pivot: this.grabLayer(axis, layer),
+      screenDir: bestScreen.normalize(),
+      pixelsPerWorld: bestPixelsPerWorld,
+      radius,
+      angleSign,
+    };
+    this.applyLiveAngle(dx, dy);
+  }
+
+  /** Rotate the grabbed slice so it follows the current drag offset. */
+  private applyLiveAngle(dx: number, dy: number): void {
+    const turn = this.drag!.turn!;
+    const projPixels = dx * turn.screenDir.x + dy * turn.screenDir.y;
+    const worldDrag = projPixels / turn.pixelsPerWorld;
+    turn.pivot.rotation[turn.axis] = (turn.angleSign * worldDrag) / turn.radius;
   }
 
   /** Screen-space (pixel) direction of a world-space direction at a point. */
