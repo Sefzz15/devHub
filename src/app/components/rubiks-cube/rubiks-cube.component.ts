@@ -71,10 +71,10 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
   private readonly colors = {
     right: 0xb71234, // +x red
     left: 0xff5800, // -x orange
-    top: 0xffffff, // +y white
-    bottom: 0xffd500, // -y yellow
-    front: 0x009b48, // +z green
-    back: 0x0046ad, // -z blue
+    top: 0x009b48, // +y green
+    bottom: 0x0046ad, // -y blue
+    front: 0xffd500, // +z yellow
+    back: 0xffffff, // -z white
     inner: 0x161616,
   };
 
