@@ -1,7 +1,7 @@
 .rubiks-wrapper {
   position: relative;
   width: 100%;
-  height: calc(100vh - 64px);
+  height: 88vh; /* navbar (6vh) + content (88vh) + footer (6vh) = 100vh */
   overflow: hidden;
 }
 

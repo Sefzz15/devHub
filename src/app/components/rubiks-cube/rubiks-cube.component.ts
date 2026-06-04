@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import * as THREE from 'three';
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
+import {TrackballControls} from 'three/examples/jsm/controls/TrackballControls.js';
 
 type Axis = 'x' | 'y' | 'z';
 
@@ -92,7 +92,7 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
   private renderer!: THREE.WebGLRenderer;
-  private controls!: OrbitControls;
+  private controls!: TrackballControls;
   private cubeGroup!: THREE.Group;
   private cubies: THREE.Mesh[] = [];
 
@@ -154,12 +154,16 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
     this.renderer.setSize(width, height);
     host.appendChild(this.renderer.domElement);
 
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enableDamping = true;
-    this.controls.dampingFactor = 0.1;
-    this.controls.enablePan = false;
+    // TrackballControls: free rotation in any direction, no polar/360 limit
+    this.controls = new TrackballControls(this.camera, this.renderer.domElement);
+    this.controls.rotateSpeed = 3.0;
+    this.controls.zoomSpeed = 1.2;
+    this.controls.noPan = true;
+    this.controls.staticMoving = false; // momentum/easing
+    this.controls.dynamicDampingFactor = 0.15;
     this.controls.minDistance = 5;
     this.controls.maxDistance = 14;
+    this.controls.keys = ['', '', '']; // don't steal the F/B/U/D/L/R move keys
 
     this.scene.add(new THREE.AmbientLight(0xffffff, 0.85));
     const key = new THREE.DirectionalLight(0xffffff, 0.7);
@@ -356,6 +360,7 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height);
+    this.controls.handleResize();
   }
 
   // ---------------------------------------------------------------- buttons
