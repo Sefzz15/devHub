@@ -1,9 +1,11 @@
+/* ===== Filters ===== */
 .filters-row {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   gap: .5rem;
 }
 
+/* ===== Tabs & controls ===== */
 .stats-toolbar {
   margin-top: .5rem;
 }
@@ -13,7 +15,8 @@
   gap: .5rem;
 }
 
-.tab {
+.tab,
+.tab-select {
   border: 1px solid #c7cbe9;
   background: #fff;
   color: #3e4684;
@@ -26,6 +29,11 @@
   background: #eef5ff;
 }
 
+.tab-select:focus {
+  outline: none;
+}
+
+/* ===== Stats grid ===== */
 .stats-grid {
   display: grid;
   gap: .75rem;
@@ -91,37 +99,42 @@
   font-size: .85rem;
 }
 
+/* ===== History table ===== */
 .table-wrapper,
 .pagination-controls {
-  width: min(92vw);
+  width: 92vw;
 }
 
 .table-wrapper {
-  border-radius: 15px;
-  background: transparent;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-  scrollbar-gutter: stable;
   height: 50vh;
   min-height: 50vh;
   max-height: 50vh;
   overflow: hidden auto;
+  border-radius: 15px;
+  background: transparent;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: visible;
 }
 
 .table thead th {
   position: sticky;
   top: 0;
   z-index: 2;
+  background: #3e4684;
+  color: #fff;
 }
 
 .table thead tr {
   box-shadow: 0 1px 0 #e6e9f9;
-}
-
-.table-wrapper table {
-  width: 100%;
-  table-layout: auto;
-  border-collapse: collapse;
 }
 
 .table-wrapper th,
@@ -145,6 +158,7 @@
   white-space: nowrap;
 }
 
+/* Scrollbar */
 .table-wrapper::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -164,17 +178,4 @@
 
 .table-wrapper::-webkit-scrollbar-thumb:hover {
   background: #8f98f0;
-}
-
-.tab-select {
-  border: 1px solid #c7cbe9;
-  background: #fff;
-  color: #3e4684;
-  padding: .35rem .6rem;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.tab-select:focus {
-  outline: none;
 }

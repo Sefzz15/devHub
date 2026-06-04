@@ -1,13 +1,14 @@
+/* ===== Layout ===== */
 .container {
   display: flex;
-  background-color: #b6ebfc;
   flex-direction: column;
-  user-select: none;
   align-items: center;
+  gap: 1.5em;
   min-height: 88vh;
   max-height: 88vh;
-  gap: 1.5em;
   overflow-y: auto;
+  background-color: #b6ebfc;
+  user-select: none;
 }
 
 .container h1 {
@@ -16,6 +17,14 @@
   color: #3e4684;
 }
 
+@media screen and (max-width: 600px) {
+  .container {
+    height: 100vh;
+    max-height: 100vh;
+  }
+}
+
+/* ===== Buttons ===== */
 .container .btn {
   padding: 0.8em 1.2em;
   font-size: 1em;
@@ -25,11 +34,15 @@
   cursor: pointer;
 }
 
-.container .btn-primary {
-  background-color: #3e4684;
+.container .btn-primary,
+.container .btn-danger {
   color: white;
   border: none;
   transition: background-color 0.3s ease;
+}
+
+.container .btn-primary {
+  background-color: #3e4684;
 }
 
 .container .btn-primary:hover {
@@ -38,21 +51,18 @@
 
 .container .btn-danger {
   background-color: #c23535;
-  color: white;
-  border: none;
-  transition: background-color 0.3s ease;
 }
 
 .container .btn-danger:hover {
   background-color: #b92e2e;
 }
 
+/* ===== Table ===== */
 .table {
   background: white;
   box-shadow: 0 0 2em #e6e9f9;
   border-radius: 15px;
   overflow: hidden;
-  gap: 15px;
 }
 
 .table thead {
@@ -66,6 +76,8 @@
   text-align: left;
 }
 
+/* nth-child(even) must stay before :hover — equal specificity, so source order
+   decides the color of a hovered even row */
 .table tbody tr:nth-child(even) {
   background-color: #f0f0f0;
 }
@@ -76,11 +88,4 @@
 
 .table td a {
   margin-right: 0.5em;
-}
-
-@media screen and (max-width: 600px) {
-  .container {
-    max-height: 100vh;
-    height: 100vh;
-  }
 }
