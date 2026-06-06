@@ -29,7 +29,6 @@ export class NavbarComponent implements OnInit {
     if (!this.isAuthenticated) {
       alert("You have to sign in first");
     }
-    console.log('Current Token:', this.isAuthenticated);
   }
 
   async LogOut(): Promise<void> {

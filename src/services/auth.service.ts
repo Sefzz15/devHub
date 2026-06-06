@@ -12,6 +12,7 @@ export class AuthService {
   private _url = 'https://localhost:5000/api/users/login'; // Backend URL
   private _url1 = 'https://localhost:5000/api/users'; // Backend URL
   // private _url = 'https://192.168.1.180:5000/api/users/login'; // Backend URL
+  private static readonly TOKEN_KEY = 'authToken';
   private _isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   private _token: string | null = null;
   userID: number = 0;
@@ -21,27 +22,62 @@ export class AuthService {
   constructor(
     private _http: HttpClient,
     private _sessionService: SessionService
-  ) { }
+  ) {
+    // Rehydrate auth state from storage so a page refresh keeps the user logged in.
+    const stored = this._readStoredToken();
+    if (stored) {
+      this._token = stored;
+      this._isAuthenticatedSubject.next(true);
+    }
+  }
+
+  /** sessionStorage is unavailable during SSR and may throw if storage is disabled. */
+  private _readStoredToken(): string | null {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+    try {
+      return window.sessionStorage.getItem(AuthService.TOKEN_KEY);
+    } catch {
+      return null;
+    }
+  }
+
+  private _persistToken(token: string | null): void {
+    this._token = token;
+    if (typeof window === 'undefined') {
+      return;
+    }
+    try {
+      if (token) {
+        window.sessionStorage.setItem(AuthService.TOKEN_KEY, token);
+      } else {
+        window.sessionStorage.removeItem(AuthService.TOKEN_KEY);
+      }
+    } catch {
+      // Storage disabled (e.g. private mode); fall back to in-memory token only.
+    }
+  }
+
+  /** Used by the HTTP interceptor to attach credentials to outgoing requests. */
+  getToken(): string | null {
+    return this._token;
+  }
 
   authenticate(username: string, password: string): Observable<boolean> {
     return this._http.post<{ message: string; token?: string; $id?: number; user: { $id: string; uid: number; uname: string } }>(this._url, { username, password }).pipe(
       map(response => {
-        console.log('Server response:', response);
-        if (response.message === 'Login successful!') {
-          const token = response.token;
-          //  console.log('Raw response.user.uid:', response.user?.uid);
+        if (response.message === 'Login successful!' && response.token) {
           this.userID = response.user.uid;          // Extract userID
+          this._persistToken(response.token);
           this._isAuthenticatedSubject.next(true);
 
           // Update SessionService with the username and userID
           this._sessionService.username = username;  // Set the username
-          this._sessionService.userID = this.userID;  // Set the userID 
+          this._sessionService.userID = this.userID;  // Set the userID
 
-          console.log('Generated Token:', token);
-          console.log('User ID:', this.userID);  // Log userID to the console
           return true;
         } else {
-          console.log('Authentication failed');
           this._isAuthenticatedSubject.next(false);
           return false;
         }
@@ -70,6 +106,7 @@ export class AuthService {
 
 
   logout(): void {
+    this._persistToken(null);
     this._isAuthenticatedSubject.next(false);
   }
 }
