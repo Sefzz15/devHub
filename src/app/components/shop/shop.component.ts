@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { SessionService } from '../../../services/session.service';
 import { ProductService } from '../../../services/product.service';
+import { NotificationService } from '../../../services/notification.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { IProductValuesResponse } from '../../../interfaces/IProduct';
 
@@ -21,7 +22,8 @@ export class ShopComponent implements OnInit{
   constructor(
     private _sessionService: SessionService,
     private _productService: ProductService,
-    private _http: HttpClient
+    private _http: HttpClient,
+    private _notification: NotificationService
   ) { }
 
   ngOnInit() {
@@ -104,6 +106,7 @@ export class ShopComponent implements OnInit{
     this._http.post('https://localhost:5000/api/orders/create', payload).subscribe({
       next: (response: any) => {
         console.log('Order created successfully:', response);
+        this._notification.success('Order placed successfully!');
         this.productQuantities.clear();
         this.getProducts();
       },
@@ -115,7 +118,7 @@ export class ShopComponent implements OnInit{
             ? error.error
             : error.error?.message || 'An unexpected error occurred.';
 
-        alert(message);
+        this._notification.error(message);
       }
     });
   }

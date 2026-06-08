@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
+import { NotificationService } from '../../../services/notification.service';
+import { ConfirmationService } from '../../../services/confirmation.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,7 +17,9 @@ export class FooterComponent implements OnInit {
 
   constructor(
     private _authService: AuthService,
-    private _router: Router
+    private _router: Router,
+    private _notification: NotificationService,
+    private _confirmation: ConfirmationService
   ) {
 
   }
@@ -26,19 +30,34 @@ export class FooterComponent implements OnInit {
     });
   }
 
-  async LogOut(): Promise<void> {
+  LogOut(): void {
+    this._confirmation
+      .confirm({
+        title: 'Log out',
+        message: 'Do you want to log out?',
+        confirmText: 'Log out',
+        confirmColor: 'primary',
+      })
+      .subscribe(confirmed => {
+        if (confirmed) {
+          this._performLogout();
+        }
+      });
+  }
+
+  private async _performLogout(): Promise<void> {
     this._authService.logout();
 
     try {
       const ok = await this._router.navigate(['/login']);
       if (ok) {
-        alert('You successfully logged out...');
+        this._notification.success('You have been logged out.');
       } else {
-        alert('You are logged out, but redirect failed.');
+        this._notification.error('You are logged out, but the redirect failed.');
       }
     } catch (err) {
       console.error('Navigation error:', err);
-      alert('You are logged out, but something went wrong while redirecting.');
+      this._notification.error('You are logged out, but something went wrong while redirecting.');
     }
   }
 }

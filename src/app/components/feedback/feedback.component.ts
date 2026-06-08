@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SessionService } from '../../../services/session.service';
 import { FeedbackService } from '../../../services/feedback.service';
+import { ConfirmationService } from '../../../services/confirmation.service';
+import { NotificationService } from '../../../services/notification.service';
 import { IFeedbackValuesResponse } from '../../../interfaces/IFeedback';
 
 @Component({
@@ -42,6 +44,8 @@ export class FeedbackComponent implements OnInit {
   constructor(
     private _sessionService: SessionService,
     private _feedbackService: FeedbackService,
+    private _confirmation: ConfirmationService,
+    private _notification: NotificationService,
     private breakpointObserver: BreakpointObserver
   ) {
     this.stepperOrientation = this.breakpointObserver
@@ -81,8 +85,17 @@ export class FeedbackComponent implements OnInit {
   }
 
   deleteFeedback(id: number): void {
-    if (confirm('Are you sure you want to delete this user?')) {
-      this._feedbackService.deleteFeedback(id).subscribe(() => this.getFeedbacks());
-    }
+    this._confirmation
+      .confirm({ title: 'Delete feedback', message: 'Are you sure you want to delete this feedback?' })
+      .subscribe(confirmed => {
+        if (!confirmed) return;
+        this._feedbackService.deleteFeedback(id).subscribe({
+          next: () => {
+            this._notification.success('Feedback deleted.');
+            this.getFeedbacks();
+          },
+          error: () => this._notification.error('Failed to delete feedback.'),
+        });
+      });
   }
 }

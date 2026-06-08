@@ -4,6 +4,8 @@ import { ProductService } from '../../../services/product.service';
 import { OrderService } from '../../../services/order.service';
 import { OrderDetailService } from '../../../services/orderDetail.service';
 import { SessionService } from '../../../services/session.service';
+import { ConfirmationService } from '../../../services/confirmation.service';
+import { NotificationService } from '../../../services/notification.service';
 import { IUser, IUserValuesResponse } from '../../../interfaces/IUser';
 import { IProduct, IProductValuesResponse } from '../../../interfaces/IProduct';
 import { IOrder, IOrderValuesResponse } from '../../../interfaces/IOrder';
@@ -29,7 +31,9 @@ export class AdminComponent implements OnInit {
     private _userService: UserService,
     private _productService: ProductService,
     private _orderService: OrderService,
-    private _orderDetailService: OrderDetailService
+    private _orderDetailService: OrderDetailService,
+    private _confirmation: ConfirmationService,
+    private _notification: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -50,29 +54,50 @@ export class AdminComponent implements OnInit {
 
   // Delete a user
   deleteUser(id: number): void {
-    if (confirm('Are you sure you want to delete this user?')) {
-      this._userService.deleteUser(id).subscribe(() => {
-        this.getUsers();  // Refresh the user list
+    this._confirmation
+      .confirm({ title: 'Delete user', message: 'Are you sure you want to delete this user?' })
+      .subscribe(confirmed => {
+        if (!confirmed) return;
+        this._userService.deleteUser(id).subscribe({
+          next: () => {
+            this._notification.success('User deleted.');
+            this.getUsers();  // Refresh the user list
+          },
+          error: () => this._notification.error('Failed to delete user.'),
+        });
       });
-    }
   }
 
   // Delete a product
   deleteProduct(id: number): void {
-    if (confirm('Are you sure you want to delete this product?')) {
-      this._productService.deleteProduct(id).subscribe(() => {
-        this.getProducts();  // Refresh the product list
+    this._confirmation
+      .confirm({ title: 'Delete product', message: 'Are you sure you want to delete this product?' })
+      .subscribe(confirmed => {
+        if (!confirmed) return;
+        this._productService.deleteProduct(id).subscribe({
+          next: () => {
+            this._notification.success('Product deleted.');
+            this.getProducts();  // Refresh the product list
+          },
+          error: () => this._notification.error('Failed to delete product.'),
+        });
       });
-    }
   }
 
   // Delete an order
   deleteOrder(id: number): void {
-    if (confirm('Are you sure you want to delete this order?')) {
-      this._orderService.deleteOrder(id).subscribe(() => {
-        this.getOrders();  // Refresh the orders list
+    this._confirmation
+      .confirm({ title: 'Delete order', message: 'Are you sure you want to delete this order?' })
+      .subscribe(confirmed => {
+        if (!confirmed) return;
+        this._orderService.deleteOrder(id).subscribe({
+          next: () => {
+            this._notification.success('Order deleted.');
+            this.getOrders();  // Refresh the orders list
+          },
+          error: () => this._notification.error('Failed to delete order.'),
+        });
       });
-    }
   }
 
   // Fetch products after deletion

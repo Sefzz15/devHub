@@ -11,3 +11,47 @@ body {
     padding-left: 30%;
   }
 }
+
+html,
+body {
+  height: 88vh;
+  max-height: 88vh;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Toast notifications (NotificationService / MatSnackBar) — palette matches the app */
+.notification--success .mdc-snackbar__surface {
+  background-color: #2e7d32 !important;
+}
+.notification--error .mdc-snackbar__surface {
+  background-color: #c23535 !important; /* app danger */
+}
+.notification--info .mdc-snackbar__surface {
+  background-color: #3e4684 !important; /* app brand */
+}
+.notification--warn .mdc-snackbar__surface {
+  background-color: #e65100 !important;
+}
+.notification--success .mdc-snackbar__label,
+.notification--error .mdc-snackbar__label,
+.notification--info .mdc-snackbar__label,
+.notification--warn .mdc-snackbar__label {
+  color: #fff !important;
+}
+.notification--success .mat-mdc-snack-bar-action,
+.notification--error .mat-mdc-snack-bar-action,
+.notification--info .mat-mdc-snack-bar-action,
+.notification--warn .mat-mdc-snack-bar-action {
+  color: #fff !important;
+}
+
+/* Confirmation dialog (ConfirmationService / MatDialog) — match the app's card style */
+.confirm-dialog-panel .mat-mdc-dialog-surface {
+  border-radius: 15px !important;
+}

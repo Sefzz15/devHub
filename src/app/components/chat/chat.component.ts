@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import * as signalR from '@microsoft/signalr';
 import { SessionService } from '../../../services/session.service';
 import { AuthService } from '../../../services/auth.service';
+import { NotificationService } from '../../../services/notification.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -29,7 +30,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   constructor(
     private _sessionService: SessionService,
     private _authService: AuthService,
-    private _router: Router
+    private _router: Router,
+    private _notification: NotificationService
   ) { }
 
   ngOnInit() {
@@ -170,7 +172,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   startInactivityTimer() {
     this.inactivityTimeout = setTimeout(() => {
-      alert('You have been logged out due to inactivity.');
+      this._notification.warn('You have been logged out due to inactivity.');
       this._authService.logout();
       this._router.navigate(['/']);
     }, 5 * 60 * 1000); // 5 minutes (5 min * 60 sec * 1000 ms)

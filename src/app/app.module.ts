@@ -16,6 +16,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableModule} from '@angular/material/table';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatDialogModule} from '@angular/material/dialog';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './components/login/login.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
@@ -66,6 +68,8 @@ import {NgApexchartsModule} from "ng-apexcharts";
     MatIconModule,
     MatPaginatorModule,
     MatTableModule,
+    MatSnackBarModule,
+    MatDialogModule,
     NgApexchartsModule,
   ],
   providers: [
