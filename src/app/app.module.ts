@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule, provideClientHydration, withEventReplay} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule, provideHttpClient, withFetch, withInterceptors} from '@angular/common/http';
+import {provideHttpClient, withFetch, withInterceptors} from '@angular/common/http';
 import {authInterceptor} from '../services/auth.interceptor';
 import {AppRoutingModule} from './app-routing.module';
 import {RouterModule} from '@angular/router';
@@ -13,7 +13,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {AsyncPipe} from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableModule} from '@angular/material/table';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
@@ -26,7 +25,6 @@ import {AdminComponent} from './components/admin/admin.component';
 import {ShopComponent} from './components/shop/shop.component';
 import {OrderHistoryComponent} from './components/order-history/order-history';
 import {ChatComponent} from './components/chat/chat.component';
-import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {FeedbackComponent} from './components/feedback/feedback.component';
 import {RubiksCubeComponent} from './components/rubiks-cube/rubiks-cube.component';
 import {SpotifyComponent} from './components/spotify/spotify.component';
@@ -56,9 +54,7 @@ import {NgApexchartsModule} from "ng-apexcharts";
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule,
     MatToolbarModule,
-    BrowserAnimationsModule,
     ReactiveFormsModule,
     MatStepperModule,
     MatButtonModule,
@@ -74,8 +70,7 @@ import {NgApexchartsModule} from "ng-apexcharts";
   ],
   providers: [
     provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
-    provideAnimationsAsync()
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor]))
   ],
   bootstrap: [AppComponent]
 })
