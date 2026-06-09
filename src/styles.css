@@ -12,19 +12,6 @@ body {
   }
 }
 
-html,
-body {
-  height: 88vh;
-  max-height: 88vh;
-}
-
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
 /* Toast notifications (NotificationService / MatSnackBar) — palette matches the app */
 .notification--success .mdc-snackbar__surface {
   background-color: #2e7d32 !important;
