@@ -30,6 +30,7 @@ import {RubiksCubeComponent} from './components/rubiks-cube/rubiks-cube.componen
 import {SpotifyComponent} from './components/spotify/spotify.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {EntityFormComponent} from './components/entity-form/entity-form.component';
+import {CinemaComponent} from './components/cinema/cinema.component';
 import {NgApexchartsModule} from "ng-apexcharts";
 
 
@@ -48,6 +49,7 @@ import {NgApexchartsModule} from "ng-apexcharts";
     SpotifyComponent,
     FooterComponent,
     EntityFormComponent,
+    CinemaComponent,
   ],
   imports: [
     RouterModule,

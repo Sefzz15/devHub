@@ -1,0 +1,150 @@
+<nav class="container">
+
+  <h1>Now Playing in Thessaloniki</h1>
+
+  <!-- ===== Day picker ===== -->
+  <div class="day-bar">
+    <button type="button" class="day-chip" [class.active]="selectedDate === today" (click)="setDate(today)">
+      Today
+    </button>
+    <button type="button" class="day-chip" [class.active]="selectedDate === tomorrow" (click)="setDate(tomorrow)">
+      Tomorrow
+    </button>
+    <button type="button" class="day-chip" [class.active]="selectedDate === ''" (click)="setDate('')">
+      All dates
+    </button>
+
+    <select class="day-select" [(ngModel)]="selectedDate">
+      <option value="">All upcoming days</option>
+      @for (d of availableDates(); track d) {
+        <option [value]="d">{{ dateLabel(d) }}</option>
+      }
+    </select>
+  </div>
+
+  <!-- ===== Filter bar ===== -->
+  <div class="filters">
+    <input
+      type="text"
+      class="filter-search"
+      placeholder="Search title, director or cast…"
+      [(ngModel)]="query"
+    />
+
+    <select [(ngModel)]="selectedGenre">
+      <option value="">All genres</option>
+      @for (g of genres(); track g) {
+        <option [value]="g">{{ g }}</option>
+      }
+    </select>
+
+    <select [(ngModel)]="selectedCinema">
+      <option value="">All cinemas</option>
+      @for (c of cinemas(); track c) {
+        <option [value]="c">{{ c }}</option>
+      }
+    </select>
+
+    <select [(ngModel)]="sortKey">
+      <option value="rating">Top rated</option>
+      <option value="year">Newest</option>
+      <option value="title">A–Z</option>
+    </select>
+
+    <label class="filter-therinos">
+      <input type="checkbox" [(ngModel)]="therinosOnly" />
+      ☀ Θερινός
+    </label>
+
+    <button type="button" class="btn-clear" (click)="clearFilters()">Clear</button>
+  </div>
+
+  <div class="result-count">
+    Showing {{ filteredFilms.length }} of {{ totalCount }} films
+    @if (selectedDate) { · {{ dateLabel(selectedDate) }} }
+  </div>
+
+  <!-- ===== Film grid ===== -->
+  <div class="film-grid">
+    @for (film of filteredFilms; track film.slug) {
+      <article class="film-card">
+        @if (film.poster) {
+          <img class="film-poster" [src]="film.poster" [alt]="film.title" loading="lazy" />
+        }
+
+        <div class="film-body">
+          <div class="film-head">
+            <h3><a [href]="film.url" target="_blank" rel="noopener">{{ film.title }}</a></h3>
+            @if (film.rating !== undefined) {
+              <span class="rating-badge" [class]="ratingClass(film.rating)">★ {{ film.rating.toFixed(1) }}</span>
+            }
+          </div>
+
+          @if (film.originalTitle) {
+            <p class="film-original">{{ film.originalTitle }}</p>
+          }
+
+          <p class="film-meta">
+            @if (film.year) { {{ film.year }} }
+            @if (film.durationMin) { · {{ film.durationMin }}′ }
+            @if (film.director) { · {{ film.director }} }
+          </p>
+
+          <div class="film-genres">
+            @for (g of film.genres; track g) {
+              <span class="genre-chip">{{ g }}</span>
+            }
+          </div>
+
+          @if (film.description) {
+            <p class="film-desc">{{ film.description }}</p>
+          }
+
+          <!-- Showtimes: one day, or the full upcoming agenda -->
+          <div class="showtimes">
+            @if (selectedDate) {
+              @for (row of showtimesOn(film, selectedDate); track row.cinema) {
+                <div class="st-row">
+                  <span class="st-cinema">{{ row.cinema }}</span>
+                  <span class="st-times">
+                    @for (t of row.times; track t) { <span class="time-pill">{{ t }}</span> }
+                  </span>
+                </div>
+              }
+            } @else {
+              @for (row of agenda(film); track row.cinema) {
+                <div class="st-agenda">
+                  <span class="st-cinema">{{ row.cinema }}</span>
+                  <div class="st-days">
+                    @for (day of row.days; track day.date) {
+                      <div class="st-day">
+                        <span class="st-daylabel">{{ dateLabel(day.date) }}</span>
+                        @for (t of day.times; track t) { <span class="time-pill">{{ t }}</span> }
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+
+  @if (filteredFilms.length === 0) {
+    <div class="no-films-message">
+      @if (selectedDate) {
+        Nothing is playing {{ dateLabel(selectedDate) === 'Today' ? 'today' : 'on ' + dateLabel(selectedDate) }}
+        with these filters.
+      } @else {
+        No films match your filters.
+      }
+    </div>
+  }
+
+  <p class="data-note">
+    Showtimes scraped from thessalonikiguide.gr · last updated {{ scrapedAt | date: 'd MMM y, HH:mm' }}
+  </p>
+
+</nav>
