@@ -9,6 +9,8 @@ import {
 } from '@angular/core';
 import * as THREE from 'three';
 import {TrackballControls} from 'three/examples/jsm/controls/TrackballControls.js';
+import type {SolveRequest, SolveResponse} from './solver.worker';
+import {CubeSnapshot, RubiksStateService} from './rubiks-state.service';
 
 type Axis = 'x' | 'y' | 'z';
 
@@ -104,18 +106,28 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
   private drag: DragState | null = null;
   private frameId = 0;
 
+  /** Web worker running the Kociemba two-phase solver off the UI thread. */
+  private solver?: Worker;
+  /** True while the worker is computing a solution (drives button state). */
+  solving = false;
+  /** Last solve result shown in the UI (move count + algorithm). */
+  solveInfo = '';
+
   // bound listeners (kept for removal)
   private readonly onPointerDown = (e: PointerEvent) => this.handlePointerDown(e);
   private readonly onPointerMove = (e: PointerEvent) => this.handlePointerMove(e);
   private readonly onPointerUp = () => this.handlePointerUp();
 
-  constructor(private zone: NgZone) {
+  constructor(private zone: NgZone, private state: RubiksStateService) {
   }
 
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
       this.initThree();
       this.buildCube();
+      // Bring back the scramble + camera angle from a previous visit, if any.
+      const snapshot = this.state.load();
+      if (snapshot) this.restoreState(snapshot);
       const el = this.renderer.domElement;
       // capture phase so we can veto OrbitControls before it starts orbiting
       el.addEventListener('pointerdown', this.onPointerDown, true);
@@ -123,10 +135,21 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
       window.addEventListener('pointerup', this.onPointerUp);
       this.animate();
     });
+    this.initSolver();
+  }
+
+  /** Spin up the solver worker (browser only — SSR has no Worker). */
+  private initSolver(): void {
+    if (typeof Worker === 'undefined') return;
+    this.solver = new Worker(new URL('./solver.worker', import.meta.url));
+    this.solver.onmessage = ({data}: MessageEvent<SolveResponse>) =>
+      this.onSolved(data);
   }
 
   ngOnDestroy(): void {
     cancelAnimationFrame(this.frameId);
+    // Persist the current state so it's there when the user navigates back.
+    this.state.save(this.captureState());
     const el = this.renderer?.domElement;
     el?.removeEventListener('pointerdown', this.onPointerDown, true);
     window.removeEventListener('pointermove', this.onPointerMove);
@@ -134,6 +157,7 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
     this.disposeCube();
     this.controls?.dispose();
     this.renderer?.dispose();
+    this.solver?.terminate();
   }
 
   // ---------------------------------------------------------------- setup
@@ -193,6 +217,8 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
           ];
           const cubie = new THREE.Mesh(geo, mats);
           cubie.position.set(gx * this.spacing, gy * this.spacing, gz * this.spacing);
+          // Remember the solved home so a restored snapshot can match colours.
+          cubie.userData['home'] = `${gx},${gy},${gz}`;
           this.cubeGroup.add(cubie);
           this.cubies.push(cubie);
         }
@@ -211,6 +237,58 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
       c.parent?.remove(c);
     }
     this.cubies = [];
+  }
+
+  // ---------------------------------------------------------------- persistence
+
+  /**
+   * Serialise the live cube + camera into a plain snapshot. World transforms are
+   * read so it stays correct even if a slice is mid-turn (parented to a pivot).
+   */
+  private captureState(): CubeSnapshot {
+    const pos = new THREE.Vector3();
+    const quat = new THREE.Quaternion();
+    const cubies = this.cubies.map((c) => {
+      c.getWorldPosition(pos);
+      c.getWorldQuaternion(quat);
+      return {
+        home: c.userData['home'] as string,
+        position: [pos.x, pos.y, pos.z] as [number, number, number],
+        quaternion: [quat.x, quat.y, quat.z, quat.w] as [number, number, number, number],
+      };
+    });
+
+    const target = this.controls.target;
+    return {
+      cubies,
+      camera: {
+        position: [this.camera.position.x, this.camera.position.y, this.camera.position.z],
+        up: [this.camera.up.x, this.camera.up.y, this.camera.up.z],
+        target: [target.x, target.y, target.z],
+      },
+      solveInfo: this.solveInfo,
+    };
+  }
+
+  /** Apply a snapshot onto the freshly built (solved) cube and camera. */
+  private restoreState(snapshot: CubeSnapshot): void {
+    // Guard against a stale snapshot from a different build.
+    if (snapshot.cubies.length !== this.cubies.length) return;
+
+    const byHome = new Map(snapshot.cubies.map((s) => [s.home, s]));
+    // cubeGroup sits at the origin with no transform, so local == world here.
+    for (const c of this.cubies) {
+      const s = byHome.get(c.userData['home'] as string);
+      if (!s) continue;
+      c.position.fromArray(s.position);
+      c.quaternion.fromArray(s.quaternion);
+    }
+
+    this.camera.position.fromArray(snapshot.camera.position);
+    this.camera.up.fromArray(snapshot.camera.up);
+    this.controls.target.fromArray(snapshot.camera.target);
+    this.controls.update();
+    this.solveInfo = snapshot.solveInfo;
   }
 
   // ---------------------------------------------------------------- loop
@@ -383,6 +461,50 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
       this.disposeCube();
       this.buildCube();
     });
+    this.solveInfo = '';
+  }
+
+  /** Read the current state and ask the worker for a near-optimal solution. */
+  solve(): void {
+    // Need a settled cube: no animation, queued moves or live drag in flight.
+    if (this.solving || !this.solver || this.active || this.queue.length || this.drag) {
+      return;
+    }
+    const facelets = this.readFacelets();
+    // Fast path: an already-solved cube needs no worker round-trip.
+    if (this.isUniform(facelets)) {
+      this.solveInfo = 'Already solved';
+      return;
+    }
+    this.solving = true;
+    this.solveInfo = '';
+    const message: SolveRequest = {facelets};
+    this.solver.postMessage(message);
+  }
+
+  /** True when every face shows a single colour (i.e. the cube is solved). */
+  private isUniform(facelets: string): boolean {
+    for (let f = 0; f < 6; f++) {
+      const block = facelets.slice(f * 9, f * 9 + 9);
+      if ([...block].some((ch) => ch !== block[0])) return false;
+    }
+    return true;
+  }
+
+  /** Worker callback: turn the algorithm into queued moves and play it back. */
+  private onSolved(data: SolveResponse): void {
+    this.zone.run(() => {
+      this.solving = false;
+      if (data.error) {
+        this.solveInfo = 'Solve failed';
+        console.error('Rubik solver error:', data.error);
+        return;
+      }
+      const algo = (data.solution ?? '').trim();
+      const moves = this.parseSolution(algo);
+      this.solveInfo = moves.length ? `${moves.length} moves: ${algo}` : 'Already solved';
+      for (const move of moves) this.enqueue(move);
+    });
   }
 
   // ---------------------------------------------------------------- helpers
@@ -489,5 +611,117 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
       ((b.x - a.x) * rect.width) / 2,
       (-(b.y - a.y) * rect.height) / 2,
     );
+  }
+
+  // ---------------------------------------------------------------- solver i/o
+
+  /**
+   * Serialise the cube into Kociemba's 54-char facelet string: faces in
+   * U R F D L B order, each read in standard reading order (left→right,
+   * top→bottom when looking at that face). Each sticker becomes its face
+   * letter, derived from its colour. Our solved scheme is
+   * green=U(+y) red=R(+x) yellow=F(+z) blue=D(-y) orange=L(-x) white=B(-z).
+   */
+  private readFacelets(): string {
+    const byPos = new Map<string, THREE.Mesh>();
+    for (const c of this.cubies) {
+      const p = c.position.clone().round();
+      byPos.set(`${p.x},${p.y},${p.z}`, c);
+    }
+    const palette: {hex: number; face: string}[] = [
+      {hex: this.colors.top, face: 'U'},
+      {hex: this.colors.right, face: 'R'},
+      {hex: this.colors.front, face: 'F'},
+      {hex: this.colors.bottom, face: 'D'},
+      {hex: this.colors.left, face: 'L'},
+      {hex: this.colors.back, face: 'B'},
+    ];
+    // Per face: outward normal + (row, col) -> grid position, row/col matching
+    // the standard facelet numbering for that face.
+    const faces: {n: THREE.Vector3; pos: (r: number, c: number) => THREE.Vector3}[] = [
+      {n: new THREE.Vector3(0, 1, 0), pos: (r, c) => new THREE.Vector3(c - 1, 1, r - 1)},   // U
+      {n: new THREE.Vector3(1, 0, 0), pos: (r, c) => new THREE.Vector3(1, 1 - r, 1 - c)},   // R
+      {n: new THREE.Vector3(0, 0, 1), pos: (r, c) => new THREE.Vector3(c - 1, 1 - r, 1)},   // F
+      {n: new THREE.Vector3(0, -1, 0), pos: (r, c) => new THREE.Vector3(c - 1, -1, 1 - r)}, // D
+      {n: new THREE.Vector3(-1, 0, 0), pos: (r, c) => new THREE.Vector3(-1, 1 - r, c - 1)}, // L
+      {n: new THREE.Vector3(0, 0, -1), pos: (r, c) => new THREE.Vector3(1 - c, 1 - r, -1)}, // B
+    ];
+
+    let str = '';
+    for (const f of faces) {
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          const p = f.pos(r, c);
+          const cubie = byPos.get(`${p.x},${p.y},${p.z}`)!;
+          str += this.nearestFace(this.outwardColor(cubie, f.n), palette);
+        }
+      }
+    }
+    return str;
+  }
+
+  /** Colour (hex) of the sticker on `cubie` currently facing world normal `n`. */
+  private outwardColor(cubie: THREE.Mesh, n: THREE.Vector3): number {
+    const q = cubie.getWorldQuaternion(new THREE.Quaternion());
+    // BoxGeometry material order: +x, -x, +y, -y, +z, -z.
+    const localNormals = [
+      new THREE.Vector3(1, 0, 0), new THREE.Vector3(-1, 0, 0),
+      new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, -1, 0),
+      new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, -1),
+    ];
+    const mats = cubie.material as THREE.MeshStandardMaterial[];
+    for (let i = 0; i < 6; i++) {
+      const w = localNormals[i].applyQuaternion(q).round();
+      if (w.x === n.x && w.y === n.y && w.z === n.z) return mats[i].color.getHex();
+    }
+    return this.colors.inner;
+  }
+
+  /** Nearest face letter for a colour, robust to colour-space round-tripping. */
+  private nearestFace(hex: number, palette: {hex: number; face: string}[]): string {
+    const r = (hex >> 16) & 255, g = (hex >> 8) & 255, b = hex & 255;
+    let best = palette[0];
+    let bestDist = Infinity;
+    for (const p of palette) {
+      const dr = r - ((p.hex >> 16) & 255);
+      const dg = g - ((p.hex >> 8) & 255);
+      const db = b - (p.hex & 255);
+      const dist = dr * dr + dg * dg + db * db;
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = p;
+      }
+    }
+    return best.face;
+  }
+
+  /**
+   * Parse a solution like "R U R' U2 F" into queue moves. Our F/B/U/D/L/R base
+   * turns are exactly the clockwise face turns of standard notation; "'" flips
+   * direction and "2" is two quarter turns.
+   */
+  private parseSolution(algo: string): Move[] {
+    const base: Record<string, Move> = {
+      U: {axis: 'y', layer: 1, dir: -1},
+      D: {axis: 'y', layer: -1, dir: 1},
+      R: {axis: 'x', layer: 1, dir: -1},
+      L: {axis: 'x', layer: -1, dir: 1},
+      F: {axis: 'z', layer: 1, dir: -1},
+      B: {axis: 'z', layer: -1, dir: 1},
+    };
+    const moves: Move[] = [];
+    for (const token of algo.split(/\s+/)) {
+      const b = base[token[0]];
+      if (!b) continue;
+      const mod = token.slice(1);
+      if (mod === "'") {
+        moves.push({...b, dir: (-b.dir) as 1 | -1});
+      } else if (mod === '2') {
+        moves.push({...b}, {...b});
+      } else {
+        moves.push({...b});
+      }
+    }
+    return moves;
   }
 }
