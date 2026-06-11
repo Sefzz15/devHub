@@ -82,7 +82,7 @@
     </div>
   </div>
 
-  @if (feedbacks.length > 0) {
+  @if (feedbacks().length > 0) {
   <table class="table">
     <thead>
       <tr>
@@ -95,7 +95,7 @@
       </tr>
     </thead>
     <tbody>
-      @for (feedback of feedbacks; track feedback) {
+      @for (feedback of feedbacks(); track feedback) {
       <tr>
         <td>{{ feedback.fid }}</td>
         <td>{{ feedback.message }}</td>

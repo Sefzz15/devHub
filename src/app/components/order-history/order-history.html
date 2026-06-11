@@ -6,12 +6,12 @@
 
   <select id="clientSelect" (change)="selectClient($event)">
     <option value="" disabled selected>-- Select client --</option>
-    @for (name of clientNames; track name) {
+    @for (name of clientNames(); track name) {
       <option [value]="name">{{ name }}</option>
     }
   </select>
 
-  @for (order of groupedOrderDetails; track order) {
+  @for (order of groupedOrderDetails(); track order) {
     <div class="order-block">
       <h3>Order #{{ order.orderId }} - {{ order.date }}</h3>
       <table class="table">
@@ -41,7 +41,7 @@
     </div>
   }
 
-  @if (noOrders) {
+  @if (noOrders()) {
     <div class="no-orders-message">
       There are currently no purchases associated <br>
       with the selected customer.

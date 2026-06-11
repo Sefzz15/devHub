@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ISpotifyValuesResponse, ITopGenreDto } from '../../../interfaces/ISpotify';
 import { SessionService } from '../../../services/session.service';
 import { SpotifyService } from '../../../services/spotify.service';
@@ -43,17 +43,18 @@ export class SpotifyComponent implements OnInit {
     { key: 'incognito_mode', label: 'Incognito', visible: false },
   ];
 
-  spotifyList: ISpotifyValuesResponse[] = [];
+  readonly spotifyList = signal<ISpotifyValuesResponse[]>([]);
+  // Two-way bound via [(ngModel)] on its properties, so kept as a plain object.
   filters: ISpotifyFilters = { type: 'all', dateFrom: null, dateTo: null, query: '' };
-  topTracks: ITopTrackDto[] = [];
-  topArtists: ITopArtistDto[] = [];
-  topGenres: ITopGenreDto[] = [];
+  readonly topTracks = signal<ITopTrackDto[]>([]);
+  readonly topArtists = signal<ITopArtistDto[]>([]);
+  readonly topGenres = signal<ITopGenreDto[]>([]);
 
-  years: number[] = [];
-  countBy: 'time' | 'plays' = 'time';
-  totalItems = 0;
-  pageSize = 100;
-  currentPage = 1;
+  readonly years = signal<number[]>([]);
+  readonly countBy = signal<'time' | 'plays'>('time');
+  readonly totalItems = signal(0);
+  readonly pageSize = signal(100);
+  readonly currentPage = signal(1);
   currentSortColumn: string = '';
   currentSortDirection: 'asc' | 'desc' = 'asc';
 
@@ -65,8 +66,8 @@ export class SpotifyComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.years = this.buildYears(2016);
-    this.loadPage(this.currentPage, this.pageSize);
+    this.years.set(this.buildYears(2016));
+    this.loadPage(this.currentPage(), this.pageSize());
     this.loadInsights();
   }
 
@@ -74,15 +75,15 @@ export class SpotifyComponent implements OnInit {
     this._spotifyService
       .getPage(page, pageSize, this.currentSortColumn || undefined, this.currentSortDirection, this.filters)
       .subscribe((response) => {
-        this.spotifyList = response.items;
-        this.totalItems = response.totalItems;
-        this.currentPage = response.page;
-        this.pageSize = response.pageSize;
+        this.spotifyList.set(response.items);
+        this.totalItems.set(response.totalItems);
+        this.currentPage.set(response.page);
+        this.pageSize.set(response.pageSize);
       });
   }
 
   onPageChange(newPage: number) {
-    this.loadPage(newPage, this.pageSize);
+    this.loadPage(newPage, this.pageSize());
     this.loadInsights();
   }
 
@@ -102,7 +103,7 @@ export class SpotifyComponent implements OnInit {
       this.currentSortColumn = column;
       this.currentSortDirection = 'asc';
     }
-    this.loadPage(1, this.pageSize);
+    this.loadPage(1, this.pageSize());
     this.loadInsights();
   }
 
@@ -117,7 +118,7 @@ export class SpotifyComponent implements OnInit {
 
     this.filters.dateFrom = fromDate.toISOString().slice(0, 10);
     this.filters.dateTo = to;
-    this.loadPage(1, this.pageSize);
+    this.loadPage(1, this.pageSize());
     this.loadInsights();
   }
 
@@ -136,14 +137,14 @@ export class SpotifyComponent implements OnInit {
     this.filters.dateFrom = from.toISOString().slice(0, 10);
     this.filters.dateTo = to.toISOString().slice(0, 10);
 
-    this.loadPage(1, this.pageSize);
+    this.loadPage(1, this.pageSize());
     this.loadInsights();
   }
 
   toggleCountBy() {
-    this.countBy = this.countBy === 'time' ? 'plays' : 'time';
+    this.countBy.set(this.countBy() === 'time' ? 'plays' : 'time');
     this.loadInsights();
-    if (this.selectedDate) this.loadDailyCharts();
+    if (this.selectedDate()) this.loadDailyCharts();
   }
 
   // formatter for durations
@@ -156,46 +157,46 @@ export class SpotifyComponent implements OnInit {
   }
 
   loadInsights(): void {
-    this._spotifyService.topTracks(10, this.countBy, this.filters)
-      .subscribe((d: ITopTrackDto[]) => this.topTracks = d);
+    this._spotifyService.topTracks(10, this.countBy(), this.filters)
+      .subscribe((d: ITopTrackDto[]) => this.topTracks.set(d));
 
-    this._spotifyService.topArtists(10, this.countBy, this.filters)
-      .subscribe((d: ITopArtistDto[]) => this.topArtists = d);
+    this._spotifyService.topArtists(10, this.countBy(), this.filters)
+      .subscribe((d: ITopArtistDto[]) => this.topArtists.set(d));
 
     const genreFilters: ISpotifyFilters = { ...this.filters, type: 'songs' };
-    this._spotifyService.topGenres(10, this.countBy, genreFilters)
-      .subscribe(d => this.topGenres = d);
+    this._spotifyService.topGenres(10, this.countBy(), genreFilters)
+      .subscribe(d => this.topGenres.set(d));
   }
 
   resetFilters() {
     this.filters = { type: 'all', dateFrom: null, dateTo: null, query: '' };
-    this.countBy = 'time';
-    this.loadPage(1, this.pageSize);
+    this.countBy.set('time');
+    this.loadPage(1, this.pageSize());
     this.loadInsights();
   }
 
-  selectedDate: string | null = null;
+  readonly selectedDate = signal<string | null>(null);
 
   donutChart: ApexChart = { type: 'donut', height: 320 };
   legend: ApexLegend = { position: 'bottom', horizontalAlign: 'center', fontSize: '12px' };
   tooltip: ApexTooltip = {
     y: {
-      formatter: (val: number) => this.countBy === 'time' ? this.fmtMsNumber(val) : `${val} plays`
+      formatter: (val: number) => this.countBy() === 'time' ? this.fmtMsNumber(val) : `${val} plays`
     }
   };
   donutResponsive: ApexResponsive[] = [
     { breakpoint: 768, options: { chart: { height: 280 }, legend: { fontSize: '11px' } } }
   ];
 
-  songSeries: number[] = [];
-  songLabels: string[] = [];
-  artistSeries: number[] = [];
-  artistLabels: string[] = [];
-  genreSeries: number[] = [];
-  genreLabels: string[] = [];
+  readonly songSeries = signal<number[]>([]);
+  readonly songLabels = signal<string[]>([]);
+  readonly artistSeries = signal<number[]>([]);
+  readonly artistLabels = signal<string[]>([]);
+  readonly genreSeries = signal<number[]>([]);
+  readonly genreLabels = signal<string[]>([]);
 
   onSelectedDateChange() {
-    if (!this.selectedDate) {
+    if (!this.selectedDate()) {
       this.clearDailyCharts();
       return;
     }
@@ -203,12 +204,12 @@ export class SpotifyComponent implements OnInit {
   }
 
   private clearDailyCharts() {
-    this.songSeries = [];
-    this.songLabels = [];
-    this.artistSeries = [];
-    this.artistLabels = [];
-    this.genreSeries = [];
-    this.genreLabels = [];
+    this.songSeries.set([]);
+    this.songLabels.set([]);
+    this.artistSeries.set([]);
+    this.artistLabels.set([]);
+    this.genreSeries.set([]);
+    this.genreLabels.set([]);
   }
 
   // Build an ISO date string for +N days (exclusive upper bound for daily range)
@@ -224,7 +225,7 @@ export class SpotifyComponent implements OnInit {
   }
 
   private loadDailyCharts(): void {
-    const day = this.selectedDate!;
+    const day = this.selectedDate()!;
     const next = this.addDaysStr(day, 1);
 
     const baseFilters: ISpotifyFilters = {
@@ -234,25 +235,25 @@ export class SpotifyComponent implements OnInit {
     };
 
     this._spotifyService
-      .topTracks(10, this.countBy, baseFilters)
+      .topTracks(10, this.countBy(), baseFilters)
       .subscribe((rows: ITopTrackDto[]) => {
-        this.songLabels = rows.map(r => `${r.trackName} — ${r.artistName}`);
-        this.songSeries = rows.map(r => this.countBy === 'time' ? r.totalMs : r.plays);
+        this.songLabels.set(rows.map(r => `${r.trackName} — ${r.artistName}`));
+        this.songSeries.set(rows.map(r => this.countBy() === 'time' ? r.totalMs : r.plays));
       });
 
     this._spotifyService
-      .topArtists(10, this.countBy, baseFilters)
+      .topArtists(10, this.countBy(), baseFilters)
       .subscribe((rows: ITopArtistDto[]) => {
-        this.artistLabels = rows.map(r => r.artistName);
-        this.artistSeries = rows.map(r => this.countBy === 'time' ? r.totalMs : r.plays);
+        this.artistLabels.set(rows.map(r => r.artistName));
+        this.artistSeries.set(rows.map(r => this.countBy() === 'time' ? r.totalMs : r.plays));
       });
 
     const genreFilters: ISpotifyFilters = { ...baseFilters, type: 'songs' };
     this._spotifyService
-      .topGenres(10, this.countBy, genreFilters)
+      .topGenres(10, this.countBy(), genreFilters)
       .subscribe((rows: ITopGenreDto[]) => {
-        this.genreLabels = rows.map(r => r.genre);
-        this.genreSeries = rows.map(r => this.countBy === 'time' ? r.totalMsWeighted : r.playsWeighted);
+        this.genreLabels.set(rows.map(r => r.genre));
+        this.genreSeries.set(rows.map(r => this.countBy() === 'time' ? r.totalMsWeighted : r.playsWeighted));
       });
   }
 

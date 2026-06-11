@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, signal } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { SessionService } from '../../../services/session.service';
 import { AuthService } from '../../../services/auth.service';
@@ -16,15 +16,15 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   private _connection!: signalR.HubConnection;
 
-  messages: { text: string; isSender: boolean }[] = [];
-  messageInput: string = '';
+  readonly messages = signal<{ text: string; isSender: boolean }[]>([]);
+  readonly messageInput = signal('');
   username: string = '';
-  connectedUsers: string[] = [];
-  unreadCount: number = 0;
+  readonly connectedUsers = signal<string[]>([]);
+  readonly unreadCount = signal(0);
   inactivityTimeout: any = null;
-  currentGroup: string = '';
-  chatGroups: string[] = [];
-  newGroup: string = '';
+  readonly currentGroup = signal('');
+  readonly chatGroups = signal<string[]>([]);
+  readonly newGroup = signal('');
 
 
   constructor(
@@ -42,7 +42,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     const savedUnreadCount = sessionStorage.getItem('unreadCount');
     if (savedUnreadCount) {
-      this.unreadCount = JSON.parse(savedUnreadCount);
+      this.unreadCount.set(JSON.parse(savedUnreadCount));
     }
 
     // Retrieve messages and connected users from sessionStorage
@@ -50,13 +50,13 @@ export class ChatComponent implements OnInit, OnDestroy {
     const savedUsers = sessionStorage.getItem('connectedUsers');
     const chatGroups = sessionStorage.getItem('chatGroups');
     if (savedMessages) {
-      this.messages = JSON.parse(savedMessages);
+      this.messages.set(JSON.parse(savedMessages));
     }
     if (savedUsers) {
-      this.connectedUsers = JSON.parse(savedUsers);
+      this.connectedUsers.set(JSON.parse(savedUsers));
     }
     if (chatGroups) {
-      this.chatGroups = JSON.parse(chatGroups);
+      this.chatGroups.set(JSON.parse(chatGroups));
     }
 
     // Create SignalR connection
@@ -74,7 +74,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         // Explicitly request groups on load
         this._connection.invoke('GetGroups')
           .then((groups: string[]) => {
-            this.chatGroups = groups;
+            this.chatGroups.set(groups);
             sessionStorage.setItem('chatGroups', JSON.stringify(groups));
           })
           .catch(err => console.error('Error getting groups: ', err));
@@ -84,65 +84,65 @@ export class ChatComponent implements OnInit, OnDestroy {
     // Receive messages and update the list of connected users
     this._connection.on('ReceiveMessage', (user: string, message: string) => {
       if (user !== this.username) {
-        this.messages.push({ text: `${user}: ${message}`, isSender: false });
-        this.unreadCount++;
+        this.messages.update(m => [...m, { text: `${user}: ${message}`, isSender: false }]);
+        this.unreadCount.update(c => c + 1);
         this.scrollToBottom();
       }
     });
 
     // Add a user to the list of connected users
     this._connection.on('UserConnected', (user: string) => {
-      if (!this.connectedUsers.includes(user)) {
-        this.connectedUsers.push(user);
+      if (!this.connectedUsers().includes(user)) {
+        this.connectedUsers.update(u => [...u, user]);
       }
-      this.messages.push({ text: `A wild ${user} appeared!`, isSender: false });
+      this.messages.update(m => [...m, { text: `A wild ${user} appeared!`, isSender: false }]);
       this.scrollToBottom();
     });
 
     // Remove a user from the list of connected users
     this._connection.on('UserDisconnected', (user: string) => {
-      this.connectedUsers = this.connectedUsers.filter((u) => u !== user);
-      this.messages.push({ text: `A wild ${user} disappeared!`, isSender: false });
+      this.connectedUsers.update(list => list.filter((u) => u !== user));
+      this.messages.update(m => [...m, { text: `A wild ${user} disappeared!`, isSender: false }]);
       this.scrollToBottom();
     });
 
     // Save the list of connected users to sessionStorage
     this._connection.on('ReceiveConnectedUsers', (users: string[]) => {
-      this.connectedUsers = users;
+      this.connectedUsers.set(users);
     });
 
     this._connection.on('UserJoinedGroup', (user: string, group: string) => {
-      this.messages.push({ text: `${user} joined ${group}`, isSender: false });
+      this.messages.update(m => [...m, { text: `${user} joined ${group}`, isSender: false }]);
       this.scrollToBottom();
     });
 
     this._connection.on('UserLeftGroup', (user: string, group: string) => {
-      this.messages.push({ text: `${user} left ${group}`, isSender: false });
+      this.messages.update(m => [...m, { text: `${user} left ${group}`, isSender: false }]);
       this.scrollToBottom();
     });
 
     this._connection.on('ReceiveGroups', (groups: string[]) => {
-      this.chatGroups = [...groups];
-      sessionStorage.setItem('chatGroups', JSON.stringify(this.chatGroups));
+      this.chatGroups.set([...groups]);
+      sessionStorage.setItem('chatGroups', JSON.stringify(this.chatGroups()));
     });
 
   }
 
   sendMessage() {
-    const text = this.messageInput?.trim();
+    const text = this.messageInput().trim();
     if (!text) return;
 
     const user = this.username;
-    const group = this.currentGroup?.trim();
+    const group = this.currentGroup().trim();
 
     const invoke = group
       ? this._connection.invoke('SendMessageToGroup', user, text, group)
       : this._connection.invoke('SendMessage', user, text);
 
     invoke.then(() => {
-      this.messages.push({ text: `${user}: ${text}`, isSender: true });
-      this.messageInput = '';
-      this.unreadCount = 0;
+      this.messages.update(m => [...m, { text: `${user}: ${text}`, isSender: true }]);
+      this.messageInput.set('');
+      this.unreadCount.set(0);
       this.scrollToBottom();
     })
       .catch(err => console.error('Error while sending message: ', err));
@@ -154,7 +154,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (!groupNameTrimmed) return;
 
     this._connection.invoke('JoinGroup', this.username, groupNameTrimmed)
-      .then(() => { this.currentGroup = groupNameTrimmed; })
+      .then(() => { this.currentGroup.set(groupNameTrimmed); })
       .catch(err => console.error('Error joining group: ', err));
   }
 
@@ -164,7 +164,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     this._connection.invoke('LeaveGroup', this.username, groupNameTrimmed)
       .then(() => {
-        if (this.currentGroup === groupNameTrimmed) this.currentGroup = '';
+        if (this.currentGroup() === groupNameTrimmed) this.currentGroup.set('');
       })
       .catch(err => console.error('Error leaving group: ', err));
   }
@@ -191,7 +191,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   markAsRead() {
-    this.unreadCount = 0;
+    this.unreadCount.set(0);
   }
 
   onInputFocus() {
@@ -200,9 +200,9 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     // Save the data before disconnecting
-    sessionStorage.setItem('unreadCount', JSON.stringify(this.unreadCount));
-    sessionStorage.setItem('messages', JSON.stringify(this.messages));
-    sessionStorage.setItem('connectedUsers', JSON.stringify(this.connectedUsers));
+    sessionStorage.setItem('unreadCount', JSON.stringify(this.unreadCount()));
+    sessionStorage.setItem('messages', JSON.stringify(this.messages()));
+    sessionStorage.setItem('connectedUsers', JSON.stringify(this.connectedUsers()));
 
     if (this._connection) {
       this._connection.invoke('UserDisconnected', this.username); // Notify the server about the disconnection

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { NotificationService } from '../../../services/notification.service';
 import { ConfirmationService } from '../../../services/confirmation.service';
@@ -11,10 +11,7 @@ import { Router } from '@angular/router';
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css'
 })
-export class FooterComponent implements OnInit {
-  isAuthenticated: boolean = false;
-
-
+export class FooterComponent {
   constructor(
     private _authService: AuthService,
     private _router: Router,
@@ -24,10 +21,9 @@ export class FooterComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-    this._authService.isAuthenticated.subscribe(token => {
-      this.isAuthenticated = token; // Update local state
-    });
+  /** Reactive auth state read straight from the AuthService signal. */
+  get isAuthenticated(): boolean {
+    return this._authService.isAuthenticated();
   }
 
   LogOut(): void {
@@ -40,7 +36,7 @@ export class FooterComponent implements OnInit {
       })
       .subscribe(confirmed => {
         if (confirmed) {
-          this._performLogout();
+          void this._performLogout();
         }
       });
   }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import { SessionService } from '../../../services/session.service';
 import { ProductService } from '../../../services/product.service';
 import { NotificationService } from '../../../services/notification.service';
@@ -15,8 +15,8 @@ import { IProductValuesResponse } from '../../../interfaces/IProduct';
     './shop.component.css'],
 })
 export class ShopComponent implements OnInit{
-  userID: number = 0;
-  username: string = '';
+  readonly userID = signal(0);
+  readonly username = signal('');
   uid: number = 0;
 
   constructor(
@@ -27,25 +27,25 @@ export class ShopComponent implements OnInit{
   ) { }
 
   ngOnInit() {
-    this.username = this._sessionService.username;
-    this.userID = this._sessionService.userID;
+    this.username.set(this._sessionService.username);
+    this.userID.set(this._sessionService.userID);
     this.getProducts();
 
-    console.log('Username :', this.username);
-    console.log('UserID :', this.userID);
+    console.log('Username :', this.username());
+    console.log('UserID :', this.userID());
   }
 
-  products: any[] = [];
+  readonly products = signal<any[]>([]);
   productQuantities: Map<number, number> = new Map(); // Map to track product quantity changes
 
   getProducts(): void {
     this._productService.getProducts().subscribe({
       next: (data: IProductValuesResponse[]) => {
         console.log('Fetched products:', data);
-        this.products = data.map((product) => ({
+        this.products.set(data.map((product) => ({
           ...product,
           quantity: 0,
-        }));
+        })));
       },
       error: (error: any) => {
         console.error('Error fetching products:', error);

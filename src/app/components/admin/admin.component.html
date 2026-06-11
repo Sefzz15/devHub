@@ -8,7 +8,7 @@
     </div>
   </div>
 
-  @if (users.length > 0) {
+  @if (users().length > 0) {
     <table class="table">
       <thead>
         <tr>
@@ -19,7 +19,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (user of users; track user) {
+        @for (user of users(); track user) {
           <tr>
             <td>{{ user.uid }}</td>
             <td>{{ user.uname }}</td>
@@ -42,7 +42,7 @@
     </div>
   </div>
 
-  @if (products.length > 0) {
+  @if (products().length > 0) {
     <table class="table">
       <thead>
         <tr>
@@ -54,7 +54,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (product  of products; track product ) {
+        @for (product  of products(); track product ) {
           <tr>
             <td>{{ product.pid }}</td>
             <td>{{ product.pname }}</td>
@@ -79,7 +79,7 @@
     </div>
   </div>
 
-  @if (orders.length > 0) {
+  @if (orders().length > 0) {
     <table class="table">
       <thead>
         <tr>
@@ -90,7 +90,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (order of orders; track order) {
+        @for (order of orders(); track order) {
           <tr>
             <td>{{ order.oid }}</td>
             <td>{{ order.uid }}</td>
@@ -112,7 +112,7 @@
     </div>
   </div>
 
-  @if (orderDetails.length > 0) {
+  @if (orderDetails().length > 0) {
     <table class="table">
       <thead>
         <tr>
@@ -123,7 +123,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (orderDetail of orderDetails; track orderDetail) {
+        @for (orderDetail of orderDetails(); track orderDetail) {
           <tr>
             <td>{{ orderDetail.oid }}</td>
             <td>{{ orderDetail.pid }}</td>

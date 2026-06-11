@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { IUserValuesResponse } from '../../../interfaces/IUser';
 import { SessionService } from '../../../services/session.service';
 import { UserService } from '../../../services/user.service';
@@ -12,10 +12,10 @@ import { IGroupedOrder, IOrderDetailsValuesFormatted } from '../../../interfaces
   styleUrls: ['../admin/admin.component.css', './order-history.css'],
 })
 export class OrderHistoryComponent implements OnInit {
-  userID?: number;
-  clientNames: string[] = [];
-  groupedOrderDetails: IGroupedOrder[] = [];
-  noOrders: boolean = false;
+  readonly userID = signal<number | undefined>(undefined);
+  readonly clientNames = signal<string[]>([]);
+  readonly groupedOrderDetails = signal<IGroupedOrder[]>([]);
+  readonly noOrders = signal(false);
 
 
   constructor(
@@ -25,15 +25,15 @@ export class OrderHistoryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userID = this._sessionService.userID;
+    this.userID.set(this._sessionService.userID);
     this.getUsers();
   }
 
   getUsers(): void {
     this._userService.getUsers().subscribe({
       next: (data: IUserValuesResponse[]) => {
-        this.clientNames = data.map(i => i.uname);
-        console.log('Fetched users:', this.clientNames);
+        this.clientNames.set(data.map(i => i.uname));
+        console.log('Fetched users:', this.clientNames());
       },
       error: (error: any) => {
         console.error('Error fetching users:', error);
@@ -52,8 +52,8 @@ export class OrderHistoryComponent implements OnInit {
         userOrders.sort((a, b) => b.oid - a.oid);
 
         if (userOrders.length === 0) {
-          this.groupedOrderDetails = [];
-          this.noOrders = true;
+          this.groupedOrderDetails.set([]);
+          this.noOrders.set(true);
           return;
         }
 
@@ -84,8 +84,8 @@ export class OrderHistoryComponent implements OnInit {
           orderGroup.totalAmount += itemTotal;
         });
 
-        this.groupedOrderDetails = Array.from(orderMap.values());
-        this.noOrders = false;
+        this.groupedOrderDetails.set(Array.from(orderMap.values()));
+        this.noOrders.set(false);
       }
     );
   }

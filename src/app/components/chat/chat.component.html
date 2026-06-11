@@ -7,7 +7,7 @@
       <div class="connected-users">
         <h3>Connected Users:</h3>
         <ul>
-          @for (user of connectedUsers; track user) {
+          @for (user of connectedUsers(); track user) {
             <li>{{ user }}</li>
           }
         </ul>
@@ -16,10 +16,10 @@
       <div class="groups-list">
         <h3>Available Groups:</h3>
         <ul>
-          @for (group of chatGroups; track group) {
-            <li [class.active]="group === currentGroup">
+          @for (group of chatGroups(); track group) {
+            <li [class.active]="group === currentGroup()">
               <span (click)="joinGroup(group)">{{ group }}</span>
-              @if (currentGroup === group) {
+              @if (currentGroup() === group) {
                 <button (click)="leaveGroup(group)">Leave</button>
               }
             </li>
@@ -28,16 +28,17 @@
       </div>
 
       <div class="group-controls">
-        <input type="text" [(ngModel)]="newGroup" placeholder="Enter group name..." />
-        <button (click)="joinGroup(newGroup)" [disabled]="!newGroup.trim()"> Join </button>
-        <button (click)="leaveGroup(newGroup)" [disabled]="!newGroup.trim()"> Leave </button>
+        <input type="text" [ngModel]="newGroup()" (ngModelChange)="newGroup.set($event)"
+          placeholder="Enter group name..." />
+        <button (click)="joinGroup(newGroup())" [disabled]="!newGroup().trim()"> Join </button>
+        <button (click)="leaveGroup(newGroup())" [disabled]="!newGroup().trim()"> Leave </button>
       </div>
 
     </div>
 
     <div class="b">
       <div class="chat-window" #chatWindow>
-        @for (message of messages; track message) {
+        @for (message of messages(); track message) {
           <div [class]="message.isSender ? 'bubble sender' : 'bubble receiver'">
             <p>{{ message.text }}</p>
           </div>
@@ -45,12 +46,13 @@
       </div>
 
       <div class="input-area">
-        @if (unreadCount > 0) {
+        @if (unreadCount() > 0) {
           <div class="unread-count" (click)="markAsRead()">
-            {{ unreadCount }}
+            {{ unreadCount() }}
           </div>
         }
-        <input type="text" placeholder="Type your message..." [(ngModel)]="messageInput" (keydown.enter)="sendMessage()"
+        <input type="text" placeholder="Type your message..." [ngModel]="messageInput()"
+          (ngModelChange)="messageInput.set($event)" (keydown.enter)="sendMessage()"
           (focus)="onInputFocus()" />
           <button class="btn btn-primary" (click)="sendMessage()">Send</button>
         </div>

@@ -4,26 +4,28 @@
     <!-- Username Field -->
     <div class="input-container">
       <label for="username">Username:</label>
-      <input class="input-field" type="text" id="username" [(ngModel)]="username" name="username" required>
+      <input class="input-field" type="text" id="username" [ngModel]="username()"
+        (ngModelChange)="username.set($event)" name="username" required>
       <!-- Error Message for Username -->
-      @if (usernameError) {
-        <div class="error">{{ usernameError }}</div>
+      @if (usernameError()) {
+        <div class="error">{{ usernameError() }}</div>
       }
     </div>
 
     <!-- Password Field -->
     <div class="input-container">
       <label for="password">Password:</label>
-      <input class="input-field" id="password" type="password" [(ngModel)]="password" name="password" required>
+      <input class="input-field" id="password" type="password" [ngModel]="password()"
+        (ngModelChange)="password.set($event)" name="password" required>
       <!-- Error Message for Password -->
-      @if (passwordError) {
-        <div class="error">{{ passwordError }}</div>
+      @if (passwordError()) {
+        <div class="error">{{ passwordError() }}</div>
       }
     </div>
 
     <!-- General Error Message -->
-    @if (generalError) {
-      <div class="error">{{ generalError }}</div>
+    @if (generalError()) {
+      <div class="error">{{ generalError() }}</div>
     }
 
     <!-- Submit Button -->

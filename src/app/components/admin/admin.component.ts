@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { ProductService } from '../../../services/product.service';
 import { OrderService } from '../../../services/order.service';
@@ -19,11 +19,11 @@ import { IOrderDetailsValues } from '../../../interfaces/IOrderDetail';
 })
 
 export class AdminComponent implements OnInit {
-  userID?: number;
-  users: IUser[] = [];
-  products: IProduct[] = [];
-  orders: IOrder[] = [];
-  orderDetails: IOrderDetailsValues[] = [];
+  readonly userID = signal<number | undefined>(undefined);
+  readonly users = signal<IUser[]>([]);
+  readonly products = signal<IProduct[]>([]);
+  readonly orders = signal<IOrder[]>([]);
+  readonly orderDetails = signal<IOrderDetailsValues[]>([]);
 
 
   constructor(
@@ -37,19 +37,19 @@ export class AdminComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userID = this._sessionService.userID;
-    console.log('UserID in admin:', this.userID);
+    this.userID.set(this._sessionService.userID);
+    console.log('UserID in admin:', this.userID());
   }
 
   getUsers(): void {
-    this._userService.getUsers().subscribe(
-      (data: IUserValuesResponse[]) => {
-        this.users = data; // Ensure this updates the array
+    this._userService.getUsers().subscribe({
+      next: (data: IUserValuesResponse[]) => {
+        this.users.set(data); // Ensure this updates the array
       },
-      (error: any) => {
+      error: (error: any) => {
         console.error('Error fetching users:', error);
-      }
-    );
+      },
+    });
   }
 
   // Delete a user
@@ -102,38 +102,38 @@ export class AdminComponent implements OnInit {
 
   // Fetch products after deletion
   getProducts(): void {
-    this._productService.getProducts().subscribe(
-      (data: IProductValuesResponse[]) => {
-        this.products = data;
+    this._productService.getProducts().subscribe({
+      next: (data: IProductValuesResponse[]) => {
+        this.products.set(data);
       },
-      (error: any) => {
+      error: (error: any) => {
         console.error('Error fetching products:', error);
-      }
-    );
+      },
+    });
   }
 
   // Fetch orders after deletion
   getOrders(): void {
-    this._orderService.getOrders().subscribe(
-      (data: IOrderValuesResponse[]) => {
-        this.orders = data;
+    this._orderService.getOrders().subscribe({
+      next: (data: IOrderValuesResponse[]) => {
+        this.orders.set(data);
       },
-      (error: any) => {
+      error: (error: any) => {
         console.error('Error fetching orders:', error);
-      }
-    );
+      },
+    });
   }
 
   // Fetch orders after deletion
   getOrderDetails(): void {
-    this._orderDetailService.getOrderDetails().subscribe(
-      (data: IOrderDetailsValues[]) => {
-        this.orderDetails = data;
+    this._orderDetailService.getOrderDetails().subscribe({
+      next: (data: IOrderDetailsValues[]) => {
+        this.orderDetails.set(data);
       },
-      (error: any) => {
+      error: (error: any) => {
         console.error('Error fetching orders:', error);
-      }
-    );
+      },
+    });
   }
 
 }

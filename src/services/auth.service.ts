@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { SessionService } from './session.service';
@@ -13,7 +13,9 @@ export class AuthService {
   private _url1 = 'https://localhost:5000/api/users'; // Backend URL
   // private _url = 'https://192.168.1.180:5000/api/users/login'; // Backend URL
   private static readonly TOKEN_KEY = 'authToken';
-  private _isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  private readonly _isAuthenticated = signal<boolean>(false);
+  /** Reactive auth state. Read as a signal: `authService.isAuthenticated()`. */
+  readonly isAuthenticated = this._isAuthenticated.asReadonly();
   private _token: string | null = null;
   userID: number = 0;
 
@@ -27,7 +29,7 @@ export class AuthService {
     const stored = this._readStoredToken();
     if (stored) {
       this._token = stored;
-      this._isAuthenticatedSubject.next(true);
+      this._isAuthenticated.set(true);
     }
   }
 
@@ -70,7 +72,7 @@ export class AuthService {
         if (response.message === 'Login successful!' && response.token) {
           this.userID = response.user.uid;          // Extract userID
           this._persistToken(response.token);
-          this._isAuthenticatedSubject.next(true);
+          this._isAuthenticated.set(true);
 
           // Update SessionService with the username and userID
           this._sessionService.username = username;  // Set the username
@@ -78,7 +80,7 @@ export class AuthService {
 
           return true;
         } else {
-          this._isAuthenticatedSubject.next(false);
+          this._isAuthenticated.set(false);
           return false;
         }
       }),
@@ -100,13 +102,8 @@ export class AuthService {
     );
   }
 
-  get isAuthenticated(): Observable<boolean> {
-    return this._isAuthenticatedSubject.asObservable();
-  }
-
-
   logout(): void {
     this._persistToken(null);
-    this._isAuthenticatedSubject.next(false);
+    this._isAuthenticated.set(false);
   }
 }

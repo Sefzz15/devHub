@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { StepperOrientation } from '@angular/material/stepper';
@@ -22,10 +22,10 @@ import { IFeedbackValuesResponse } from '../../../interfaces/IFeedback';
 
 })
 export class FeedbackComponent implements OnInit {
-  userID?: number;
+  readonly userID = signal<number | undefined>(undefined);
   private _formBuilder = inject(FormBuilder);
-  errorMessage: string = '';
-  feedbacks: IFeedbackValuesResponse[] = [];
+  readonly errorMessage = signal('');
+  readonly feedbacks = signal<IFeedbackValuesResponse[]>([]);
 
   nameFormGroup = this._formBuilder.group({
     firstCtrl: ['', Validators.required],
@@ -54,14 +54,14 @@ export class FeedbackComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userID = this._sessionService.userID;
+    this.userID.set(this._sessionService.userID);
     this.getFeedbacks();
   }
 
   submitFeedback(): void {
     if (this.messageFormGroup.valid) {
       const payload = {
-        uid: this.userID ?? 0,
+        uid: this.userID() ?? 0,
         name: this.nameFormGroup.value.firstCtrl || null,
         address: this.addressFormGroup.value.secondCtrl || null,
         phone: this.phoneFormGroup.value.thirdCtrl || null,
@@ -70,7 +70,7 @@ export class FeedbackComponent implements OnInit {
 
       this._feedbackService.createFeedback(payload).subscribe({
         next: () => this.getFeedbacks(),
-        error: () => (this.errorMessage = 'Failed to submit feedback. Please try again later.'),
+        error: () => this.errorMessage.set('Failed to submit feedback. Please try again later.'),
       });
     }
   }
@@ -78,7 +78,7 @@ export class FeedbackComponent implements OnInit {
   getFeedbacks(): void {
     this._feedbackService.getFeedbacks().subscribe({
       next: (data: IFeedbackValuesResponse[]) => {
-        this.feedbacks = data ?? [];
+        this.feedbacks.set(data ?? []);
       },
       error: (e) => console.error('Error fetching feedbacks:', e),
     });
