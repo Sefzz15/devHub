@@ -69,7 +69,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     this._connection.start()
       .then(() => {
         console.log('SignalR Connected.');
-        this._connection.invoke('UserConnected', this.username);
+        this._connection.invoke('UserConnected', this.username)
+          .catch(err => console.error('Error notifying server of connection: ', err));
 
         // Explicitly request groups on load
         this._connection.invoke('GetGroups')
@@ -174,7 +175,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.inactivityTimeout = setTimeout(() => {
       this._notification.warn('You have been logged out due to inactivity.');
       this._authService.logout();
-      this._router.navigate(['/']);
+      this._router.navigate(['/'])
+        .catch(err => console.error('Navigation error: ', err));
     }, 5 * 60 * 1000); // 5 minutes (5 min * 60 sec * 1000 ms)
   }
 
@@ -205,7 +207,9 @@ export class ChatComponent implements OnInit, OnDestroy {
     sessionStorage.setItem('connectedUsers', JSON.stringify(this.connectedUsers()));
 
     if (this._connection) {
-      this._connection.invoke('UserDisconnected', this.username); // Notify the server about the disconnection
+      // Notify the server about the disconnection
+      this._connection.invoke('UserDisconnected', this.username)
+        .catch(err => console.error('Error notifying server of disconnection: ', err));
       this._connection.stop().catch((err) => console.error('Error while stopping connection: ', err));
     }
   }
