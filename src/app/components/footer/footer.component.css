@@ -6,6 +6,10 @@
   width: 100%;
   padding: 0 20px;
   box-sizing: border-box;
+
+  @media screen and (max-width: 600px) {
+    display: none;
+  }
 }
 
 .copyright {
@@ -27,14 +31,8 @@
   background-color: #c23535;
   border: none;
   transition: background-color 0.3s ease;
-}
 
-.logout-button:hover {
-  text-decoration: underline;
-}
-
-@media screen and (max-width: 600px) {
-  .footer {
-    display: none;
+  &:hover {
+    text-decoration: underline;
   }
 }

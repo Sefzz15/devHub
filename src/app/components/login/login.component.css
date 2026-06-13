@@ -16,12 +16,12 @@
   border-radius: 15px;
   color: #4d4d4d;
   margin-bottom: 2em;
-}
 
-.input-container input {
-  outline: none;
-  border: none;
-  display: block;
+  input {
+    outline: none;
+    border: none;
+    display: block;
+  }
 }
 
 .loginButton {

@@ -7,13 +7,18 @@
   gap: 1em;
   background-color: #b6ebfc;
   overflow-y: auto;
-}
 
-.container h1 {
-  font-size: 2em;
-  font-weight: bold;
-  color: #3e4684;
-  text-align: center;
+  h1 {
+    font-size: 2em;
+    font-weight: bold;
+    color: #3e4684;
+    text-align: center;
+  }
+
+  @media screen and (max-width: 600px) {
+    max-height: 100vh;
+    height: 100vh;
+  }
 }
 
 section {
@@ -23,11 +28,4 @@ section {
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #fff;
-}
-
-@media screen and (max-width: 600px) {
-  .container {
-    max-height: 100vh;
-    height: 100vh;
-  }
 }
