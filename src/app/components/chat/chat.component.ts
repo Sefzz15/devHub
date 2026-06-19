@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, signal } from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, ElementRef, signal} from '@angular/core';
 import * as signalR from '@microsoft/signalr';
-import { SessionService } from '../../../services/session.service';
-import { AuthService } from '../../../services/auth.service';
-import { NotificationService } from '../../../services/notification.service';
-import { Router } from '@angular/router';
+import {SessionService} from '../../../services/session.service';
+import {AuthService} from '../../../services/auth.service';
+import {NotificationService} from '../../../services/notification.service';
+import {Router} from '@angular/router';
 
 @Component({
   standalone: false,
@@ -15,6 +15,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   @ViewChild('chatWindow') private chatWindowRef!: ElementRef;
 
   private _connection!: signalR.HubConnection;
+  private _intentionalDisconnect = false;
 
   readonly messages = signal<{ text: string; isSender: boolean }[]>([]);
   readonly messageInput = signal('');
@@ -32,7 +33,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     private _authService: AuthService,
     private _router: Router,
     private _notification: NotificationService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.username = this._sessionService.username;
@@ -65,6 +67,21 @@ export class ChatComponent implements OnInit, OnDestroy {
       .withAutomaticReconnect()
       .build();
 
+    // Keep the user informed when the chat server connection drops or recovers
+    this._connection.onreconnecting(() => {
+      this._notification.warn('Lost connection to the chat server. Trying to reconnect...');
+    });
+
+    this._connection.onreconnected(() => {
+      this._notification.success('Reconnected to the chat server.');
+    });
+
+    this._connection.onclose(() => {
+      if (!this._intentionalDisconnect) {
+        this._notification.error('Disconnected from the chat server. Please refresh to try again.');
+      }
+    });
+
     // Start the connection
     this._connection.start()
       .then(() => {
@@ -80,12 +97,15 @@ export class ChatComponent implements OnInit, OnDestroy {
           })
           .catch(err => console.error('Error getting groups: ', err));
       })
-      .catch(err => console.error('SignalR Connection Error: ', err));
+      .catch(err => {
+        console.error('SignalR Connection Error: ', err);
+        this._notification.error('Unable to reach the chat server. Please try again later.');
+      });
 
     // Receive messages and update the list of connected users
     this._connection.on('ReceiveMessage', (user: string, message: string) => {
       if (user !== this.username) {
-        this.messages.update(m => [...m, { text: `${user}: ${message}`, isSender: false }]);
+        this.messages.update(m => [...m, {text: `${user}: ${message}`, isSender: false}]);
         this.unreadCount.update(c => c + 1);
         this.scrollToBottom();
       }
@@ -96,14 +116,14 @@ export class ChatComponent implements OnInit, OnDestroy {
       if (!this.connectedUsers().includes(user)) {
         this.connectedUsers.update(u => [...u, user]);
       }
-      this.messages.update(m => [...m, { text: `A wild ${user} appeared!`, isSender: false }]);
+      this.messages.update(m => [...m, {text: `A wild ${user} appeared!`, isSender: false}]);
       this.scrollToBottom();
     });
 
     // Remove a user from the list of connected users
     this._connection.on('UserDisconnected', (user: string) => {
       this.connectedUsers.update(list => list.filter((u) => u !== user));
-      this.messages.update(m => [...m, { text: `A wild ${user} disappeared!`, isSender: false }]);
+      this.messages.update(m => [...m, {text: `A wild ${user} disappeared!`, isSender: false}]);
       this.scrollToBottom();
     });
 
@@ -113,12 +133,12 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
 
     this._connection.on('UserJoinedGroup', (user: string, group: string) => {
-      this.messages.update(m => [...m, { text: `${user} joined ${group}`, isSender: false }]);
+      this.messages.update(m => [...m, {text: `${user} joined ${group}`, isSender: false}]);
       this.scrollToBottom();
     });
 
     this._connection.on('UserLeftGroup', (user: string, group: string) => {
-      this.messages.update(m => [...m, { text: `${user} left ${group}`, isSender: false }]);
+      this.messages.update(m => [...m, {text: `${user} left ${group}`, isSender: false}]);
       this.scrollToBottom();
     });
 
@@ -141,12 +161,15 @@ export class ChatComponent implements OnInit, OnDestroy {
       : this._connection.invoke('SendMessage', user, text);
 
     invoke.then(() => {
-      this.messages.update(m => [...m, { text: `${user}: ${text}`, isSender: true }]);
+      this.messages.update(m => [...m, {text: `${user}: ${text}`, isSender: true}]);
       this.messageInput.set('');
       this.unreadCount.set(0);
       this.scrollToBottom();
     })
-      .catch(err => console.error('Error while sending message: ', err));
+      .catch(err => {
+        console.error('Error while sending message: ', err);
+        this._notification.error('Message not sent — the chat server is unavailable.');
+      });
   }
 
 
@@ -155,7 +178,9 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (!groupNameTrimmed) return;
 
     this._connection.invoke('JoinGroup', this.username, groupNameTrimmed)
-      .then(() => { this.currentGroup.set(groupNameTrimmed); })
+      .then(() => {
+        this.currentGroup.set(groupNameTrimmed);
+      })
       .catch(err => console.error('Error joining group: ', err));
   }
 
@@ -207,7 +232,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     sessionStorage.setItem('connectedUsers', JSON.stringify(this.connectedUsers()));
 
     if (this._connection) {
-      // Notify the server about the disconnection
+      this._intentionalDisconnect = true;
       this._connection.invoke('UserDisconnected', this.username)
         .catch(err => console.error('Error notifying server of disconnection: ', err));
       this._connection.stop().catch((err) => console.error('Error while stopping connection: ', err));
