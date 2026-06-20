@@ -105,5 +105,6 @@ export class AuthService {
   logout(): void {
     this._persistToken(null);
     this._isAuthenticated.set(false);
+    this._sessionService.clearSession();
   }
 }
