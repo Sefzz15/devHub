@@ -9,8 +9,8 @@ import { SessionService } from './session.service';
   providedIn: 'root'
 })
 export class AuthService {
-  private _url = 'https://localhost:5000/api/users/login'; // Backend URL
-  private _url1 = 'https://localhost:5000/api/users'; // Backend URL
+  private _url = '/api/users/login'; // Backend URL (relative — proxied to the backend)
+  private _url1 = '/api/users'; // Backend URL (relative — proxied to the backend)
   // private _url = 'https://192.168.1.180:5000/api/users/login'; // Backend URL
   private static readonly TOKEN_KEY = 'authToken';
   private readonly _isAuthenticated = signal<boolean>(false);

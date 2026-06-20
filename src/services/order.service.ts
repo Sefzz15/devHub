@@ -8,7 +8,7 @@ import { IOrder, IOrderResponse, IOrderValuesResponse } from '../interfaces/IOrd
 })
 export class OrderService {
 
-  private _url = 'https://localhost:5000/api/orders';
+  private _url = '/api/orders';
 
   constructor(
     private _http: HttpClient

@@ -8,7 +8,7 @@ import { IProduct, IProductResponse, IProductValuesResponse } from '../interface
 })
 export class ProductService {
 
-  private _url = 'https://localhost:5000/api/products';
+  private _url = '/api/products';
 
   constructor(
     private _http: HttpClient

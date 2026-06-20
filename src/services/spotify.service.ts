@@ -12,7 +12,7 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class SpotifyService {
-    private _url = 'https://localhost:5000/api/spotify';
+    private _url = '/api/spotify';
 
     constructor(private _http: HttpClient) { }
 

@@ -8,7 +8,7 @@ import { IFeedback, IFeedbackValuesResponse } from '../interfaces/IFeedback';
 })
 export class FeedbackService {
 
-  private _url = 'https://localhost:5000/api/feedback';
+  private _url = '/api/feedback';
 
   constructor(
     private _http: HttpClient

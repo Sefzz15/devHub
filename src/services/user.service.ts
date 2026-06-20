@@ -8,7 +8,7 @@ import { IUser, IUserResponse, IUserValuesResponse } from '../interfaces/IUser';
 })
 export class UserService {
 
-  private _url = 'https://localhost:5000/api/users';
+  private _url = '/api/users';
 
   constructor(
     private _http: HttpClient

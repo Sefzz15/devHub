@@ -103,7 +103,7 @@ export class ShopComponent implements OnInit{
 
     console.log('Payload to be sent:', JSON.stringify(payload, null, 2));
 
-    this._http.post('https://localhost:5000/api/orders/create', payload).subscribe({
+    this._http.post('/api/orders/create', payload).subscribe({
       next: (response: any) => {
         console.log('Order created successfully:', response);
         this._notification.success('Order placed successfully!');

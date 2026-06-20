@@ -1,0 +1,22 @@
+# Cloudflare terminates TLS at the edge and the tunnel forwards plain HTTP here,
+# so Caddy only needs to listen on :80 inside the container.
+:80 {
+	encode gzip
+
+	# REST API -> .NET backend
+	handle /api/* {
+		reverse_proxy backend:8080
+	}
+
+	# SignalR chat hub (WebSocket upgrade is handled automatically by reverse_proxy)
+	handle /chatHub* {
+		reverse_proxy websocket:5001
+	}
+
+	# Angular single-page app: serve static files, fall back to index.html for client routes
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+	}
+}

@@ -63,7 +63,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     // Create SignalR connection
     this._connection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5001/chathub')
+      .withUrl('/chatHub')
       .withAutomaticReconnect()
       .build();
 
