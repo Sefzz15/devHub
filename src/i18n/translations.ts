@@ -68,6 +68,18 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'dashboard.feedbackTitle': 'Feedback Page',
     'dashboard.feedbackBody':
       'A page dedicated to provide the ability for the user to express his opinion on the website and provide proper feedback for improvements.',
+    'dashboard.cinemaTitle': 'Cinema: Now Playing in Thessaloniki',
+    'dashboard.cinemaBody':
+      'Browse current cinema listings around Thessaloniki with posters, ratings, genres and showtimes, and filter by day, venue or open-air screenings.',
+    'dashboard.rubiksTitle': "Rubik's Cube: Interactive 3D Solver",
+    'dashboard.rubiksBody':
+      "Scramble and solve a fully interactive 3D Rubik's Cube in the browser, with drag-to-turn controls, keyboard shortcuts and an automatic solver.",
+    'dashboard.welcome': 'Welcome back, {name} 👋',
+    'dashboard.welcomeGeneric': 'Welcome to devHub 👋',
+    'dashboard.subtitle':
+      'Your all-in-one developer playground — manage data, shop, watch, play, chat and explore your stats, all in one place.',
+    'dashboard.featuresCount': '{count} features',
+    'dashboard.open': 'Open',
 
     // ---- admin ----
     'admin.usersList': 'Users List',
@@ -320,6 +332,18 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'dashboard.feedbackTitle': 'Σελίδα Σχολίων',
     'dashboard.feedbackBody':
       'Μια σελίδα αφιερωμένη στο να δίνει τη δυνατότητα στον χρήστη να εκφράσει τη γνώμη του για τον ιστότοπο και να παρέχει σχόλια για βελτιώσεις.',
+    'dashboard.cinemaTitle': 'Σινεμά: Παίζουν Τώρα στη Θεσσαλονίκη',
+    'dashboard.cinemaBody':
+      'Δες τις τρέχουσες προβολές κινηματογράφων στη Θεσσαλονίκη με αφίσες, βαθμολογίες, είδη και ώρες, και φιλτράρισέ τες ανά ημέρα, αίθουσα ή θερινό σινεμά.',
+    'dashboard.rubiksTitle': 'Κύβος του Ρούμπικ: Διαδραστικός 3D Λύτης',
+    'dashboard.rubiksBody':
+      'Ανακάτεψε και λύσε έναν πλήρως διαδραστικό 3D κύβο του Ρούμπικ μέσα στον browser, με χειρισμό σύρσιμο-για-περιστροφή, συντομεύσεις πληκτρολογίου και αυτόματο λύτη.',
+    'dashboard.welcome': 'Καλώς ήρθες, {name} 👋',
+    'dashboard.welcomeGeneric': 'Καλώς ήρθες στο devHub 👋',
+    'dashboard.subtitle':
+      'Ο προσωπικός σου χώρος για προγραμματιστές — διαχείριση δεδομένων, αγορές, ταινίες, παιχνίδι, συνομιλία και στατιστικά, όλα σε ένα μέρος.',
+    'dashboard.featuresCount': '{count} λειτουργίες',
+    'dashboard.open': 'Άνοιγμα',
 
     // ---- admin ----
     'admin.usersList': 'Λίστα Χρηστών',

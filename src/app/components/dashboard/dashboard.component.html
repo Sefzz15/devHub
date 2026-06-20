@@ -1,34 +1,39 @@
-<div class="container">
-  <h1>{{ 'dashboard.title' | translate }}</h1>
+<div class="dashboard">
 
-  <section>
-    <h2>{{ 'dashboard.adminTitle' | translate }}</h2>
-    <p>{{ 'dashboard.adminBody' | translate }}</p>
-  </section>
+  <header class="hero">
+    <div class="hero-text">
+      <h1 class="hero-title">
+        @if (username()) {
+          {{ 'dashboard.welcome' | translate: { name: username() } }}
+        } @else {
+          {{ 'dashboard.welcomeGeneric' | translate }}
+        }
+      </h1>
+      <p class="hero-subtitle">{{ 'dashboard.subtitle' | translate }}</p>
+      <span class="hero-chip">
+        <mat-icon>apps</mat-icon>
+        {{ 'dashboard.featuresCount' | translate: { count: features.length } }}
+      </span>
+    </div>
+    <img src="/favicon.ico" alt="DevHub" class="hero-logo" />
+  </header>
 
-  <section>
-    <h2>{{ 'dashboard.shopTitle' | translate }}</h2>
-    <p>{{ 'dashboard.shopBody' | translate }}</p>
-  </section>
+  <h2 class="section-heading">{{ 'dashboard.title' | translate }}</h2>
 
-  <section>
-    <h2>{{ 'dashboard.orderTitle' | translate }}</h2>
-    <p>{{ 'dashboard.orderBody' | translate }}</p>
-  </section>
-
-  <section>
-    <h2>{{ 'dashboard.chatTitle' | translate }}</h2>
-    <p>{{ 'dashboard.chatBody' | translate }}</p>
-  </section>
-
-  <section>
-    <h2>{{ 'dashboard.spotifyTitle' | translate }}</h2>
-    <p>{{ 'dashboard.spotifyBody' | translate }}</p>
-  </section>
-
-  <section>
-    <h2>{{ 'dashboard.feedbackTitle' | translate }}</h2>
-    <p>{{ 'dashboard.feedbackBody' | translate }}</p>
-  </section>
+  <div class="feature-grid">
+    @for (feature of features; track feature.route) {
+      <a class="feature-card" [routerLink]="feature.route">
+        <span class="feature-icon" [style.background-color]="feature.color">
+          <mat-icon>{{ feature.icon }}</mat-icon>
+        </span>
+        <h3 class="feature-title">{{ feature.titleKey | translate }}</h3>
+        <p class="feature-body">{{ feature.bodyKey | translate }}</p>
+        <span class="feature-link">
+          {{ 'dashboard.open' | translate }}
+          <mat-icon>arrow_forward</mat-icon>
+        </span>
+      </a>
+    }
+  </div>
 
 </div>
