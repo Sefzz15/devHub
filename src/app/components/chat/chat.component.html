@@ -1,62 +1,91 @@
 <div class="container">
-  <!-- <h1>Chat Application</h1> -->
   <div class="chat-container">
 
-
-    <div class="chatInfo">
-      <div class="connected-users">
-        <h3>{{ 'chat.connectedUsers' | translate }}</h3>
+    <!-- Sidebar: online users + groups -->
+    <aside class="chatInfo">
+      <section class="panel connected-users">
+        <h3>{{ 'chat.connectedUsers' | translate }} <span class="count">{{ connectedUsers().length }}</span></h3>
         <ul>
           @for (user of connectedUsers(); track user) {
-            <li>{{ user }}</li>
+            <li>
+              <span class="avatar">{{ (user || '?').charAt(0).toUpperCase() }}</span>
+              <span class="name">{{ user }}</span>
+              <span class="presence" aria-hidden="true"></span>
+            </li>
+          } @empty {
+            <li class="empty">—</li>
           }
         </ul>
-      </div>
+      </section>
 
-      <div class="groups-list">
+      <section class="panel groups-list">
         <h3>{{ 'chat.availableGroups' | translate }}</h3>
         <ul>
           @for (group of chatGroups(); track group) {
             <li [class.active]="group === currentGroup()">
-              <span (click)="joinGroup(group)">{{ group }}</span>
+              <span class="group-name" (click)="joinGroup(group)">#&nbsp;{{ group }}</span>
               @if (currentGroup() === group) {
-                <button (click)="leaveGroup(group)">{{ 'chat.leave' | translate }}</button>
+                <button class="chip-btn" (click)="leaveGroup(group)">{{ 'chat.leave' | translate }}</button>
               }
             </li>
+          } @empty {
+            <li class="empty">—</li>
           }
         </ul>
-      </div>
+      </section>
 
-      <div class="group-controls">
+      <section class="panel group-controls">
         <input type="text" [ngModel]="newGroup()" (ngModelChange)="newGroup.set($event)"
-          [placeholder]="'chat.enterGroupName' | translate" />
-        <button (click)="joinGroup(newGroup())" [disabled]="!newGroup().trim()"> {{ 'chat.join' | translate }} </button>
-        <button (click)="leaveGroup(newGroup())" [disabled]="!newGroup().trim()"> {{ 'chat.leave' | translate }} </button>
-      </div>
+               [placeholder]="'chat.enterGroupName' | translate" />
+        <div class="group-controls__actions">
+          <button (click)="joinGroup(newGroup())" [disabled]="!newGroup().trim()">{{ 'chat.join' | translate }}</button>
+          <button class="ghost" (click)="leaveGroup(newGroup())" [disabled]="!newGroup().trim()">{{ 'chat.leave' | translate }}</button>
+        </div>
+      </section>
+    </aside>
 
-    </div>
+    <!-- Main chat area -->
+    <section class="b">
+      <header class="chat-header">
+        <div class="chat-header__title">
+          <span class="avatar avatar--me">{{ (username || '?').charAt(0).toUpperCase() }}</span>
+          <div class="chat-header__meta">
+            <strong>{{ username }}</strong>
+            @if (currentGroup()) {
+              <small>#&nbsp;{{ currentGroup() }}</small>
+            }
+          </div>
+        </div>
+        <span class="chat-header__online"><span class="presence" aria-hidden="true"></span>{{ connectedUsers().length }}</span>
+      </header>
 
-    <div class="b">
       <div class="chat-window" #chatWindow>
         @for (message of messages(); track message) {
           <div [class]="message.isSender ? 'bubble sender' : 'bubble receiver'">
             <p>{{ message.text }}</p>
+          </div>
+        } @empty {
+          <div class="chat-empty">
+            <p>{{ 'chat.typeMessage' | translate }}</p>
           </div>
         }
       </div>
 
       <div class="input-area">
         @if (unreadCount() > 0) {
-          <div class="unread-count" (click)="markAsRead()">
-            {{ unreadCount() }}
-          </div>
+          <div class="unread-count" (click)="markAsRead()">{{ unreadCount() }}</div>
         }
         <input type="text" [placeholder]="'chat.typeMessage' | translate" [ngModel]="messageInput()"
-          (ngModelChange)="messageInput.set($event)" (keydown.enter)="sendMessage()"
-          (focus)="onInputFocus()" />
-          <button class="btn btn-primary" (click)="sendMessage()">{{ 'chat.send' | translate }}</button>
-        </div>
+               (ngModelChange)="messageInput.set($event)" (keydown.enter)="sendMessage()"
+               (focus)="onInputFocus()" />
+        <button class="send-btn" (click)="sendMessage()" [disabled]="!messageInput().trim()">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path fill="currentColor" d="M3.4 20.4l17.45-7.48a1 1 0 0 0 0-1.84L3.4 3.6a.993.993 0 0 0-1.39.91L2 9.12c0 .5.37.93.87.99L17 12 2.87 13.88c-.5.07-.87.5-.87 1l.01 4.61c0 .71.73 1.2 1.39.91z"/>
+          </svg>
+          <span>{{ 'chat.send' | translate }}</span>
+        </button>
       </div>
-    </div>
+    </section>
 
   </div>
+</div>
