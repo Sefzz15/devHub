@@ -7,8 +7,12 @@
   padding: 0 20px;
   box-sizing: border-box;
 
-  @media screen and (max-width: 600px) {
-    display: none;
+  /* On phones/small tablets a 6vh bar is too short for the logout button
+     (especially in landscape), so let it size to its content instead. */
+  @media screen and (max-width: 1024px) {
+    height: auto;
+    min-height: 52px;
+    padding: 8px 16px;
   }
 }
 

@@ -56,6 +56,23 @@
 }
 
 /* ===== Table ===== */
+/* Wide tables (e.g. long password hashes) scroll sideways on small screens
+   instead of overflowing the page. Centered when it fits, scrolls when it doesn't. */
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /* overflow-x:auto makes the vertical axis 'auto' too; without this the
+     table would shrink to a sliver inside the max-height flex container.
+     Keep its natural height and let the page (.container) scroll instead. */
+  flex-shrink: 0;
+}
+
+/* Center the table when it fits; it scrolls from the left when wider. */
+.table-scroll .table {
+  margin-inline: auto;
+}
+
 .table {
   background: white;
   box-shadow: 0 0 2em #e6e9f9;

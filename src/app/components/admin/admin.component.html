@@ -9,7 +9,8 @@
   </div>
 
   @if (users().length > 0) {
-    <table class="table">
+    <div class="table-scroll">
+      <table class="table">
       <thead>
         <tr>
           <th>{{ 'admin.colId' | translate }}</th>
@@ -31,7 +32,8 @@
           </tr>
         }
       </tbody>
-    </table>
+      </table>
+    </div>
   }
 
   <div class="header-actions">
@@ -43,7 +45,8 @@
   </div>
 
   @if (products().length > 0) {
-    <table class="table">
+    <div class="table-scroll">
+      <table class="table">
       <thead>
         <tr>
           <th>{{ 'admin.colProductIdLower' | translate }}</th>
@@ -67,7 +70,8 @@
           </tr>
         }
       </tbody>
-    </table>
+      </table>
+    </div>
   }
 
 
@@ -80,7 +84,8 @@
   </div>
 
   @if (orders().length > 0) {
-    <table class="table">
+    <div class="table-scroll">
+      <table class="table">
       <thead>
         <tr>
           <th>{{ 'admin.colOrderId' | translate }}</th>
@@ -102,7 +107,8 @@
           </tr>
         }
       </tbody>
-    </table>
+      </table>
+    </div>
   }
 
   <div class="header-actions">
@@ -113,7 +119,8 @@
   </div>
 
   @if (orderDetails().length > 0) {
-    <table class="table">
+    <div class="table-scroll">
+      <table class="table">
       <thead>
         <tr>
           <th>{{ 'admin.colOrderId' | translate }}</th>
@@ -135,6 +142,7 @@
           </tr>
         }
       </tbody>
-    </table>
+      </table>
+    </div>
   }
 </nav>

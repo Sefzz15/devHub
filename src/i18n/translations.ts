@@ -30,6 +30,8 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'nav.signInFirst': 'Please sign in first.',
     'nav.switchToGreek': 'Switch to Greek',
     'nav.switchToEnglish': 'Switch to English',
+    'nav.openMenu': 'Open menu',
+    'nav.closeMenu': 'Close menu',
 
     // ---- footer ----
     'footer.logout': 'Log Out',
@@ -294,6 +296,8 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'nav.signInFirst': 'Παρακαλώ συνδεθείτε πρώτα.',
     'nav.switchToGreek': 'Αλλαγή σε Ελληνικά',
     'nav.switchToEnglish': 'Αλλαγή σε Αγγλικά',
+    'nav.openMenu': 'Άνοιγμα μενού',
+    'nav.closeMenu': 'Κλείσιμο μενού',
 
     // ---- footer ----
     'footer.logout': 'Αποσύνδεση',

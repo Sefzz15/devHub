@@ -111,7 +111,7 @@
   height: 50vh;
   min-height: 50vh;
   max-height: 50vh;
-  overflow: hidden auto;
+  overflow: auto;
   border-radius: 15px;
   background: transparent;
   scrollbar-gutter: stable;
@@ -119,7 +119,8 @@
   -webkit-overflow-scrolling: touch;
 
   table {
-    width: 100%;
+    width: max-content;
+    min-width: 100%;
     table-layout: auto;
     border-collapse: separate;
     border-spacing: 0;
@@ -128,7 +129,7 @@
 
   th,
   td {
-    white-space: normal;
+    white-space: nowrap;
   }
 
   /* Scrollbar */

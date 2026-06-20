@@ -1,7 +1,25 @@
 @if (isAuthenticated) {
-  <nav class="navbar">
+  <nav class="navbar navbar--app" [class.menu-open]="menuOpen">
     <img src="/favicon.ico" alt="DevHub Logo" class="logo">
-    <ul class="navbar-links">
+
+    <button
+      type="button"
+      class="nav-toggle"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuOpen"
+      [attr.aria-label]="menuOpen ? ('nav.closeMenu' | translate) : ('nav.openMenu' | translate)">
+      @if (menuOpen) {
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6 L18 18 M18 6 L6 18"/>
+        </svg>
+      } @else {
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 6 H21 M3 12 H21 M3 18 H21"/>
+        </svg>
+      }
+    </button>
+
+    <ul class="navbar-links" [class.open]="menuOpen">
       <li><a routerLink="/dashboard" (click)="onLinkClick($event)">{{ 'nav.dashboard' | translate }}</a></li>
       <li><a routerLink="/admin" (click)="onLinkClick($event)">{{ 'nav.admin' | translate }}</a></li>
       <li><a routerLink="/shop" (click)="onLinkClick($event)">{{ 'nav.shop' | translate }}</a></li>
@@ -12,8 +30,12 @@
       <li><a routerLink="/spotify" (click)="onLinkClick($event)">{{ 'nav.spotify' | translate }}</a></li>
       <li><a routerLink="/feedback" (click)="onLinkClick($event)">{{ 'nav.feedback' | translate }}</a></li>
     </ul>
+
     <app-language-toggle class="navbar-lang"></app-language-toggle>
   </nav>
+
+  <!-- Tap-away backdrop for the mobile slide-out menu. -->
+  <div class="nav-backdrop" [class.show]="menuOpen" (click)="closeMenu()"></div>
 }
 
 @if (!isAuthenticated) {
