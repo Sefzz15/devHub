@@ -1,11 +1,11 @@
 <nav class="container">
 
-  <h1>Orders History</h1>
+  <h1>{{ 'orderHistory.title' | translate }}</h1>
 
-  <label for="clientSelect">Choose a client:</label>
+  <label for="clientSelect">{{ 'orderHistory.chooseClient' | translate }}</label>
 
   <select id="clientSelect" (change)="selectClient($event)">
-    <option value="" disabled selected>-- Select client --</option>
+    <option value="" disabled selected>{{ 'orderHistory.selectClient' | translate }}</option>
     @for (name of clientNames(); track name) {
       <option [value]="name">{{ name }}</option>
     }
@@ -13,14 +13,14 @@
 
   @for (order of groupedOrderDetails(); track order) {
     <div class="order-block">
-      <h3>Order #{{ order.orderId }} - {{ order.date }}</h3>
+      <h3>{{ 'orderHistory.orderHeader' | translate: { id: order.orderId, date: order.date } }}</h3>
       <table class="table">
         <thead>
           <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total Price</th>
+            <th>{{ 'orderHistory.colProduct' | translate }}</th>
+            <th>{{ 'orderHistory.colQuantity' | translate }}</th>
+            <th>{{ 'orderHistory.colPrice' | translate }}</th>
+            <th>{{ 'orderHistory.colTotalPrice' | translate }}</th>
           </tr>
         </thead>
         <tbody>
@@ -33,7 +33,7 @@
             </tr>
           }
           <tr class="total-row">
-            <td colspan="3"><strong>Order Total</strong></td>
+            <td colspan="3"><strong>{{ 'orderHistory.orderTotal' | translate }}</strong></td>
             <td><strong>{{ order.totalAmount }}</strong></td>
           </tr>
         </tbody>
@@ -43,8 +43,7 @@
 
   @if (noOrders()) {
     <div class="no-orders-message">
-      There are currently no purchases associated <br>
-      with the selected customer.
+      {{ 'orderHistory.noOrders' | translate }}
     </div>
   }
 

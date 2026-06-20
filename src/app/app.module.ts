@@ -31,6 +31,8 @@ import {SpotifyComponent} from './components/spotify/spotify.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {EntityFormComponent} from './components/entity-form/entity-form.component';
 import {CinemaComponent} from './components/cinema/cinema.component';
+import {LanguageToggleComponent} from './components/language-toggle/language-toggle.component';
+import {TranslatePipe} from '../pipes/translate.pipe';
 import {NgApexchartsModule} from "ng-apexcharts";
 
 
@@ -50,6 +52,8 @@ import {NgApexchartsModule} from "ng-apexcharts";
     FooterComponent,
     EntityFormComponent,
     CinemaComponent,
+    LanguageToggleComponent,
+    TranslatePipe,
   ],
   imports: [
     RouterModule,

@@ -1,21 +1,21 @@
 <nav class="container">
 
-  <h1>Now Playing in Thessaloniki</h1>
+  <h1>{{ 'cinema.title' | translate }}</h1>
 
   <!-- ===== Day picker ===== -->
   <div class="day-bar">
     <button type="button" class="day-chip" [class.active]="selectedDate === today" (click)="setDate(today)">
-      Today
+      {{ 'cinema.today' | translate }}
     </button>
     <button type="button" class="day-chip" [class.active]="selectedDate === tomorrow" (click)="setDate(tomorrow)">
-      Tomorrow
+      {{ 'cinema.tomorrow' | translate }}
     </button>
     <button type="button" class="day-chip" [class.active]="selectedDate === ''" (click)="setDate('')">
-      All dates
+      {{ 'cinema.allDates' | translate }}
     </button>
 
     <select class="day-select" [(ngModel)]="selectedDate">
-      <option value="">All upcoming days</option>
+      <option value="">{{ 'cinema.allUpcoming' | translate }}</option>
       @for (d of availableDates(); track d) {
         <option [value]="d">{{ dateLabel(d) }}</option>
       }
@@ -27,40 +27,40 @@
     <input
       type="text"
       class="filter-search"
-      placeholder="Search title, director or cast…"
+      [placeholder]="'cinema.searchPlaceholder' | translate"
       [(ngModel)]="query"
     />
 
     <select [(ngModel)]="selectedGenre">
-      <option value="">All genres</option>
+      <option value="">{{ 'cinema.allGenres' | translate }}</option>
       @for (g of genres(); track g) {
         <option [value]="g">{{ g }}</option>
       }
     </select>
 
     <select [(ngModel)]="selectedCinema">
-      <option value="">All cinemas</option>
+      <option value="">{{ 'cinema.allCinemas' | translate }}</option>
       @for (c of cinemas(); track c) {
         <option [value]="c">{{ c }}</option>
       }
     </select>
 
     <select [(ngModel)]="sortKey">
-      <option value="rating">Top rated</option>
-      <option value="year">Newest</option>
-      <option value="title">A–Z</option>
+      <option value="rating">{{ 'cinema.topRated' | translate }}</option>
+      <option value="year">{{ 'cinema.newest' | translate }}</option>
+      <option value="title">{{ 'cinema.az' | translate }}</option>
     </select>
 
     <label class="filter-therinos">
       <input type="checkbox" [(ngModel)]="therinosOnly" />
-      ☀ Θερινός
+      {{ 'cinema.therinos' | translate }}
     </label>
 
-    <button type="button" class="btn-clear" (click)="clearFilters()">Clear</button>
+    <button type="button" class="btn-clear" (click)="clearFilters()">{{ 'cinema.clear' | translate }}</button>
   </div>
 
   <div class="result-count">
-    Showing {{ filteredFilms.length }} of {{ totalCount }} films
+    {{ 'cinema.showing' | translate: { count: filteredFilms.length, total: totalCount } }}
     @if (selectedDate) { · {{ dateLabel(selectedDate) }} }
   </div>
 
@@ -135,16 +135,15 @@
   @if (filteredFilms.length === 0) {
     <div class="no-films-message">
       @if (selectedDate) {
-        Nothing is playing {{ dateLabel(selectedDate) === 'Today' ? 'today' : 'on ' + dateLabel(selectedDate) }}
-        with these filters.
+        {{ 'cinema.nothingPlaying' | translate }}
       } @else {
-        No films match your filters.
+        {{ 'cinema.noMatch' | translate }}
       }
     </div>
   }
 
   <p class="data-note">
-    Showtimes scraped from thessalonikiguide.gr · last updated {{ scrapedAt | date: 'd MMM y, HH:mm' }}
+    {{ 'cinema.scrapedPrefix' | translate }} {{ scrapedAt | date: 'd MMM y, HH:mm' }}
   </p>
 
 </nav>

@@ -1,6 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { IFilm } from '../../../interfaces/IFilm';
 import { FILMS, SCRAPED_AT } from './films.data';
+import { TranslationService } from '../../../services/translation.service';
 
 type SortKey = 'rating' | 'year' | 'title';
 
@@ -44,6 +45,8 @@ export class CinemaComponent implements OnInit {
   therinosOnly = false;
 
   readonly today = this.toIso(new Date());
+
+  constructor(private _i18n: TranslationService) {}
 
   ngOnInit(): void {
     this.genres.set(this.distinct(this.films.flatMap((f) => f.genres)));
@@ -93,10 +96,11 @@ export class CinemaComponent implements OnInit {
 
   /** Friendly label for a date chip / option: "Today", "Tomorrow" or "Sat 7 Jun". */
   dateLabel(iso: string): string {
-    if (iso === this.today) return 'Today';
-    if (iso === this.tomorrow) return 'Tomorrow';
+    if (iso === this.today) return this._i18n.translate('cinema.today');
+    if (iso === this.tomorrow) return this._i18n.translate('cinema.tomorrow');
     const [y, m, d] = iso.split('-').map(Number);
-    return new Date(y, m - 1, d).toLocaleDateString('en-GB', {
+    const locale = this._i18n.lang() === 'el' ? 'el-GR' : 'en-GB';
+    return new Date(y, m - 1, d).toLocaleDateString(locale, {
       weekday: 'short',
       day: 'numeric',
       month: 'short',

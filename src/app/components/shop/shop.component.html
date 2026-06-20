@@ -1,15 +1,15 @@
 <div class="container">
-  <h1>Product List</h1>
+  <h1>{{ 'shop.title' | translate }}</h1>
 
-  <a class="btn btn-primary" routerLink="/admin/create-product">New Product</a>
+  <a class="btn btn-primary" routerLink="/admin/create-product">{{ 'shop.newProduct' | translate }}</a>
   <table class="table">
     <thead>
       <tr>
-        <th>Product ID</th>
-        <th>Product Name</th>
-        <th>Price</th>
-        <th>Stock</th>
-        <th>Action</th>
+        <th>{{ 'shop.colProductId' | translate }}</th>
+        <th>{{ 'shop.colProductName' | translate }}</th>
+        <th>{{ 'shop.colPrice' | translate }}</th>
+        <th>{{ 'shop.colStock' | translate }}</th>
+        <th>{{ 'common.actions' | translate }}</th>
       </tr>
     </thead>
     <tbody>
@@ -30,5 +30,5 @@
       </tbody>
     </table>
 
-    <button class="btn btn-primary" (click)="buyProducts()">Buy</button>
+    <button class="btn btn-primary" (click)="buyProducts()">{{ 'shop.buy' | translate }}</button>
   </div>

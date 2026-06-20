@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { SessionService } from '../../../services/session.service';
+import { TranslationService } from '../../../services/translation.service';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class LoginComponent {
     private _router: Router,
     private _authService: AuthService,
     private _sessionService: SessionService,
+    private _i18n: TranslationService,
   ) { }
 
   onSubmit() {
@@ -31,11 +33,11 @@ export class LoginComponent {
 
     // Check if username and password are provided
     if (!this.username()) {
-      this.usernameError.set('Please insert username');
+      this.usernameError.set(this._i18n.translate('login.errUsername'));
     }
 
     if (!this.password()) {
-      this.passwordError.set('Please insert password');
+      this.passwordError.set(this._i18n.translate('login.errPassword'));
       return;
     }
 

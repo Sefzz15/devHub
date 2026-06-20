@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { NotificationService } from '../../../services/notification.service';
 import { ConfirmationService } from '../../../services/confirmation.service';
+import { TranslationService } from '../../../services/translation.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,7 +17,8 @@ export class FooterComponent {
     private _authService: AuthService,
     private _router: Router,
     private _notification: NotificationService,
-    private _confirmation: ConfirmationService
+    private _confirmation: ConfirmationService,
+    private _i18n: TranslationService
   ) {
 
   }
@@ -29,9 +31,10 @@ export class FooterComponent {
   LogOut(): void {
     this._confirmation
       .confirm({
-        title: 'Log out',
-        message: 'Do you want to log out?',
-        confirmText: 'Log out',
+        title: this._i18n.translate('footer.logoutTitle'),
+        message: this._i18n.translate('footer.logoutConfirm'),
+        confirmText: this._i18n.translate('footer.logoutTitle'),
+        cancelText: this._i18n.translate('common.cancel'),
         confirmColor: 'primary',
       })
       .subscribe(confirmed => {
@@ -47,13 +50,13 @@ export class FooterComponent {
     try {
       const ok = await this._router.navigate(['/login']);
       if (ok) {
-        this._notification.success('You have been logged out.');
+        this._notification.success(this._i18n.translate('footer.loggedOut'));
       } else {
-        this._notification.error('You are logged out, but the redirect failed.');
+        this._notification.error(this._i18n.translate('footer.redirectFailed'));
       }
     } catch (err) {
       console.error('Navigation error:', err);
-      this._notification.error('You are logged out, but something went wrong while redirecting.');
+      this._notification.error(this._i18n.translate('footer.redirectError'));
     }
   }
 }

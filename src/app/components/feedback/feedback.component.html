@@ -3,82 +3,82 @@
 
     @switch (stepperOrientation | async) {
     @case ('horizontal') {
-    <div>Make your screen smaller to see a vertical stepper</div>
+    <div>{{ 'feedback.stepperHorizontal' | translate }}</div>
     }
     @case ('vertical') {
-    <div>Make your screen larger to see a horizontal stepper</div>
+    <div>{{ 'feedback.stepperVertical' | translate }}</div>
     }
     }
 
     <mat-stepper class="example-stepper" [orientation]="(stepperOrientation | async)!">
 
-      <mat-step [stepControl]="nameFormGroup" label="Fill out name">
+      <mat-step [stepControl]="nameFormGroup" [label]="'feedback.fillName' | translate">
         <form [formGroup]="nameFormGroup">
           <mat-form-field>
-            <mat-label>Name</mat-label>
-            <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+            <mat-label>{{ 'feedback.name' | translate }}</mat-label>
+            <input matInput [placeholder]="'feedback.namePlaceholder' | translate" formControlName="firstCtrl" required>
           </mat-form-field>
           <div>
-            <button mat-button matStepperNext>Next</button>
+            <button mat-button matStepperNext>{{ 'feedback.next' | translate }}</button>
           </div>
         </form>
       </mat-step>
 
-      <mat-step [stepControl]="addressFormGroup" label="Fill out address">
+      <mat-step [stepControl]="addressFormGroup" [label]="'feedback.fillAddress' | translate">
         <form [formGroup]="addressFormGroup">
           <mat-form-field>
-            <mat-label>Address</mat-label>
-            <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
+            <mat-label>{{ 'feedback.address' | translate }}</mat-label>
+            <input matInput formControlName="secondCtrl" [placeholder]="'feedback.addressPlaceholder' | translate" required>
           </mat-form-field>
           <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+            <button mat-button matStepperPrevious>{{ 'feedback.back' | translate }}</button>
+            <button mat-button matStepperNext>{{ 'feedback.next' | translate }}</button>
           </div>
         </form>
       </mat-step>
 
-      <mat-step [stepControl]="phoneFormGroup" label="Fill out phone number">
+      <mat-step [stepControl]="phoneFormGroup" [label]="'feedback.fillPhone' | translate">
         <form [formGroup]="phoneFormGroup">
           <mat-form-field>
-            <mat-label>Phone number</mat-label>
-            <input matInput formControlName="thirdCtrl" placeholder="Ex. 12345678" required>
+            <mat-label>{{ 'feedback.phone' | translate }}</mat-label>
+            <input matInput formControlName="thirdCtrl" [placeholder]="'feedback.phonePlaceholder' | translate" required>
           </mat-form-field>
           <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+            <button mat-button matStepperPrevious>{{ 'feedback.back' | translate }}</button>
+            <button mat-button matStepperNext>{{ 'feedback.next' | translate }}</button>
           </div>
         </form>
       </mat-step>
 
-      <mat-step [stepControl]="messageFormGroup" label="Fill out Message">
+      <mat-step [stepControl]="messageFormGroup" [label]="'feedback.fillMessage' | translate">
         <form [formGroup]="messageFormGroup">
           <mat-form-field>
-            <mat-label>Message</mat-label>
+            <mat-label>{{ 'feedback.message' | translate }}</mat-label>
             <input matInput formControlName="fourthCtrl"
-              placeholder="Ex. Everything is perfect. Have a nice day :P" required>
+              [placeholder]="'feedback.messagePlaceholder' | translate" required>
           </mat-form-field>
           <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+            <button mat-button matStepperPrevious>{{ 'feedback.back' | translate }}</button>
+            <button mat-button matStepperNext>{{ 'feedback.next' | translate }}</button>
           </div>
         </form>
       </mat-step>
 
       <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        <p>You are now done.</p>
+        <ng-template matStepLabel>{{ 'feedback.done' | translate }}</ng-template>
+        <p>{{ 'feedback.doneBody' | translate }}</p>
         <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button (click)="submitFeedback()">Submit</button>
+          <button mat-button matStepperPrevious>{{ 'feedback.back' | translate }}</button>
+          <button mat-button (click)="submitFeedback()">{{ 'feedback.submit' | translate }}</button>
         </div>
       </mat-step>
     </mat-stepper>
   </section>
 
   <div class="header-actions">
-    <h1>Feedbacks List</h1>
+    <h1>{{ 'feedback.feedbacksList' | translate }}</h1>
     <div class="actions">
-      <button class="btn btn-secondary" (click)="getFeedbacks()">Load Feedbacks</button>
+      <button class="btn btn-secondary" (click)="getFeedbacks()">{{ 'feedback.loadFeedbacks' | translate }}</button>
     </div>
   </div>
 
@@ -86,12 +86,12 @@
   <table class="table">
     <thead>
       <tr>
-        <th>fid</th>
-        <th>message</th>
-        <th>name</th>
-        <th>address</th>
-        <th>phone</th>
-        <th>Actions</th>
+        <th>{{ 'feedback.colFid' | translate }}</th>
+        <th>{{ 'feedback.colMessage' | translate }}</th>
+        <th>{{ 'feedback.colName' | translate }}</th>
+        <th>{{ 'feedback.colAddress' | translate }}</th>
+        <th>{{ 'feedback.colPhone' | translate }}</th>
+        <th>{{ 'common.actions' | translate }}</th>
       </tr>
     </thead>
     <tbody>
@@ -103,7 +103,7 @@
         <td>{{ feedback.address }}</td>
         <td>{{ feedback.phone }}</td>
         <td>
-          <a class="btn btn-danger btn-sm" (click)="deleteFeedback(feedback.fid)">Delete</a>
+          <a class="btn btn-danger btn-sm" (click)="deleteFeedback(feedback.fid)">{{ 'common.delete' | translate }}</a>
         </td>
       </tr>
       }

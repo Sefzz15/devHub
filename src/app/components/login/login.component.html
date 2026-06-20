@@ -1,9 +1,9 @@
 <div class="login-container">
-  <h2>Login</h2>
+  <h2>{{ 'login.title' | translate }}</h2>
   <form (ngSubmit)="onSubmit()">
     <!-- Username Field -->
     <div class="input-container">
-      <label for="username">Username:</label>
+      <label for="username">{{ 'login.username' | translate }}</label>
       <input class="input-field" type="text" id="username" [ngModel]="username()"
         (ngModelChange)="username.set($event)" name="username" required>
       <!-- Error Message for Username -->
@@ -14,7 +14,7 @@
 
     <!-- Password Field -->
     <div class="input-container">
-      <label for="password">Password:</label>
+      <label for="password">{{ 'login.password' | translate }}</label>
       <input class="input-field" id="password" type="password" [ngModel]="password()"
         (ngModelChange)="password.set($event)" name="password" required>
       <!-- Error Message for Password -->
@@ -30,12 +30,12 @@
 
     <!-- Submit Button -->
     <div>
-      <button class="loginButton" type="submit">Login</button>
+      <button class="loginButton" type="submit">{{ 'login.submit' | translate }}</button>
     </div>
 
     <!-- Link to Create User Page -->
     <div>
-      <a class="btn btn-primary mb-3" routerLink="../entity-form/user">New User</a>
+      <a class="btn btn-primary mb-3" routerLink="../entity-form/user">{{ 'login.newUser' | translate }}</a>
     </div>
   </form>
 </div>

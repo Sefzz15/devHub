@@ -6,6 +6,7 @@ import { OrderDetailService } from '../../../services/orderDetail.service';
 import { SessionService } from '../../../services/session.service';
 import { ConfirmationService } from '../../../services/confirmation.service';
 import { NotificationService } from '../../../services/notification.service';
+import { TranslationService } from '../../../services/translation.service';
 import { IUser, IUserValuesResponse } from '../../../interfaces/IUser';
 import { IProduct, IProductValuesResponse } from '../../../interfaces/IProduct';
 import { IOrder, IOrderValuesResponse } from '../../../interfaces/IOrder';
@@ -33,7 +34,8 @@ export class AdminComponent implements OnInit {
     private _orderService: OrderService,
     private _orderDetailService: OrderDetailService,
     private _confirmation: ConfirmationService,
-    private _notification: NotificationService
+    private _notification: NotificationService,
+    private _i18n: TranslationService
   ) { }
 
   ngOnInit(): void {
@@ -55,15 +57,20 @@ export class AdminComponent implements OnInit {
   // Delete a user
   deleteUser(id: number): void {
     this._confirmation
-      .confirm({ title: 'Delete user', message: 'Are you sure you want to delete this user?' })
+      .confirm({
+        title: this._i18n.translate('admin.deleteUserTitle'),
+        message: this._i18n.translate('admin.deleteUserMsg'),
+        confirmText: this._i18n.translate('common.delete'),
+        cancelText: this._i18n.translate('common.cancel'),
+      })
       .subscribe(confirmed => {
         if (!confirmed) return;
         this._userService.deleteUser(id).subscribe({
           next: () => {
-            this._notification.success('User deleted.');
+            this._notification.success(this._i18n.translate('admin.userDeleted'));
             this.getUsers();  // Refresh the user list
           },
-          error: () => this._notification.error('Failed to delete user.'),
+          error: () => this._notification.error(this._i18n.translate('admin.userDeleteFailed')),
         });
       });
   }
@@ -71,15 +78,20 @@ export class AdminComponent implements OnInit {
   // Delete a product
   deleteProduct(id: number): void {
     this._confirmation
-      .confirm({ title: 'Delete product', message: 'Are you sure you want to delete this product?' })
+      .confirm({
+        title: this._i18n.translate('admin.deleteProductTitle'),
+        message: this._i18n.translate('admin.deleteProductMsg'),
+        confirmText: this._i18n.translate('common.delete'),
+        cancelText: this._i18n.translate('common.cancel'),
+      })
       .subscribe(confirmed => {
         if (!confirmed) return;
         this._productService.deleteProduct(id).subscribe({
           next: () => {
-            this._notification.success('Product deleted.');
+            this._notification.success(this._i18n.translate('admin.productDeleted'));
             this.getProducts();  // Refresh the product list
           },
-          error: () => this._notification.error('Failed to delete product.'),
+          error: () => this._notification.error(this._i18n.translate('admin.productDeleteFailed')),
         });
       });
   }
@@ -87,15 +99,20 @@ export class AdminComponent implements OnInit {
   // Delete an order
   deleteOrder(id: number): void {
     this._confirmation
-      .confirm({ title: 'Delete order', message: 'Are you sure you want to delete this order?' })
+      .confirm({
+        title: this._i18n.translate('admin.deleteOrderTitle'),
+        message: this._i18n.translate('admin.deleteOrderMsg'),
+        confirmText: this._i18n.translate('common.delete'),
+        cancelText: this._i18n.translate('common.cancel'),
+      })
       .subscribe(confirmed => {
         if (!confirmed) return;
         this._orderService.deleteOrder(id).subscribe({
           next: () => {
-            this._notification.success('Order deleted.');
+            this._notification.success(this._i18n.translate('admin.orderDeleted'));
             this.getOrders();  // Refresh the orders list
           },
-          error: () => this._notification.error('Failed to delete order.'),
+          error: () => this._notification.error(this._i18n.translate('admin.orderDeleteFailed')),
         });
       });
   }

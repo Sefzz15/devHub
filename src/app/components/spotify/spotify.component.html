@@ -2,13 +2,13 @@
   <div class="header-actions">
     <h1>Spotify</h1>
     <div class="actions">
-      <button class="btn btn-secondary" (click)="resetFilters()">Reset filters</button>
-      <button class="btn btn-primary btn-sm" (click)="toggleCountBy()">Count by: {{ countBy() }}</button>
+      <button class="btn btn-secondary" (click)="resetFilters()">{{ 'spotify.resetFilters' | translate }}</button>
+      <button class="btn btn-primary btn-sm" (click)="toggleCountBy()">{{ 'spotify.countBy' | translate: { by: countBy() } }}</button>
     </div>
   </div>
 
   <div class="filters-row">
-    <input class="form-control" placeholder="Search (track / artist )" [(ngModel)]="filters.query"
+    <input class="form-control" [placeholder]="'spotify.searchPlaceholder' | translate" [(ngModel)]="filters.query"
       (ngModelChange)="loadPage(1, pageSize()); loadInsights()" />
 
       <input type="date" class="form-control" [(ngModel)]="filters.dateFrom"
@@ -21,11 +21,11 @@
         <!-- Range tabs -->
         <div class="stats-toolbar">
           <div class="tabs">
-            <button class="tab" (click)="setRange('4w')">last 4 weeks</button>
-            <button class="tab" (click)="setRange('6m')">last 6 months</button>
-            <button class="tab" (click)="setRange('12m')">last 12 months</button>
+            <button class="tab" (click)="setRange('4w')">{{ 'spotify.last4w' | translate }}</button>
+            <button class="tab" (click)="setRange('6m')">{{ 'spotify.last6m' | translate }}</button>
+            <button class="tab" (click)="setRange('12m')">{{ 'spotify.last12m' | translate }}</button>
             <select class="tab-select" (change)="setYearRange(+$any($event.target).value)">
-              <option value="" selected disabled>Year…</option>
+              <option value="" selected disabled>{{ 'spotify.year' | translate }}</option>
               @for (y of years(); track y) {
                 <option [value]="y">{{ y }}</option>
               }
@@ -36,7 +36,7 @@
         <!-- Insights cards -->
         <div class="stats-grid">
           <div class="card">
-            <div class="card-header">Top Tracks ({{ countBy() }})</div>
+            <div class="card-header">{{ 'spotify.topTracks' | translate }} ({{ countBy() }})</div>
             <ol class="toplist">
               @for (t of topTracks(); track t.spotifyTrackUri) {
                 <li class="toplist-item">
@@ -46,12 +46,12 @@
                   </div>
                   <div class="right">
                     <a class="open" target="_blank" rel="noopener"
-                    [href]="'https://open.spotify.com/track/' + extractSpotifyId(t.spotifyTrackUri)">OPEN</a>
+                    [href]="'https://open.spotify.com/track/' + extractSpotifyId(t.spotifyTrackUri)">{{ 'spotify.open' | translate }}</a>
                     @if (countBy()==='time') {
                       <div class="metric">{{ fmtMs(t.totalMs) }}</div>
                     }
                     @if (countBy()==='plays') {
-                      <div class="metric">{{ t.plays }} plays</div>
+                      <div class="metric">{{ t.plays }} {{ 'spotify.plays' | translate }}</div>
                     }
                   </div>
                 </li>
@@ -60,20 +60,20 @@
           </div>
 
           <div class="card">
-            <div class="card-header">Top Artists ({{ countBy() }})</div>
+            <div class="card-header">{{ 'spotify.topArtists' | translate }} ({{ countBy() }})</div>
             <ol class="toplist">
               @for (a of topArtists(); track a.artistName) {
                 <li class="toplist-item">
                   <div class="left">
                     <div class="title">{{ a.artistName }}</div>
-                    <div class="subtitle">Tracks: {{ a.uniqueTracks }}</div>
+                    <div class="subtitle">{{ 'spotify.tracksLabel' | translate }} {{ a.uniqueTracks }}</div>
                   </div>
                   <div class="right">
                     @if (countBy()==='time') {
                       <div class="metric">{{ fmtMs(a.totalMs) }}</div>
                     }
                     @if (countBy()==='plays') {
-                      <div class="metric">{{ a.plays }} plays</div>
+                      <div class="metric">{{ a.plays }} {{ 'spotify.plays' | translate }}</div>
                     }
                   </div>
                 </li>
@@ -83,7 +83,7 @@
 
           @if (topGenres().length) {
             <div class="card">
-              <div class="card-header">Top Genres ({{ countBy() }})</div>
+              <div class="card-header">{{ 'spotify.topGenres' | translate }} ({{ countBy() }})</div>
               <ol class="toplist">
                 @for (g of topGenres(); track g.genre) {
                   <li class="toplist-item">
@@ -109,7 +109,7 @@
         <!-- Daily popularity (pick a single date) -->
         <div class="stats-toolbar">
           <div class="tabs" style="align-items:center; gap: .75rem;">
-            <strong>Daily popularity:</strong>
+            <strong>{{ 'spotify.dailyPopularity' | translate }}</strong>
             <input type="date" class="form-control" [ngModel]="selectedDate()"
               (ngModelChange)="selectedDate.set($event); onSelectedDateChange()" />
             @if (selectedDate()) {
@@ -122,17 +122,17 @@
         @if (selectedDate()) {
           <div class="chart-grid">
             <div class="card">
-              <div class="card-header">Top Songs — {{ countBy() }}</div>
+              <div class="card-header">{{ 'spotify.topSongs' | translate }} — {{ countBy() }}</div>
               <apx-chart [series]="songSeries()" [labels]="songLabels()" [chart]="donutChart" [legend]="legend" [tooltip]="tooltip"
               [responsive]="donutResponsive"></apx-chart>
             </div>
             <div class="card">
-              <div class="card-header">Top Artists — {{ countBy() }}</div>
+              <div class="card-header">{{ 'spotify.topArtists' | translate }} — {{ countBy() }}</div>
               <apx-chart [series]="artistSeries()" [labels]="artistLabels()" [chart]="donutChart" [legend]="legend"
               [tooltip]="tooltip" [responsive]="donutResponsive"></apx-chart>
             </div>
             <div class="card">
-              <div class="card-header">Top Genres — {{ countBy() }}</div>
+              <div class="card-header">{{ 'spotify.topGenres' | translate }} — {{ countBy() }}</div>
               <apx-chart [series]="genreSeries()" [labels]="genreLabels()" [chart]="donutChart" [legend]="legend"
               [tooltip]="tooltip" [responsive]="donutResponsive"></apx-chart>
             </div>
@@ -140,10 +140,10 @@
         }
 
         <div class="header-actions">
-          <h1>History</h1>
+          <h1>{{ 'spotify.history' | translate }}</h1>
           <div class="actions">
-            <button class="btn btn-secondary" (click)="loadPage(1, pageSize())">Refresh</button>
-            <span class="badge">Total Items: {{ totalItems() }}</span>
+            <button class="btn btn-secondary" (click)="loadPage(1, pageSize())">{{ 'spotify.refresh' | translate }}</button>
+            <span class="badge">{{ 'spotify.totalItems' | translate }} {{ totalItems() }}</span>
           </div>
         </div>
 
@@ -157,7 +157,7 @@
                       {{ col.label }}
                     </th>
                   }
-                  <th>Actions</th>
+                  <th>{{ 'common.actions' | translate }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -183,7 +183,7 @@
                       </td>
                     }
                     <td>
-                      <button class="btn btn-primary btn-sm" (click)="onInspect(item)">Inspect</button>
+                      <button class="btn btn-primary btn-sm" (click)="onInspect(item)">{{ 'spotify.inspect' | translate }}</button>
                     </td>
                   </tr>
                 }
@@ -194,9 +194,9 @@
 
         <div class="pagination-controls">
           <button class="btn btn-secondary btn-sm" [disabled]="currentPage() === 1"
-          (click)="onPageChange(currentPage() - 1)">Previous</button>
-          <span>Page {{ currentPage() }}</span>
+          (click)="onPageChange(currentPage() - 1)">{{ 'spotify.previous' | translate }}</button>
+          <span>{{ 'spotify.pageLabel' | translate }} {{ currentPage() }}</span>
           <button class="btn btn-primary btn-sm" [disabled]="(currentPage() * pageSize()) >= totalItems()"
-          (click)="onPageChange(currentPage() + 1)">Next</button>
+          (click)="onPageChange(currentPage() + 1)">{{ 'spotify.next' | translate }}</button>
         </div>
       </nav>

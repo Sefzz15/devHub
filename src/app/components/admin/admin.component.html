@@ -1,10 +1,10 @@
 <nav class="container">
 
   <div class="header-actions">
-    <h1>Users List</h1>
+    <h1>{{ 'admin.usersList' | translate }}</h1>
     <div class="actions">
-      <button class="btn btn-secondary" (click)="getUsers()">Load Users</button>
-      <a class="btn btn-primary" [routerLink]="['/entity-form', 'user']">New User</a>
+      <button class="btn btn-secondary" (click)="getUsers()">{{ 'admin.loadUsers' | translate }}</button>
+      <a class="btn btn-primary" [routerLink]="['/entity-form', 'user']">{{ 'admin.newUser' | translate }}</a>
     </div>
   </div>
 
@@ -12,10 +12,10 @@
     <table class="table">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Password</th>
-          <th>Action</th>
+          <th>{{ 'admin.colId' | translate }}</th>
+          <th>{{ 'admin.colName' | translate }}</th>
+          <th>{{ 'admin.colPassword' | translate }}</th>
+          <th>{{ 'common.actions' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -25,8 +25,8 @@
             <td>{{ user.uname }}</td>
             <td>{{ user.upass }}</td>
             <td>
-              <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'user', user.uid]">Update</a>
-              <a class="btn btn-danger btn-sm" (click)="deleteUser(user.uid)">Delete</a>
+              <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'user', user.uid]">{{ 'common.update' | translate }}</a>
+              <a class="btn btn-danger btn-sm" (click)="deleteUser(user.uid)">{{ 'common.delete' | translate }}</a>
             </td>
           </tr>
         }
@@ -35,10 +35,10 @@
   }
 
   <div class="header-actions">
-    <h1>Products List</h1>
+    <h1>{{ 'admin.productsList' | translate }}</h1>
     <div class="actions">
-      <button class="btn btn-secondary" (click)="getProducts()">Load Products</button>
-      <a class="btn btn-primary" [routerLink]="['/entity-form', 'product']">New Product</a>
+      <button class="btn btn-secondary" (click)="getProducts()">{{ 'admin.loadProducts' | translate }}</button>
+      <a class="btn btn-primary" [routerLink]="['/entity-form', 'product']">{{ 'admin.newProduct' | translate }}</a>
     </div>
   </div>
 
@@ -46,11 +46,11 @@
     <table class="table">
       <thead>
         <tr>
-          <th>product id</th>
-          <th>product Name</th>
-          <th>price</th>
-          <th>stock</th>
-          <th>Action</th>
+          <th>{{ 'admin.colProductIdLower' | translate }}</th>
+          <th>{{ 'admin.colProductNameLower' | translate }}</th>
+          <th>{{ 'admin.colPriceLower' | translate }}</th>
+          <th>{{ 'admin.colStockLower' | translate }}</th>
+          <th>{{ 'common.actions' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -61,8 +61,8 @@
             <td>{{ product.price }}</td>
             <td>{{ product.stock }}</td>
             <td>
-              <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'product', product.pid]">Update</a>
-              <a class="btn btn-danger btn-sm" (click)="deleteProduct(product.pid)">Delete</a>
+              <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'product', product.pid]">{{ 'common.update' | translate }}</a>
+              <a class="btn btn-danger btn-sm" (click)="deleteProduct(product.pid)">{{ 'common.delete' | translate }}</a>
             </td>
           </tr>
         }
@@ -72,10 +72,10 @@
 
 
   <div class="header-actions">
-    <h1>Orders List</h1>
+    <h1>{{ 'admin.ordersList' | translate }}</h1>
     <div class="actions">
-      <button class="btn btn-secondary" (click)="getOrders()">Load Orders</button>
-      <a class="btn btn-primary" [routerLink]="['/entity-form', 'order']">Create Order</a>
+      <button class="btn btn-secondary" (click)="getOrders()">{{ 'admin.loadOrders' | translate }}</button>
+      <a class="btn btn-primary" [routerLink]="['/entity-form', 'order']">{{ 'admin.createOrder' | translate }}</a>
     </div>
   </div>
 
@@ -83,10 +83,10 @@
     <table class="table">
       <thead>
         <tr>
-          <th>Order ID</th>
-          <th>User ID</th>
-          <th>Date</th>
-          <th>Actions</th>
+          <th>{{ 'admin.colOrderId' | translate }}</th>
+          <th>{{ 'admin.colUserId' | translate }}</th>
+          <th>{{ 'admin.colDate' | translate }}</th>
+          <th>{{ 'common.actions' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -96,8 +96,8 @@
             <td>{{ order.uid }}</td>
             <td>{{ order.date }}</td>
             <td>
-              <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'order', order.oid]">Edit</a>
-              <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">Delete</a>
+              <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'order', order.oid]">{{ 'common.edit' | translate }}</a>
+              <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">{{ 'common.delete' | translate }}</a>
             </td>
           </tr>
         }
@@ -106,9 +106,9 @@
   }
 
   <div class="header-actions">
-    <h1>OrdersDetails List</h1>
+    <h1>{{ 'admin.orderDetailsList' | translate }}</h1>
     <div class="actions">
-      <button class="btn btn-secondary" (click)="getOrderDetails()">Load Order Details</button>
+      <button class="btn btn-secondary" (click)="getOrderDetails()">{{ 'admin.loadOrderDetails' | translate }}</button>
     </div>
   </div>
 
@@ -116,10 +116,10 @@
     <table class="table">
       <thead>
         <tr>
-          <th>Order ID</th>
-          <th>Product ID</th>
-          <th>Quantity</th>
-          <th>Actions</th>
+          <th>{{ 'admin.colOrderId' | translate }}</th>
+          <th>{{ 'admin.colProductId' | translate }}</th>
+          <th>{{ 'admin.colQuantity' | translate }}</th>
+          <th>{{ 'common.actions' | translate }}</th>
         </tr>
       </thead>
       <tbody>

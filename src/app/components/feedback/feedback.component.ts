@@ -8,6 +8,7 @@ import { SessionService } from '../../../services/session.service';
 import { FeedbackService } from '../../../services/feedback.service';
 import { ConfirmationService } from '../../../services/confirmation.service';
 import { NotificationService } from '../../../services/notification.service';
+import { TranslationService } from '../../../services/translation.service';
 import { IFeedbackValuesResponse } from '../../../interfaces/IFeedback';
 
 @Component({
@@ -46,6 +47,7 @@ export class FeedbackComponent implements OnInit {
     private _feedbackService: FeedbackService,
     private _confirmation: ConfirmationService,
     private _notification: NotificationService,
+    private _i18n: TranslationService,
     private breakpointObserver: BreakpointObserver
   ) {
     this.stepperOrientation = this.breakpointObserver
@@ -70,7 +72,7 @@ export class FeedbackComponent implements OnInit {
 
       this._feedbackService.createFeedback(payload).subscribe({
         next: () => this.getFeedbacks(),
-        error: () => this.errorMessage.set('Failed to submit feedback. Please try again later.'),
+        error: () => this.errorMessage.set(this._i18n.translate('feedback.submitFailed')),
       });
     }
   }
@@ -86,15 +88,20 @@ export class FeedbackComponent implements OnInit {
 
   deleteFeedback(id: number): void {
     this._confirmation
-      .confirm({ title: 'Delete feedback', message: 'Are you sure you want to delete this feedback?' })
+      .confirm({
+        title: this._i18n.translate('feedback.deleteTitle'),
+        message: this._i18n.translate('feedback.deleteMsg'),
+        confirmText: this._i18n.translate('common.delete'),
+        cancelText: this._i18n.translate('common.cancel'),
+      })
       .subscribe(confirmed => {
         if (!confirmed) return;
         this._feedbackService.deleteFeedback(id).subscribe({
           next: () => {
-            this._notification.success('Feedback deleted.');
+            this._notification.success(this._i18n.translate('feedback.deleted'));
             this.getFeedbacks();
           },
-          error: () => this._notification.error('Failed to delete feedback.'),
+          error: () => this._notification.error(this._i18n.translate('feedback.deleteFailed')),
         });
       });
   }

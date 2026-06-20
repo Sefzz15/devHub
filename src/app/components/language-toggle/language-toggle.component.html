@@ -1,0 +1,42 @@
+<button
+  type="button"
+  class="lang-toggle"
+  (click)="toggle()"
+  [title]="i18n.lang() === 'en' ? (i18n.translate('nav.switchToGreek')) : (i18n.translate('nav.switchToEnglish'))"
+  [attr.aria-label]="i18n.lang() === 'en' ? (i18n.translate('nav.switchToGreek')) : (i18n.translate('nav.switchToEnglish'))">
+
+  @if (i18n.lang() === 'el') {
+    <!-- Greek flag (active = Greek) -->
+    <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <clipPath id="gr-clip"><circle cx="18" cy="18" r="18" /></clipPath>
+      </defs>
+      <g clip-path="url(#gr-clip)">
+        <rect width="36" height="36" fill="#0d5eaf" />
+        <rect y="4" width="36" height="4" fill="#ffffff" />
+        <rect y="12" width="36" height="4" fill="#ffffff" />
+        <rect y="20" width="36" height="4" fill="#ffffff" />
+        <rect y="28" width="36" height="4" fill="#ffffff" />
+        <rect width="20" height="20" fill="#0d5eaf" />
+        <rect x="8" width="4" height="20" fill="#ffffff" />
+        <rect y="8" width="20" height="4" fill="#ffffff" />
+      </g>
+    </svg>
+  } @else {
+    <!-- Union Jack (active = English) -->
+    <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <clipPath id="gb-clip"><circle cx="18" cy="18" r="18" /></clipPath>
+      </defs>
+      <g clip-path="url(#gb-clip)">
+        <rect width="36" height="36" fill="#012169" />
+        <path d="M0,0 L36,36 M36,0 L0,36" stroke="#ffffff" stroke-width="7" />
+        <path d="M0,0 L36,36 M36,0 L0,36" stroke="#c8102e" stroke-width="2.5" />
+        <rect x="13" width="10" height="36" fill="#ffffff" />
+        <rect y="13" width="36" height="10" fill="#ffffff" />
+        <rect x="15" width="6" height="36" fill="#c8102e" />
+        <rect y="15" width="36" height="6" fill="#c8102e" />
+      </g>
+    </svg>
+  }
+</button>

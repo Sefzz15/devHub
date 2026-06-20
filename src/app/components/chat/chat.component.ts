@@ -3,6 +3,7 @@ import * as signalR from '@microsoft/signalr';
 import {SessionService} from '../../../services/session.service';
 import {AuthService} from '../../../services/auth.service';
 import {NotificationService} from '../../../services/notification.service';
+import {TranslationService} from '../../../services/translation.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -32,7 +33,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     private _sessionService: SessionService,
     private _authService: AuthService,
     private _router: Router,
-    private _notification: NotificationService
+    private _notification: NotificationService,
+    private _i18n: TranslationService
   ) {
   }
 
@@ -69,16 +71,16 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     // Keep the user informed when the chat server connection drops or recovers
     this._connection.onreconnecting(() => {
-      this._notification.warn('Lost connection to the chat server. Trying to reconnect...');
+      this._notification.warn(this._i18n.translate('chat.lostConnection'));
     });
 
     this._connection.onreconnected(() => {
-      this._notification.success('Reconnected to the chat server.');
+      this._notification.success(this._i18n.translate('chat.reconnected'));
     });
 
     this._connection.onclose(() => {
       if (!this._intentionalDisconnect) {
-        this._notification.error('Disconnected from the chat server. Please refresh to try again.');
+        this._notification.error(this._i18n.translate('chat.disconnected'));
       }
     });
 
@@ -99,7 +101,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       })
       .catch(err => {
         console.error('SignalR Connection Error: ', err);
-        this._notification.error('Unable to reach the chat server. Please try again later.');
+        this._notification.error(this._i18n.translate('chat.unreachable'));
       });
 
     // Receive messages and update the list of connected users
@@ -168,7 +170,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     })
       .catch(err => {
         console.error('Error while sending message: ', err);
-        this._notification.error('Message not sent — the chat server is unavailable.');
+        this._notification.error(this._i18n.translate('chat.messageNotSent'));
       });
   }
 
@@ -198,7 +200,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   startInactivityTimer() {
     this.inactivityTimeout = setTimeout(() => {
-      this._notification.warn('You have been logged out due to inactivity.');
+      this._notification.warn(this._i18n.translate('chat.loggedOutInactivity'));
       this._authService.logout();
       this._router.navigate(['/'])
         .catch(err => console.error('Navigation error: ', err));

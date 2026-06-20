@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { ProductService } from '../../../services/product.service';
 import { OrderService } from '../../../services/order.service';
+import { TranslationService } from '../../../services/translation.service';
 
 @Component({
   standalone: false,
@@ -25,22 +26,46 @@ export class EntityFormComponent implements OnInit {
     public _router: Router,
     private _userService: UserService,
     private _productService: ProductService,
-    private _orderService: OrderService
+    private _orderService: OrderService,
+    private _i18n: TranslationService
   ) { }
+
+  /** Translation key for the current entity, derived from its config title. */
+  private _entityKey(): string {
+    switch (this.config()?.title) {
+      case 'User': return 'entity.user';
+      case 'Product': return 'entity.product';
+      case 'Order': return 'entity.order';
+      default: return 'entity.entity';
+    }
+  }
+
+  /** Localised entity name, e.g. "User" / "Χρήστης". */
+  entityLabel(): string {
+    return this._i18n.translate(this._entityKey());
+  }
+
+  /** Localised "Create User" / "Update Product" form heading. */
+  headerText(): string {
+    return this._i18n.translate(
+      this.mode() === 'create' ? 'entityForm.create' : 'entityForm.update',
+      { entity: this.entityLabel() },
+    );
+  }
 
   ngOnInit(): void {
     const typeParam = this._route.snapshot.paramMap.get('type');
     console.log('Type param:', typeParam);
 
     if (!typeParam) {
-      this.errorMessage.set('Invalid entity type.');
+      this.errorMessage.set(this._i18n.translate('entityForm.invalidType'));
       return;
     }
 
     this.config.set(this.getConfig(typeParam));
 
     if (!this.config()) {
-      this.errorMessage.set(`Unknown entity type: ${typeParam}`);
+      this.errorMessage.set(this._i18n.translate('entityForm.unknownType', { type: typeParam }));
       return;
     }
 
@@ -51,7 +76,7 @@ export class EntityFormComponent implements OnInit {
       if (!isNaN(id) && id > 0) {
         this.config().get(id).subscribe({
           next: (data: any) => (this.entity = data),
-          error: () => this.errorMessage.set(`Unable to fetch ${this.config().title} data.`)
+          error: () => this.errorMessage.set(this._i18n.translate('entityForm.fetchFailed', { entity: this.entityLabel() }))
         });
       }
     }
@@ -101,7 +126,7 @@ export class EntityFormComponent implements OnInit {
   onSubmit(): void {
     const config = this.config();
     if (!config) {
-      this.errorMessage.set('Invalid entity configuration.');
+      this.errorMessage.set(this._i18n.translate('entityForm.invalidConfig'));
       return;
     }
 
@@ -121,8 +146,10 @@ export class EntityFormComponent implements OnInit {
         : config.update(this.entity[config.fields[0].key], this.entity);
 
     action$.subscribe({
-      next: () => this.handleSuccess(`${this.mode() === 'create' ? 'Created' : 'Updated'} successfully.`),
-      error: () => this.errorMessage.set(`Failed to ${this.mode()} ${config.title}.`)
+      next: () => this.handleSuccess(
+        this._i18n.translate(this.mode() === 'create' ? 'entityForm.createdSuccess' : 'entityForm.updatedSuccess'),
+      ),
+      error: () => this.errorMessage.set(this._i18n.translate('entityForm.saveFailed'))
     });
   }
 
@@ -132,7 +159,9 @@ export class EntityFormComponent implements OnInit {
     const errors: { [key: string]: string } = {};
     for (const field of this.config().fields) {
       if (field.required && !this.entity[field.key]) {
-        errors[field.key] = `${field.label} is required.`;
+        errors[field.key] = this._i18n.translate('entityForm.required', {
+          field: this._i18n.translate('field.' + field.key),
+        });
         isValid = false;
       }
     }
@@ -141,7 +170,7 @@ export class EntityFormComponent implements OnInit {
   }
 
   handleSuccess(message: string) {
-    this.successMessage.set(message + ' Redirecting...');
+    this.successMessage.set(this._i18n.translate('entityForm.redirecting', { message }));
     setTimeout(() => this._router.navigate(['/admin']), 1500);
   }
 }

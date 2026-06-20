@@ -5,7 +5,7 @@
 
     <div class="chatInfo">
       <div class="connected-users">
-        <h3>Connected Users:</h3>
+        <h3>{{ 'chat.connectedUsers' | translate }}</h3>
         <ul>
           @for (user of connectedUsers(); track user) {
             <li>{{ user }}</li>
@@ -14,13 +14,13 @@
       </div>
 
       <div class="groups-list">
-        <h3>Available Groups:</h3>
+        <h3>{{ 'chat.availableGroups' | translate }}</h3>
         <ul>
           @for (group of chatGroups(); track group) {
             <li [class.active]="group === currentGroup()">
               <span (click)="joinGroup(group)">{{ group }}</span>
               @if (currentGroup() === group) {
-                <button (click)="leaveGroup(group)">Leave</button>
+                <button (click)="leaveGroup(group)">{{ 'chat.leave' | translate }}</button>
               }
             </li>
           }
@@ -29,9 +29,9 @@
 
       <div class="group-controls">
         <input type="text" [ngModel]="newGroup()" (ngModelChange)="newGroup.set($event)"
-          placeholder="Enter group name..." />
-        <button (click)="joinGroup(newGroup())" [disabled]="!newGroup().trim()"> Join </button>
-        <button (click)="leaveGroup(newGroup())" [disabled]="!newGroup().trim()"> Leave </button>
+          [placeholder]="'chat.enterGroupName' | translate" />
+        <button (click)="joinGroup(newGroup())" [disabled]="!newGroup().trim()"> {{ 'chat.join' | translate }} </button>
+        <button (click)="leaveGroup(newGroup())" [disabled]="!newGroup().trim()"> {{ 'chat.leave' | translate }} </button>
       </div>
 
     </div>
@@ -51,10 +51,10 @@
             {{ unreadCount() }}
           </div>
         }
-        <input type="text" placeholder="Type your message..." [ngModel]="messageInput()"
+        <input type="text" [placeholder]="'chat.typeMessage' | translate" [ngModel]="messageInput()"
           (ngModelChange)="messageInput.set($event)" (keydown.enter)="sendMessage()"
           (focus)="onInputFocus()" />
-          <button class="btn btn-primary" (click)="sendMessage()">Send</button>
+          <button class="btn btn-primary" (click)="sendMessage()">{{ 'chat.send' | translate }}</button>
         </div>
       </div>
     </div>

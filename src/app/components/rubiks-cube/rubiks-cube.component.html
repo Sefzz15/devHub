@@ -3,20 +3,20 @@
 
   <div class="rubiks-ui">
     <div class="rubiks-actions">
-      <button type="button" (click)="scramble()" [disabled]="solving">Scramble</button>
+      <button type="button" (click)="scramble()" [disabled]="solving">{{ 'rubiks.scramble' | translate }}</button>
       <button type="button" (click)="solve()" [disabled]="solving">
-        {{ solving ? 'Solving…' : 'Solve' }}
+        {{ solving ? ('rubiks.solving' | translate) : ('rubiks.solve' | translate) }}
       </button>
-      <button type="button" (click)="reset()" [disabled]="solving">Reset</button>
+      <button type="button" (click)="reset()" [disabled]="solving">{{ 'rubiks.reset' | translate }}</button>
     </div>
     <div class="rubiks-help rubiks-solution" *ngIf="solveInfo">{{ solveInfo }}</div>
     <div class="rubiks-help">
-      <strong>Controls</strong>
+      <strong>{{ 'rubiks.controls' | translate }}</strong>
       <ul>
-        <li>Drag background — rotate camera</li>
-        <li>Drag a face — turn that slice</li>
-        <li><kbd>F</kbd> <kbd>B</kbd> <kbd>U</kbd> <kbd>D</kbd> <kbd>L</kbd> <kbd>R</kbd> — turn faces</li>
-        <li><kbd>Shift</kbd> + key — reverse turn</li>
+        <li>{{ 'rubiks.dragBackground' | translate }}</li>
+        <li>{{ 'rubiks.dragFace' | translate }}</li>
+        <li><kbd>F</kbd> <kbd>B</kbd> <kbd>U</kbd> <kbd>D</kbd> <kbd>L</kbd> <kbd>R</kbd> — {{ 'rubiks.turnFaces' | translate }}</li>
+        <li><kbd>Shift</kbd> + key — {{ 'rubiks.reverseTurn' | translate }}</li>
       </ul>
     </div>
   </div>
