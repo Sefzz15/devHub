@@ -1,8 +1,22 @@
 html, body {
-  height: 88vh;
-  max-height: 88vh;
+  height: 100vh;
+  height: 100dvh; /* exclude mobile browser chrome so the footer stays visible */
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* App shell: fixed navbar + footer with the routed view filling the space
+   between them. Keeps the footer pinned to the bottom on every page and lets
+   each view scroll internally instead of pushing the footer off-screen. */
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+router-outlet + * {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
 }
 
 .notification--success {

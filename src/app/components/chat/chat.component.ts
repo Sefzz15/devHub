@@ -98,19 +98,22 @@ export class ChatComponent implements OnInit, OnDestroy {
             sessionStorage.setItem('chatGroups', JSON.stringify(groups));
           })
           .catch(err => console.error('Error getting groups: ', err));
+
+        // Show the general chat's existing messages on load.
+        this.loadMessages(this.currentGroup());
       })
       .catch(err => {
         console.error('SignalR Connection Error: ', err);
         this._notification.error(this._i18n.translate('chat.unreachable'));
       });
 
-    // Receive messages and update the list of connected users
-    this._connection.on('ReceiveMessage', (user: string, message: string) => {
-      if (user !== this.username) {
-        this.messages.update(m => [...m, {text: `${user}: ${message}`, isSender: false}]);
-        this.unreadCount.update(c => c + 1);
-        this.scrollToBottom();
-      }
+    // Receive messages — only for the channel we're currently viewing ("" = general).
+    this._connection.on('ReceiveMessage', (user: string, message: string, group: string) => {
+      if ((group || '') !== this.currentGroup()) return;
+      if (user === this.username) return; // our own message is already shown optimistically
+      this.messages.update(m => [...m, {text: `${user}: ${message}`, isSender: false}]);
+      this.unreadCount.update(c => c + 1);
+      this.scrollToBottom();
     });
 
     // Add a user to the list of connected users
@@ -149,6 +152,21 @@ export class ChatComponent implements OnInit, OnDestroy {
       sessionStorage.setItem('chatGroups', JSON.stringify(this.chatGroups()));
     });
 
+    this._connection.on('GroupDeleted', (group: string) => {
+      const notice = {text: `Group ${group} was deleted`, isSender: false};
+      if (this.currentGroup() === group) {
+        // Fall back to the general chat, then show the notice on top of its history.
+        this.currentGroup.set('');
+        this.loadMessages('').then(() => {
+          this.messages.update(m => [...m, notice]);
+          this.scrollToBottom();
+        });
+      } else {
+        this.messages.update(m => [...m, notice]);
+        this.scrollToBottom();
+      }
+    });
+
   }
 
   sendMessage() {
@@ -182,6 +200,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this._connection.invoke('JoinGroup', this.username, groupNameTrimmed)
       .then(() => {
         this.currentGroup.set(groupNameTrimmed);
+        this.loadMessages(groupNameTrimmed); // show the group's existing messages
       })
       .catch(err => console.error('Error joining group: ', err));
   }
@@ -192,9 +211,38 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     this._connection.invoke('LeaveGroup', this.username, groupNameTrimmed)
       .then(() => {
-        if (this.currentGroup() === groupNameTrimmed) this.currentGroup.set('');
+        if (this.currentGroup() === groupNameTrimmed) {
+          this.currentGroup.set('');
+          this.loadMessages(''); // back to the general chat
+        }
       })
       .catch(err => console.error('Error leaving group: ', err));
+  }
+
+  deleteGroup(groupName: string) {
+    const groupNameTrimmed = groupName?.trim();
+    if (!groupNameTrimmed) return;
+
+    this._connection.invoke('DeleteGroup', groupNameTrimmed)
+      .catch(err => console.error('Error deleting group: ', err));
+  }
+
+  /** Replace the conversation with the stored history for a channel ("" = general). */
+  private loadMessages(group: string) {
+    // Clear the previous channel immediately so its messages never bleed into this one,
+    // even while the history request is in flight or if it fails.
+    this.messages.set([]);
+    this.unreadCount.set(0);
+
+    return this._connection.invoke<{ user: string; text: string }[]>('GetMessages', group)
+      .then(history => {
+        this.messages.set(history.map(m => ({
+          text: `${m.user}: ${m.text}`,
+          isSender: m.user === this.username,
+        })));
+        this.scrollToBottom();
+      })
+      .catch(err => console.error('Error loading messages: ', err));
   }
 
 

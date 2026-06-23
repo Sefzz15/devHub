@@ -13,8 +13,9 @@
   --online: #2e7d32;
   --radius: 18px;
 
-  display: block;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 * {
@@ -25,7 +26,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100%;
+  flex: 1;
+  min-height: 0;
   padding: 24px;
   background: linear-gradient(160deg, var(--bg-1), var(--bg-2));
   user-select: none;
@@ -181,6 +183,26 @@
 }
 
 .chip-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Delete chip: red on the normal (light) row, white on the active (brand) row. */
+.chip-btn--danger {
+  background: rgba(194, 53, 53, 0.12);
+  color: #c23535;
+  line-height: 1;
+}
+
+.chip-btn--danger:hover {
+  background: rgba(194, 53, 53, 0.22);
+}
+
+.groups-list li.active .chip-btn--danger {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.groups-list li.active .chip-btn--danger:hover {
   background: rgba(255, 255, 255, 0.4);
 }
 

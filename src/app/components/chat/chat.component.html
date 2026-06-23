@@ -27,6 +27,9 @@
               @if (currentGroup() === group) {
                 <button class="chip-btn" (click)="leaveGroup(group)">{{ 'chat.leave' | translate }}</button>
               }
+              <button class="chip-btn chip-btn--danger" (click)="deleteGroup(group)"
+                      [title]="'chat.delete' | translate"
+                      [attr.aria-label]="('chat.delete' | translate) + ' ' + group">✕</button>
             </li>
           } @empty {
             <li class="empty">—</li>
