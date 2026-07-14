@@ -53,5 +53,9 @@
     "node-html-parser": "^7.1.0",
     "typescript": "5.9.2"
   },
-  "overrides": {}
+  "overrides": {
+    "@angular/compiler-cli": {
+      "@babel/core": "7.29.7"
+    }
+  }
 }
