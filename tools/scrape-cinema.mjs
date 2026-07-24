@@ -16,6 +16,9 @@ import { parse } from 'node-html-parser';
 
 const SITE = 'https://www.thessalonikiguide.gr';
 const LISTING_URL = `${SITE}/cinema/`;
+// Listing is paginated: page 1 is /cinema/, page N (N>=2) is /cinema/page/N/.
+const listingPageUrl = (page) => (page <= 1 ? LISTING_URL : `${SITE}/cinema/page/${page}/`);
+const MAX_LISTING_PAGES = 10; // safety cap so a broken "next" link can't loop forever
 const OUT_FILE = resolve(dirname(fileURLToPath(import.meta.url)), '../src/app/components/cinema/films.data.ts');
 
 const CONCURRENCY = 4;
@@ -225,10 +228,9 @@ export const FILMS: IFilm[] = `;
 
 // ----------------------------------------------------------------- main
 
-async function main() {
-  console.log(`Discovering films from ${LISTING_URL} …`);
-  const listing = await getHtml(LISTING_URL);
-  const urls = [
+/** Extract this listing page's film URLs (absolute, deduped within the page). */
+function filmUrlsFromListing(listing) {
+  return [
     ...new Set(
       listing
         .querySelectorAll('a')
@@ -237,6 +239,35 @@ async function main() {
         .map((h) => (h.startsWith('http') ? h : SITE + h)),
     ),
   ];
+}
+
+/** Walk the paginated listing, collecting film URLs until a page adds none. */
+async function discoverFilmUrls() {
+  const urls = new Set();
+  for (let page = 1; page <= MAX_LISTING_PAGES; page++) {
+    const url = listingPageUrl(page);
+    let listing;
+    try {
+      listing = await getHtml(url);
+    } catch (err) {
+      // Pages past the last one 404 — that's the normal end of pagination.
+      if (page > 1) break;
+      throw err;
+    }
+    const found = filmUrlsFromListing(listing);
+    const before = urls.size;
+    for (const u of found) urls.add(u);
+    const added = urls.size - before;
+    console.log(`  page ${page}: ${found.length} films (${added} new)`);
+    // A page with no films, or one that only repeats earlier films, means we're done.
+    if (!found.length || added === 0) break;
+  }
+  return [...urls];
+}
+
+async function main() {
+  console.log(`Discovering films from ${LISTING_URL} …`);
+  const urls = await discoverFilmUrls();
   console.log(`Found ${urls.length} films. Fetching pages (concurrency ${CONCURRENCY}) …`);
 
   const films = (
