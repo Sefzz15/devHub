@@ -16,7 +16,7 @@
 
     <select class="day-select" [(ngModel)]="selectedDate">
       <option value="">{{ 'cinema.allUpcoming' | translate }}</option>
-      @for (d of availableDates(); track d) {
+      @for (d of availableDates; track d) {
         <option [value]="d">{{ dateLabel(d) }}</option>
       }
     </select>
@@ -31,16 +31,25 @@
       [(ngModel)]="query"
     />
 
+    @if (cities.length > 1) {
+      <select [(ngModel)]="selectedCity" (ngModelChange)="onCityChange()">
+        <option value="">{{ 'cinema.allCities' | translate }}</option>
+        @for (c of cities; track c) {
+          <option [value]="c">{{ cityLabel(c) }}</option>
+        }
+      </select>
+    }
+
     <select [(ngModel)]="selectedGenre">
       <option value="">{{ 'cinema.allGenres' | translate }}</option>
-      @for (g of genres(); track g) {
+      @for (g of genres; track g) {
         <option [value]="g">{{ g }}</option>
       }
     </select>
 
     <select [(ngModel)]="selectedCinema">
       <option value="">{{ 'cinema.allCinemas' | translate }}</option>
-      @for (c of cinemas(); track c) {
+      @for (c of cinemas; track c) {
         <option [value]="c">{{ c }}</option>
       }
     </select>
@@ -85,7 +94,8 @@
           }
 
           <p class="film-meta">
-            @if (film.year) { {{ film.year }} }
+            <span class="film-city">📍 {{ cityLabel(film.city) }}</span>
+            @if (film.year) { · {{ film.year }} }
             @if (film.durationMin) { · {{ film.durationMin }}′ }
             @if (film.director) { · {{ film.director }} }
           </p>

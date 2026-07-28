@@ -161,12 +161,15 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'chat.loggedOutInactivity': 'You have been logged out due to inactivity.',
 
     // ---- cinema ----
-    'cinema.title': 'Now Playing in Thessaloniki',
+    'cinema.title': 'Now Playing',
     'cinema.today': 'Today',
     'cinema.tomorrow': 'Tomorrow',
     'cinema.allDates': 'All dates',
     'cinema.allUpcoming': 'All upcoming days',
     'cinema.searchPlaceholder': 'Search title, director or cast…',
+    'cinema.allCities': 'All cities',
+    'cinema.athens': 'Athens',
+    'cinema.thessaloniki': 'Thessaloniki',
     'cinema.allGenres': 'All genres',
     'cinema.allCinemas': 'All cinemas',
     'cinema.topRated': 'Top rated',
@@ -177,7 +180,7 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'cinema.showing': 'Showing {count} of {total} films',
     'cinema.nothingPlaying': 'Nothing is playing with these filters.',
     'cinema.noMatch': 'No films match your filters.',
-    'cinema.scrapedPrefix': 'Showtimes scraped from thessalonikiguide.gr · last updated',
+    'cinema.scrapedPrefix': 'Showtimes from thessalonikiguide.gr & athinorama.gr · last updated',
 
     // ---- spotify ----
     'spotify.resetFilters': 'Reset filters',
@@ -428,12 +431,15 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'chat.loggedOutInactivity': 'Αποσυνδεθήκατε λόγω αδράνειας.',
 
     // ---- cinema ----
-    'cinema.title': 'Παίζουν Τώρα στη Θεσσαλονίκη',
+    'cinema.title': 'Παίζουν Τώρα',
     'cinema.today': 'Σήμερα',
     'cinema.tomorrow': 'Αύριο',
     'cinema.allDates': 'Όλες οι ημερομηνίες',
     'cinema.allUpcoming': 'Όλες οι επόμενες ημέρες',
     'cinema.searchPlaceholder': 'Αναζήτηση τίτλου, σκηνοθέτη ή ηθοποιών…',
+    'cinema.allCities': 'Όλες οι πόλεις',
+    'cinema.athens': 'Αθήνα',
+    'cinema.thessaloniki': 'Θεσσαλονίκη',
     'cinema.allGenres': 'Όλα τα είδη',
     'cinema.allCinemas': 'Όλοι οι κινηματογράφοι',
     'cinema.topRated': 'Κορυφαία βαθμολογία',
@@ -444,7 +450,7 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'cinema.showing': 'Εμφάνιση {count} από {total} ταινίες',
     'cinema.nothingPlaying': 'Δεν παίζει τίποτα με αυτά τα φίλτρα.',
     'cinema.noMatch': 'Καμία ταινία δεν ταιριάζει με τα φίλτρα σας.',
-    'cinema.scrapedPrefix': 'Ώρες προβολής από thessalonikiguide.gr · τελευταία ενημέρωση',
+    'cinema.scrapedPrefix': 'Ώρες προβολής από thessalonikiguide.gr & athinorama.gr · τελευταία ενημέρωση',
 
     // ---- spotify ----
     'spotify.resetFilters': 'Επαναφορά φίλτρων',

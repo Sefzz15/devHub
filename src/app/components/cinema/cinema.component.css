@@ -198,6 +198,11 @@
   font-size: 0.88em;
 }
 
+.film-city {
+  color: #3e4684;
+  font-weight: 600;
+}
+
 .film-genres {
   display: flex;
   flex-wrap: wrap;
