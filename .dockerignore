@@ -4,3 +4,7 @@ dist/
 .git/
 .vscode/
 .idea/
+scripts/
+deploy/
+.env
+**/.env

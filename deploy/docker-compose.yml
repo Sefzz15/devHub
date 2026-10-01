@@ -1,0 +1,91 @@
+name: devhub
+
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks:
+      - devhub
+
+  backend:
+    build:
+      context: ../../backend
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: "Server=mysql;Port=3306;Database=${MYSQL_DATABASE};User=root;Password=${MYSQL_ROOT_PASSWORD};"
+      Jwt__Secret: ${JWT_SECRET}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+      Spotify__ClientId: ${SPOTIFY_CLIENT_ID}
+      Spotify__ClientSecret: ${SPOTIFY_CLIENT_SECRET}
+      Cors__AllowedOrigins: ${APP_ORIGIN}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - devhub
+
+  # One-off Spotify import into the dockerized DB. NOT started by `up` (it has a
+  # profile). Run it manually when you want to import:
+  #   docker compose run --rm backend-import
+  # The host folder to read comes from SPOTIFY_IMPORT_HOST_DIR in .env, so the path
+  # stays out of the command and out of git. It's mounted read-only at /data.
+  backend-import:
+    profiles: ["import"]
+    image: devhub-backend
+    build:
+      context: ../../backend
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: "Server=mysql;Port=3306;Database=${MYSQL_DATABASE};User=root;Password=${MYSQL_ROOT_PASSWORD};"
+      SPOTIFY_IMPORT_DIR: /data
+    volumes:
+      - "${SPOTIFY_IMPORT_HOST_DIR}:/data:ro"
+    command: ["dotnet", "backend.dll", "--import-spotify"]
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - devhub
+
+  websocket:
+    build:
+      context: ../../websocket-server
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      Cors__AllowedOrigins: ${APP_ORIGIN}
+    networks:
+      - devhub
+
+  # Edge: serves the Angular static site and reverse-proxies /api and /chatHub.
+  # This is the only published port; the Cloudflare Tunnel points app.sefzz.com here.
+  # Bound to 127.0.0.1 so it is reachable only by cloudflared on this machine.
+  caddy:
+    build:
+      context: ..
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8088:80"
+    depends_on:
+      - backend
+      - websocket
+    networks:
+      - devhub
+
+volumes:
+  mysql-data:
+
+networks:
+  devhub:
