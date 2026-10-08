@@ -5,6 +5,8 @@ import { TranslationService } from '../../../services/translation.service';
 
 type SortKey = 'rating' | 'year' | 'title';
 
+const DEFAULT_CITY = 'Θεσσαλονίκη';
+
 /** A flattened "this cinema, these times" row for the selected day. */
 interface CinemaShowtimes {
   cinema: string;
@@ -46,7 +48,11 @@ export class CinemaComponent implements OnInit {
   constructor(private _i18n: TranslationService) {}
 
   ngOnInit(): void {
-    this.selectedDate = this.defaultDate();
+    this.selectedCity = this.initialCity();
+  }
+
+  private initialCity(): string {
+    return this.cities.includes(DEFAULT_CITY) ? DEFAULT_CITY : '';
   }
 
   /** Films in the currently selected city (all films when no city is chosen). */
@@ -187,10 +193,10 @@ export class CinemaComponent implements OnInit {
     this.query = '';
     this.selectedGenre = '';
     this.selectedCinema = '';
-    this.selectedCity = '';
+    this.selectedCity = this.initialCity();
     this.therinosOnly = false;
     this.sortKey = 'rating';
-    this.selectedDate = this.defaultDate();
+    this.selectedDate = '';
   }
 
   /** Colour-codes the rating badge: green good, amber middling, red poor. */
