@@ -13,6 +13,17 @@ body {
   flex-direction: column;
 }
 
+/* The navbar, routed view and footer live inside <app-root>, not directly in
+   <body>, so app-root is the element that has to be the column. Without this
+   it stays a plain block that sizes to its content: short pages leave a gap
+   under the footer, tall ones push it off-screen. */
+app-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
 router-outlet + * {
   flex: 1 1 auto;
   min-height: 0;
