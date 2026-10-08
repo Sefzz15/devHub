@@ -1,10 +1,6 @@
-export interface IinternalOrderView {
-    orderId: number;
-    product: string;
-    quantity: number;
-    price: number;
-    totalPrice: number;
-}
+import { IOrder } from './IOrder';
+import { IProduct } from './IProduct';
+import { IUser } from './IUser';
 
 export interface IOrderDetail {
     $id: string;
@@ -16,31 +12,13 @@ export interface IOrderDetailsValues {
     oid: number;
     pid: number;
     quantity: number;
-    order: IOrder;
+    order: IOrderWithUser;
     product: IProduct;
 }
 
-export interface IOrder {
-    $id: string;
-    oid: number;
-    uid: number;
-    date: string;
+/** An order as it arrives nested in order details: the canonical shape plus its user. */
+export interface IOrderWithUser extends IOrder {
     user: IUser;
-}
-
-export interface IUser {
-    $id: string;
-    uid: number;
-    uname: string;
-    upass: string;
-}
-
-export interface IProduct {
-    $id: string;
-    pid: number;
-    pname: string;
-    price: number;
-    stock: number;
 }
 
 export interface IOrderDetailsValuesFormatted {

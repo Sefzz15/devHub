@@ -15,9 +15,6 @@ export interface IFeedbackValuesResponse {
   address: string | null;
   phone: string | null;
   date: string;
-  user: IUser;
-}
-
-export interface IUser {
-  uid: number;
+  /** Only the id comes back on this response. */
+  user: { uid: number };
 }
