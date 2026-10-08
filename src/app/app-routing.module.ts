@@ -15,7 +15,6 @@ import { ChatComponent } from './components/chat/chat.component';
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { SpotifyComponent } from './components/spotify/spotify.component';
 import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.component';
-import { EntityFormComponent } from './components/entity-form/entity-form.component';
 import { CinemaComponent } from './components/cinema/cinema.component';
 
 
@@ -34,9 +33,6 @@ const routes: Routes = [
   { path: 'feedback', component: FeedbackComponent, canActivate: [AuthGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
   { path: 'cinema', component: CinemaComponent, canActivate: [AuthGuard] },
-
-  { path: 'entity-form/:type', component: EntityFormComponent },
-  { path: 'entity-form/:type/:id', component: EntityFormComponent, canActivate: [AuthGuard] },
 ];
 
 

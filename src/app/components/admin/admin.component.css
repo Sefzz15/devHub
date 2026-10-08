@@ -25,6 +25,7 @@
   .btn {
     padding: 0.8em 1.2em;
     font-size: 1em;
+    font-family: inherit;
     border-radius: 8px;
     text-decoration: none;
     text-align: center;
@@ -100,7 +101,8 @@
     background-color: #eef5ff;
   }
 
-  td a {
+  td a,
+  td button {
     margin-right: 0.5em;
   }
 }

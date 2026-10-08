@@ -1,12 +1,7 @@
 export interface IUser {
   uid: number;
   uname: string;
-  upass: string;
-}
-
-export interface IUserResponse {
-  $id: string,
-  $values: IUserValuesResponse[];
+  upass?: string;
 }
 
 export interface IUserValuesResponse {

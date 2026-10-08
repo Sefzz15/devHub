@@ -3,6 +3,7 @@ import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { SessionService } from '../../../services/session.service';
 import { TranslationService } from '../../../services/translation.service';
+import { EntityFormService } from '../../../services/entity-form.service';
 
 
 @Component({
@@ -23,7 +24,13 @@ export class LoginComponent {
     private _authService: AuthService,
     private _sessionService: SessionService,
     private _i18n: TranslationService,
+    private _entityForm: EntityFormService,
   ) { }
+
+  /** Sign-up: the same form the admin page uses, opened over the login screen. */
+  openRegister(): void {
+    this._entityForm.open('user').subscribe();
+  }
 
   onSubmit() {
     // Clear any previous error messages

@@ -14,6 +14,18 @@ import {
 export class ConfirmationService {
   constructor(private _dialog: MatDialog) {}
 
+  confirmWithPassword(data: ConfirmDialogData): Observable<string | false> {
+    return this._dialog
+      .open(ConfirmDialogComponent, {
+        data: { ...data, requirePassword: true },
+        width: '420px',
+        autoFocus: 'first-tabbable',
+        restoreFocus: true,
+        panelClass: 'confirm-dialog-panel',
+      })
+      .afterClosed();
+  }
+
   confirm(data: ConfirmDialogData): Observable<boolean> {
     return this._dialog
       .open(ConfirmDialogComponent, {

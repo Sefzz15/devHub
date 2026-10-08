@@ -1,42 +1,117 @@
+/* The host is the routed view, which styles.css already stretches to fill the
+   shell. Make it a column so the card can be centred in whatever is left,
+   rather than pinned to a magic viewport height. */
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
 .login-container {
   user-select: none;
+  flex: 1 1 auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 88vh;
+  padding: 2em 1em;
   background-color: #b6ebfc;
-  flex-direction: column;
-  gap: 1em;
+  box-sizing: border-box;
+}
+
+/* Matches the card used on the cinema, admin and dialog surfaces. */
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background: white;
+  box-shadow: 0 0 2em #e6e9f9;
+  border-radius: 15px;
+  padding: 2.5em;
+  box-sizing: border-box;
+}
+
+.login-title {
+  margin: 0 0 1.5em;
+  color: #3e4684;
+  font-weight: bold;
+  text-align: center;
 }
 
 .input-container {
-  background: white;
-  box-shadow: 0 0 2em #e6e9f9;
-  padding: 10px;
-  border-radius: 15px;
-  color: #4d4d4d;
-  margin-bottom: 2em;
+  margin-bottom: 1.25em;
 
-  input {
-    outline: none;
-    border: none;
+  label {
     display: block;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+    color: #3e4684;
+  }
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.8em 0.9em;
+  border: 1px solid #c7cbe8;
+  border-radius: 8px;
+  font-size: 1em;
+  font-family: inherit;
+  color: #4d4d4d;
+  background: white;
+  box-sizing: border-box;
+  outline: none;
+
+  &:focus {
+    border-color: #3e4684;
   }
 }
 
 .loginButton {
-  padding: 1em;
+  width: 100%;
+  margin-top: 0.5em;
+  padding: 0.9em;
   background: #3e4684;
   color: white;
   border: none;
   border-radius: 8px;
+  font-size: 1em;
+  font-family: inherit;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: #2c3561;
+  }
+}
+
+.login-alt {
+  margin-top: 1.5em;
+  padding-top: 1.25em;
+  border-top: 1px solid #eef0fb;
+  text-align: center;
+}
+
+/* A real button, so it is keyboard reachable, dressed as a link. */
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: #3e4684;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .error {
-  color: red;
+  color: #c23535;
   font-size: 0.75rem;
-  margin-top: 10px;
+  margin-top: 0.5em;
   font-style: italic;
+}
+
+.error-general {
+  text-align: center;
+  margin-bottom: 0.5em;
 }

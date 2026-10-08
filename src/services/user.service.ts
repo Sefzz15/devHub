@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IUser, IUserResponse, IUserValuesResponse } from '../interfaces/IUser';
+import { IUser, IUserValuesResponse } from '../interfaces/IUser';
 
 @Injectable({
   providedIn: 'root'
@@ -24,12 +24,6 @@ export class UserService {
     return this._http.get<IUser>(`${this._url}/${id}`);
   }
 
-  // Get user ID by username
-  // observable<any> needs to be updated
-  getUserIdByUsername(username: string): Observable<IUser> {
-    return this._http.get<IUser>(`${this._url}/getIdByUsername/${username}`);
-  }
-
   // Create a new user
   createUser(user: IUser): Observable<IUser> {
     return this._http.post<IUser>(`${this._url}`, user);
@@ -40,8 +34,13 @@ export class UserService {
     return this._http.put<IUser>(`${this._url}/${id}`, user);
   }
 
-  // Delete a user
-  deleteUser(id: number): Observable<any> {
-    return this._http.delete<any>(`${this._url}/${id}`);
+  // Change a password; the server verifies currentPassword and 401s if wrong
+  updatePassword(id: number, currentPassword: string, newPassword: string): Observable<any> {
+    return this._http.put<any>(`${this._url}/${id}/password`, { currentPassword, newPassword });
+  }
+
+  // Delete a user; the server requires that account's own password
+  deleteUser(id: number, password: string): Observable<any> {
+    return this._http.delete<any>(`${this._url}/${id}`, { body: { password } });
   }
 }

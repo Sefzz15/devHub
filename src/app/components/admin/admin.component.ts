@@ -5,6 +5,7 @@ import { OrderService } from '../../../services/order.service';
 import { OrderDetailService } from '../../../services/orderDetail.service';
 import { SessionService } from '../../../services/session.service';
 import { ConfirmationService } from '../../../services/confirmation.service';
+import { EntityFormService } from '../../../services/entity-form.service';
 import { NotificationService } from '../../../services/notification.service';
 import { TranslationService } from '../../../services/translation.service';
 import { IUser, IUserValuesResponse } from '../../../interfaces/IUser';
@@ -34,6 +35,7 @@ export class AdminComponent implements OnInit {
     private _orderService: OrderService,
     private _orderDetailService: OrderDetailService,
     private _confirmation: ConfirmationService,
+    private _entityForm: EntityFormService,
     private _notification: NotificationService,
     private _i18n: TranslationService
   ) { }
@@ -41,6 +43,16 @@ export class AdminComponent implements OnInit {
   ngOnInit(): void {
     this.userID.set(this._sessionService.userID);
     console.log('UserID in admin:', this.userID());
+  }
+
+  /** Open the create/update dialog, refreshing that list if it saved. */
+  openForm(type: 'user' | 'product' | 'order', id?: number): void {
+    this._entityForm.open(type, id).subscribe(saved => {
+      if (!saved) return;
+      if (type === 'user') this.getUsers();
+      else if (type === 'product') this.getProducts();
+      else this.getOrders();
+    });
   }
 
   getUsers(): void {
@@ -57,20 +69,26 @@ export class AdminComponent implements OnInit {
   // Delete a user
   deleteUser(id: number): void {
     this._confirmation
-      .confirm({
+      .confirmWithPassword({
         title: this._i18n.translate('admin.deleteUserTitle'),
         message: this._i18n.translate('admin.deleteUserMsg'),
+        passwordLabel: this._i18n.translate('admin.deleteUserPassword'),
         confirmText: this._i18n.translate('common.delete'),
         cancelText: this._i18n.translate('common.cancel'),
       })
-      .subscribe(confirmed => {
-        if (!confirmed) return;
-        this._userService.deleteUser(id).subscribe({
+      .subscribe(password => {
+        if (!password) return;
+        this._userService.deleteUser(id, password).subscribe({
           next: () => {
             this._notification.success(this._i18n.translate('admin.userDeleted'));
             this.getUsers();  // Refresh the user list
           },
-          error: () => this._notification.error(this._i18n.translate('admin.userDeleteFailed')),
+          error: (err: any) =>
+            this._notification.error(
+              this._i18n.translate(
+                err?.status === 401 ? 'admin.userDeleteWrongPassword' : 'admin.userDeleteFailed',
+              ),
+            ),
         });
       });
   }

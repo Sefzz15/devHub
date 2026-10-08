@@ -1,9 +1,16 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Inject, OnInit, signal } from '@angular/core';
+import { switchMap } from 'rxjs/operators';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../../services/user.service';
 import { ProductService } from '../../../services/product.service';
 import { OrderService } from '../../../services/order.service';
 import { TranslationService } from '../../../services/translation.service';
+import { NotificationService } from '../../../services/notification.service';
+
+export interface EntityFormData {
+  type: 'user' | 'product' | 'order';
+  id?: number;
+}
 
 @Component({
   standalone: false,
@@ -18,16 +25,16 @@ export class EntityFormComponent implements OnInit {
   readonly config = signal<any>(undefined);
   readonly mode = signal<'create' | 'edit'>('create');
   readonly errors = signal<{ [key: string]: string }>({});
-  readonly successMessage = signal('');
   readonly errorMessage = signal('');
 
   constructor(
-    private _route: ActivatedRoute,
-    public _router: Router,
+    @Inject(MAT_DIALOG_DATA) public data: EntityFormData,
+    private _dialogRef: MatDialogRef<EntityFormComponent, boolean>,
     private _userService: UserService,
     private _productService: ProductService,
     private _orderService: OrderService,
-    private _i18n: TranslationService
+    private _i18n: TranslationService,
+    private _notification: NotificationService
   ) { }
 
   /** Translation key for the current entity, derived from its config title. */
@@ -45,6 +52,13 @@ export class EntityFormComponent implements OnInit {
     return this._i18n.translate(this._entityKey());
   }
 
+  visibleFields(): any[] {
+    const fields = this.config()?.fields ?? [];
+    return this.mode() === 'create'
+      ? fields.filter((f: any) => !f.editOnly)
+      : fields.filter((f: any) => !f.createOnly);
+  }
+
   /** Localised "Create User" / "Update Product" form heading. */
   headerText(): string {
     return this._i18n.translate(
@@ -54,8 +68,7 @@ export class EntityFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const typeParam = this._route.snapshot.paramMap.get('type');
-    console.log('Type param:', typeParam);
+    const typeParam = this.data?.type;
 
     if (!typeParam) {
       this.errorMessage.set(this._i18n.translate('entityForm.invalidType'));
@@ -69,10 +82,9 @@ export class EntityFormComponent implements OnInit {
       return;
     }
 
-    const idParam = this._route.snapshot.paramMap.get('id');
-    if (idParam) {
+    const id = this.data?.id;
+    if (id !== undefined && id !== null) {
       this.mode.set('edit');
-      const id = Number(idParam);
       if (!isNaN(id) && id > 0) {
         this.config().get(id).subscribe({
           next: (data: any) => (this.entity = data),
@@ -86,19 +98,39 @@ export class EntityFormComponent implements OnInit {
     const configs: any = {
       user: {
         title: 'User',
+        idKey: 'uid',
         fields: [
-          { key: 'uid', label: 'User ID', readonly: true },
           { key: 'uname', label: 'Username', required: true },
-          { key: 'upass', label: 'Password', required: true, type: 'password' }
+          // Changing a password goes through PUT {id}/password instead.
+          { key: 'upass', label: 'Password', required: true, type: 'password', createOnly: true },
+          // Optional on update: leaving both blank means "do not change it".
+          { key: 'currentPassword', label: 'Current password', type: 'password', editOnly: true },
+          { key: 'newPassword', label: 'New password', type: 'password', editOnly: true }
         ],
         create: (entity: any) => this._userService.createUser(entity),
         update: (id: number, entity: any) => this._userService.updateUser(id, entity),
-        get: (id: number) => this._userService.getUser(id)
+        get: (id: number) => this._userService.getUser(id),
+        /** Password change, when one was typed. */
+        beforeUpdate: (id: number, entity: any) =>
+          entity.newPassword
+            ? this._userService.updatePassword(id, entity.currentPassword ?? '', entity.newPassword)
+            : null,
+        /** The two password fields are optional, but only as a pair. */
+        extraValidate: (entity: any) => {
+          const errors: { [key: string]: string } = {};
+          const required = (key: string) =>
+            this._i18n.translate('entityForm.required', {
+              field: this._i18n.translate('field.' + key),
+            });
+          if (entity.newPassword && !entity.currentPassword) errors['currentPassword'] = required('currentPassword');
+          if (entity.currentPassword && !entity.newPassword) errors['newPassword'] = required('newPassword');
+          return errors;
+        }
       },
       product: {
         title: 'Product',
+        idKey: 'pid',
         fields: [
-          { key: 'pid', label: 'Product ID', readonly: true },
           { key: 'pname', label: 'Product Name', required: true },
           { key: 'price', label: 'Price', required: true, type: 'number' },
           { key: 'stock', label: 'Stock Quantity', required: true, type: 'number' }
@@ -109,8 +141,8 @@ export class EntityFormComponent implements OnInit {
       },
       order: {
         title: 'Order',
+        idKey: 'oid',
         fields: [
-          { key: 'oid', label: 'Order ID', readonly: true },
           { key: 'uid', label: 'User ID', required: true, type: 'number' },
           { key: 'date', label: 'Date', required: true, type: 'datetime-local' }
         ],
@@ -140,16 +172,21 @@ export class EntityFormComponent implements OnInit {
       }
     }
 
-    const action$ =
-      this.mode() === 'create'
-        ? config.create(this.entity)
-        : config.update(this.entity[config.fields[0].key], this.entity);
+    const id = this.entity[config.idKey];
+    const save$ = this.mode() === 'create' ? config.create(this.entity) : config.update(id, this.entity);
+
+    // Password first: it is the step that can fail, and failing after the
+    // profile save would leave the edit half-applied.
+    const pre$ = this.mode() === 'edit' ? config.beforeUpdate?.(id, this.entity) ?? null : null;
+    const action$ = pre$ ? pre$.pipe(switchMap(() => save$)) : save$;
 
     action$.subscribe({
       next: () => this.handleSuccess(
         this._i18n.translate(this.mode() === 'create' ? 'entityForm.createdSuccess' : 'entityForm.updatedSuccess'),
       ),
-      error: () => this.errorMessage.set(this._i18n.translate('entityForm.saveFailed'))
+      error: (err: any) => this.errorMessage.set(
+        this._i18n.translate(err?.status === 401 ? 'entityForm.wrongPassword' : 'entityForm.saveFailed'),
+      )
     });
   }
 
@@ -157,7 +194,7 @@ export class EntityFormComponent implements OnInit {
   validate(): boolean {
     let isValid = true;
     const errors: { [key: string]: string } = {};
-    for (const field of this.config().fields) {
+    for (const field of this.visibleFields()) {
       if (field.required && !this.entity[field.key]) {
         errors[field.key] = this._i18n.translate('entityForm.required', {
           field: this._i18n.translate('field.' + field.key),
@@ -165,12 +202,14 @@ export class EntityFormComponent implements OnInit {
         isValid = false;
       }
     }
+    Object.assign(errors, this.config().extraValidate?.(this.entity) ?? {});
+
     this.errors.set(errors);
-    return isValid;
+    return Object.keys(errors).length === 0;
   }
 
   handleSuccess(message: string) {
-    this.successMessage.set(this._i18n.translate('entityForm.redirecting', { message }));
-    setTimeout(() => this._router.navigate(['/admin']), 1500);
+    this._notification.success(message);
+    this._dialogRef.close(true);
   }
 }

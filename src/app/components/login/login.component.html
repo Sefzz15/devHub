@@ -1,41 +1,44 @@
 <div class="login-container">
-  <h2>{{ 'login.title' | translate }}</h2>
-  <form (ngSubmit)="onSubmit()">
-    <!-- Username Field -->
-    <div class="input-container">
-      <label for="username">{{ 'login.username' | translate }}</label>
-      <input class="input-field" type="text" id="username" [ngModel]="username()"
-        (ngModelChange)="username.set($event)" name="username" required>
-      <!-- Error Message for Username -->
-      @if (usernameError()) {
-        <div class="error">{{ usernameError() }}</div>
+  <div class="login-card">
+    <h2 class="login-title">{{ 'login.title' | translate }}</h2>
+
+    <form (ngSubmit)="onSubmit()">
+      <!-- Username Field -->
+      <div class="input-container">
+        <label for="username">{{ 'login.username' | translate }}</label>
+        <input class="input-field" type="text" id="username" [ngModel]="username()"
+          (ngModelChange)="username.set($event)" name="username" autocomplete="username" required>
+        <!-- Error Message for Username -->
+        @if (usernameError()) {
+          <div class="error">{{ usernameError() }}</div>
+        }
+      </div>
+
+      <!-- Password Field -->
+      <div class="input-container">
+        <label for="password">{{ 'login.password' | translate }}</label>
+        <input class="input-field" id="password" type="password" [ngModel]="password()"
+          (ngModelChange)="password.set($event)" name="password" autocomplete="current-password" required>
+        <!-- Error Message for Password -->
+        @if (passwordError()) {
+          <div class="error">{{ passwordError() }}</div>
+        }
+      </div>
+
+      <!-- General Error Message -->
+      @if (generalError()) {
+        <div class="error error-general">{{ generalError() }}</div>
       }
-    </div>
 
-    <!-- Password Field -->
-    <div class="input-container">
-      <label for="password">{{ 'login.password' | translate }}</label>
-      <input class="input-field" id="password" type="password" [ngModel]="password()"
-        (ngModelChange)="password.set($event)" name="password" required>
-      <!-- Error Message for Password -->
-      @if (passwordError()) {
-        <div class="error">{{ passwordError() }}</div>
-      }
-    </div>
-
-    <!-- General Error Message -->
-    @if (generalError()) {
-      <div class="error">{{ generalError() }}</div>
-    }
-
-    <!-- Submit Button -->
-    <div>
+      <!-- Submit Button -->
       <button class="loginButton" type="submit">{{ 'login.submit' | translate }}</button>
-    </div>
+    </form>
 
-    <!-- Link to Create User Page -->
-    <div>
-      <a class="btn btn-primary mb-3" routerLink="../entity-form/user">{{ 'login.newUser' | translate }}</a>
+    <!-- Sign-up opens the shared entity form as a dialog -->
+    <div class="login-alt">
+      <button type="button" class="link-button" (click)="openRegister()">
+        {{ 'login.newUser' | translate }}
+      </button>
     </div>
-  </form>
+  </div>
 </div>

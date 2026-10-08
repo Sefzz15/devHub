@@ -1,6 +1,7 @@
 ﻿import { Component, Inject } from '@angular/core';
 import {
   MatDialogModule,
+  MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 
@@ -9,13 +10,17 @@ export interface ConfirmDialogData {
   message: string;
   confirmText?: string;
   cancelText?: string;
-  /** Colour of the confirm button. 'danger' (default) for destructive actions, 'primary' for neutral ones like logout. */
+  /** Color of the confirm button. 'danger' (default) for destructive actions, 'primary' for neutral ones like logout. */
   confirmColor?: 'danger' | 'primary';
+  /** When set, the dialog demands a password and closes with the typed value instead of `true`. */
+  requirePassword?: boolean;
+  /** Placeholder for the password field. */
+  passwordLabel?: string;
 }
 
 /**
  * Reusable confirmation dialog, opened via ConfirmationService.
- * Closes with `true` (confirmed) or `false` (cancelled / dismissed).
+ * Closes with `true` (confirmed) or `false` (canceled / dismissed).
  * Styling mirrors the app's existing palette (brand #3e4684, danger #c23535).
  */
 @Component({
@@ -23,9 +28,21 @@ export interface ConfirmDialogData {
   standalone: true,
   imports: [MatDialogModule],
   template: `
-    <h2 mat-dialog-title class="confirm-title">{{ data.title || 'Confirm' }}</h2>
-    <mat-dialog-content class="confirm-message">{{ data.message }}</mat-dialog-content>
-    <mat-dialog-actions class="confirm-actions">
+    <h2 mat-dialog-title class="dlg-title">{{ data.title || 'Confirm' }}</h2>
+    <mat-dialog-content class="dlg-message">
+      {{ data.message }}
+      @if (data.requirePassword) {
+        <input
+          type="password"
+          class="dlg-input"
+          autocomplete="current-password"
+          [placeholder]="data.passwordLabel || 'Password'"
+          (input)="password = $any($event.target).value"
+          (keyup.enter)="submit()"
+        />
+      }
+    </mat-dialog-content>
+    <mat-dialog-actions class="dlg-actions">
       <button type="button" class="btn btn-cancel" [mat-dialog-close]="false">
         {{ data.cancelText || 'Cancel' }}
       </button>
@@ -34,74 +51,36 @@ export interface ConfirmDialogData {
         class="btn"
         [class.btn-primary]="data.confirmColor === 'primary'"
         [class.btn-danger]="data.confirmColor !== 'primary'"
-        [mat-dialog-close]="true"
-        cdkFocusInitial
+        [disabled]="!canConfirm"
+        [mat-dialog-close]="data.requirePassword ? password : true"
       >
         {{ data.confirmText || 'Delete' }}
       </button>
     </mat-dialog-actions>
   `,
+  styleUrls: ['../shared/dialog.css'],
+  // No label above it, so it needs its own spacing.
   styles: [`
-    :host {
-      display: block;
-      font-family: Roboto, "Helvetica Neue", sans-serif;
-      color: #4d4d4d;
-    }
-
-    .confirm-title {
-      font-weight: bold;
-      color: #3e4684;
-    }
-
-    .confirm-message {
-      color: #4d4d4d;
-    }
-
-    .confirm-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.75em;
-      padding-top: 0.5em;
-    }
-
-    .btn {
-      padding: 0.8em 1.2em;
-      font-size: 1em;
-      border-radius: 8px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .btn-cancel {
-      background-color: #e6e9f9;
-      color: #3e4684;
-    }
-
-    .btn-cancel:hover {
-      background-color: #d4d9f0;
-    }
-
-    .btn-danger {
-      background-color: #c23535;
-      color: white;
-    }
-
-    .btn-danger:hover {
-      background-color: #b92e2e;
-    }
-
-    .btn-primary {
-      background-color: #3e4684;
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background-color: #2c3561;
+    .dlg-input {
+      margin-top: 1em;
     }
   `],
+
 })
 export class ConfirmDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData) {}
+  password = '';
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData,
+    private _dialogRef: MatDialogRef<ConfirmDialogComponent, boolean | string>,
+  ) {}
+
+  get canConfirm(): boolean {
+    return !this.data.requirePassword || !!this.password;
+  }
+
+  submit(): void {
+    if (!this.canConfirm) return;
+    this._dialogRef.close(this.data.requirePassword ? this.password : true);
+  }
 }

@@ -1,0 +1,91 @@
+/* Shared chrome for the app's dialogs (confirm, change-password).
+   Pulled in via styleUrls by each standalone dialog component, so the palette
+   and button rules live in one place. Component-specific tweaks stay inline. */
+
+:host {
+  display: block;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: #4d4d4d;
+}
+
+.dlg-title {
+  font-weight: bold;
+  color: #3e4684;
+}
+
+.dlg-message {
+  color: #4d4d4d;
+}
+
+.dlg-label {
+  display: block;
+  margin: 1em 0 0.5em;
+  font-weight: bold;
+  color: #3e4684;
+}
+
+.dlg-input {
+  display: block;
+  width: 100%;
+  padding: 0.6em 0.9em;
+  border: 1px solid #c7cbe8;
+  border-radius: 8px;
+  font-size: 1em;
+  font-family: inherit;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.dlg-input:focus {
+  border-color: #3e4684;
+}
+
+.dlg-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75em;
+  padding-top: 0.5em;
+}
+
+.btn {
+  padding: 0.8em 1.2em;
+  font-size: 1em;
+  font-family: inherit;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  background-color: #e6e9f9;
+  color: #3e4684;
+}
+
+.btn-cancel:hover {
+  background-color: #d4d9f0;
+}
+
+.btn-danger {
+  background-color: #c23535;
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #b92e2e;
+}
+
+.btn-primary {
+  background-color: #3e4684;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #2c3561;
+}

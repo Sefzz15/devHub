@@ -4,7 +4,7 @@
     <h1>{{ 'admin.usersList' | translate }}</h1>
     <div class="actions">
       <button class="btn btn-secondary" (click)="getUsers()">{{ 'admin.loadUsers' | translate }}</button>
-      <a class="btn btn-primary" [routerLink]="['/entity-form', 'user']">{{ 'admin.newUser' | translate }}</a>
+      <button type="button" class="btn btn-primary" (click)="openForm('user')">{{ 'admin.newUser' | translate }}</button>
     </div>
   </div>
 
@@ -26,8 +26,8 @@
             <td>{{ user.uname }}</td>
             <td>{{ user.upass }}</td>
             <td>
-              <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'user', user.uid]">{{ 'common.update' | translate }}</a>
-              <a class="btn btn-danger btn-sm" (click)="deleteUser(user.uid)">{{ 'common.delete' | translate }}</a>
+              <button type="button" class="btn btn-primary btn-sm" (click)="openForm('user', user.uid)">{{ 'common.update' | translate }}</button>
+              <button type="button" class="btn btn-danger btn-sm" (click)="deleteUser(user.uid)">{{ 'common.delete' | translate }}</button>
             </td>
           </tr>
         }
@@ -40,7 +40,7 @@
     <h1>{{ 'admin.productsList' | translate }}</h1>
     <div class="actions">
       <button class="btn btn-secondary" (click)="getProducts()">{{ 'admin.loadProducts' | translate }}</button>
-      <a class="btn btn-primary" [routerLink]="['/entity-form', 'product']">{{ 'admin.newProduct' | translate }}</a>
+      <button type="button" class="btn btn-primary" (click)="openForm('product')">{{ 'admin.newProduct' | translate }}</button>
     </div>
   </div>
 
@@ -64,8 +64,8 @@
             <td>{{ product.price }}</td>
             <td>{{ product.stock }}</td>
             <td>
-              <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'product', product.pid]">{{ 'common.update' | translate }}</a>
-              <a class="btn btn-danger btn-sm" (click)="deleteProduct(product.pid)">{{ 'common.delete' | translate }}</a>
+              <button type="button" class="btn btn-primary btn-sm" (click)="openForm('product', product.pid)">{{ 'common.update' | translate }}</button>
+              <button type="button" class="btn btn-danger btn-sm" (click)="deleteProduct(product.pid)">{{ 'common.delete' | translate }}</button>
             </td>
           </tr>
         }
@@ -79,7 +79,7 @@
     <h1>{{ 'admin.ordersList' | translate }}</h1>
     <div class="actions">
       <button class="btn btn-secondary" (click)="getOrders()">{{ 'admin.loadOrders' | translate }}</button>
-      <a class="btn btn-primary" [routerLink]="['/entity-form', 'order']">{{ 'admin.createOrder' | translate }}</a>
+      <button type="button" class="btn btn-primary" (click)="openForm('order')">{{ 'admin.createOrder' | translate }}</button>
     </div>
   </div>
 
@@ -101,8 +101,8 @@
             <td>{{ order.uid }}</td>
             <td>{{ order.date }}</td>
             <td>
-              <a class="btn btn-primary btn-sm" [routerLink]="['/entity-form', 'order', order.oid]">{{ 'common.edit' | translate }}</a>
-              <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">{{ 'common.delete' | translate }}</a>
+              <button type="button" class="btn btn-primary btn-sm" (click)="openForm('order', order.oid)">{{ 'common.edit' | translate }}</button>
+              <button type="button" class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">{{ 'common.delete' | translate }}</button>
             </td>
           </tr>
         }
@@ -137,7 +137,7 @@
             <td>{{ orderDetail.quantity }}</td>
             <td>
               <!-- <a class="btn btn-primary btn-sm" [routerLink]="['/admin/update-order', order.oid]">Update</a> -->
-              <!-- <a class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">Delete</a> -->
+              <!-- <button type="button" class="btn btn-danger btn-sm" (click)="deleteOrder(order.oid)">Delete</button> -->
             </td>
           </tr>
         }
