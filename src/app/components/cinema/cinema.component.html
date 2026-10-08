@@ -78,7 +78,16 @@
     @for (film of filteredFilms; track film.slug) {
       <article class="film-card">
         @if (film.poster) {
-          <img class="film-poster" [src]="film.poster" [alt]="film.title" loading="lazy" />
+          <div class="film-poster-wrap">
+            <img
+              class="film-poster"
+              [ngSrc]="film.poster"
+              [alt]="film.title"
+              fill
+              sizes="(max-width: 520px) 100vw, (max-width: 800px) 50vw, (max-width: 1100px) 33vw, (max-width: 1400px) 25vw, 20vw"
+              [priority]="$index < 5"
+            />
+          </div>
         }
 
         <div class="film-body">
@@ -110,33 +119,49 @@
             <p class="film-desc">{{ film.description }}</p>
           }
 
-          <!-- Showtimes: one day, or the full upcoming agenda -->
-          <div class="showtimes">
-            @if (selectedDate) {
-              @for (row of showtimesOn(film, selectedDate); track row.cinema) {
-                <div class="st-row">
-                  <span class="st-cinema">{{ row.cinema }}</span>
-                  <span class="st-times">
-                    @for (t of row.times; track t) { <span class="time-pill">{{ t }}</span> }
-                  </span>
-                </div>
-              }
+          <!-- Showtimes: collapsed by default; a full agenda makes cards wildly
+               uneven in height, which leaves big gaps in the grid. -->
+          <button
+            type="button"
+            class="st-toggle"
+            [attr.aria-expanded]="isExpanded(film)"
+            (click)="toggleShowtimes(film)"
+          >
+            @if (isExpanded(film)) {
+              {{ 'cinema.hideTimes' | translate }}
             } @else {
-              @for (row of agenda(film); track row.cinema) {
-                <div class="st-agenda">
-                  <span class="st-cinema">{{ row.cinema }}</span>
-                  <div class="st-days">
-                    @for (day of row.days; track day.date) {
-                      <div class="st-day">
-                        <span class="st-daylabel">{{ dateLabel(day.date) }}</span>
-                        @for (t of day.times; track t) { <span class="time-pill">{{ t }}</span> }
-                      </div>
-                    }
-                  </div>
-                </div>
-              }
+              {{ 'cinema.showTimes' | translate: { count: film.cinemas.length } }}
             }
-          </div>
+          </button>
+
+          @if (isExpanded(film)) {
+            <div class="showtimes">
+              @if (selectedDate) {
+                @for (row of showtimesOn(film, selectedDate); track row.cinema) {
+                  <div class="st-row">
+                    <span class="st-cinema">{{ row.cinema }}</span>
+                    <span class="st-times">
+                      @for (t of row.times; track t) { <span class="time-pill">{{ t }}</span> }
+                    </span>
+                  </div>
+                }
+              } @else {
+                @for (row of agenda(film); track row.cinema) {
+                  <div class="st-agenda">
+                    <span class="st-cinema">{{ row.cinema }}</span>
+                    <div class="st-days">
+                      @for (day of row.days; track day.date) {
+                        <div class="st-day">
+                          <span class="st-daylabel">{{ dateLabel(day.date) }}</span>
+                          @for (t of day.times; track t) { <span class="time-pill">{{ t }}</span> }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+              }
+            </div>
+          }
         </div>
       </article>
     }

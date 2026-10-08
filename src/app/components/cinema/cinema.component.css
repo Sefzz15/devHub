@@ -59,6 +59,7 @@
 
   select {
     cursor: pointer;
+    max-width: 200px;
   }
 
   .filter-search {
@@ -99,6 +100,7 @@
 /* ===== Film grid ===== */
 .film-grid {
   display: grid;
+  align-items: start;
   grid-template-columns: repeat(5, 1fr);
   gap: 1.2em;
   width: 95%;
@@ -137,11 +139,15 @@
   }
 }
 
-.film-poster {
-  width: 100%;
+/* NgOptimizedImage fill needs a positioned, sized parent. */
+.film-poster-wrap {
+  position: relative;
   height: 200px;
-  object-fit: cover;
   background: #eef0fb;
+}
+
+.film-poster {
+  object-fit: cover;
 }
 
 .film-body {
@@ -226,8 +232,27 @@
 }
 
 /* ===== Showtimes ===== */
-.showtimes {
+/* Card-bottom toggle for the collapsible showtimes. */
+.st-toggle {
   margin-top: auto;
+  padding: 0.5em 0.8em;
+  border: 1px solid #e6e9f9;
+  border-radius: 10px;
+  background: #f7f8ff;
+  color: #4a4e8f;
+  font: inherit;
+  font-size: 0.85em;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+}
+
+.st-toggle:hover {
+  background: #eef0fb;
+}
+
+.showtimes {
+  margin-top: 0.6em;
   padding-top: 0.7em;
   border-top: 1px solid #eef0fb;
   display: flex;

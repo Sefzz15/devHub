@@ -10,7 +10,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {AsyncPipe} from '@angular/common';
+import {AsyncPipe, NgOptimizedImage} from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatPaginatorModule} from '@angular/material/paginator';
@@ -73,6 +73,7 @@ import {NgApexchartsModule} from "ng-apexcharts";
     MatSnackBarModule,
     MatDialogModule,
     NgApexchartsModule,
+    NgOptimizedImage,
   ],
   providers: [
     provideClientHydration(withEventReplay()),

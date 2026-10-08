@@ -55,6 +55,16 @@ export class CinemaComponent implements OnInit {
     return this.cities.includes(DEFAULT_CITY) ? DEFAULT_CITY : '';
   }
 
+  private readonly expandedFilms = new Set<string>();
+
+  isExpanded(film: IFilm): boolean {
+    return this.expandedFilms.has(film.slug);
+  }
+
+  toggleShowtimes(film: IFilm): void {
+    if (!this.expandedFilms.delete(film.slug)) this.expandedFilms.add(film.slug);
+  }
+
   /** Films in the currently selected city (all films when no city is chosen). */
   private filmsInCity(): IFilm[] {
     return this.selectedCity ? this.films.filter((f) => f.city === this.selectedCity) : this.films;
@@ -169,8 +179,8 @@ export class CinemaComponent implements OnInit {
       // With a specific day chosen, only keep films that actually screen that day.
       if (this.selectedDate && this.showtimesOn(f, this.selectedDate).length === 0) return false;
       // "All dates" still hides films whose screenings are all in the past.
-      if (!this.selectedDate && this.agenda(f).length === 0) return false;
-      return true;
+      return !(!this.selectedDate && this.agenda(f).length === 0);
+
     });
 
     return matches.sort((a, b) => {

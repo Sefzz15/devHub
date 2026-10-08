@@ -180,6 +180,8 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'cinema.showing': 'Showing {count} of {total} films',
     'cinema.nothingPlaying': 'Nothing is playing with these filters.',
     'cinema.noMatch': 'No films match your filters.',
+    'cinema.showTimes': 'Showtimes ({count})',
+    'cinema.hideTimes': 'Hide showtimes',
     'cinema.scrapedPrefix': 'Showtimes from thessalonikiguide.gr & athinorama.gr · last updated',
 
     // ---- spotify ----
@@ -450,6 +452,8 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'cinema.showing': 'Εμφάνιση {count} από {total} ταινίες',
     'cinema.nothingPlaying': 'Δεν παίζει τίποτα με αυτά τα φίλτρα.',
     'cinema.noMatch': 'Καμία ταινία δεν ταιριάζει με τα φίλτρα σας.',
+    'cinema.showTimes': 'Προβολές ({count})',
+    'cinema.hideTimes': 'Απόκρυψη προβολών',
     'cinema.scrapedPrefix': 'Ώρες προβολής από thessalonikiguide.gr & athinorama.gr · τελευταία ενημέρωση',
 
     // ---- spotify ----
