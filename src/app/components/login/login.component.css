@@ -1,6 +1,3 @@
-/* The host is the routed view, which styles.css already stretches to fill the
-   shell. Make it a column so the card can be centred in whatever is left,
-   rather than pinned to a magic viewport height. */
 :host {
   display: flex;
   flex-direction: column;
@@ -17,7 +14,6 @@
   box-sizing: border-box;
 }
 
-/* Matches the card used on the cinema, admin and dialog surfaces. */
 .login-card {
   width: 100%;
   max-width: 380px;
@@ -89,7 +85,7 @@
   text-align: center;
 }
 
-/* A real button, so it is keyboard reachable, dressed as a link. */
+/* A button, not an anchor, so it is keyboard reachable. */
 .link-button {
   background: none;
   border: none;

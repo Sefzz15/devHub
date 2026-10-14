@@ -1,6 +1,47 @@
+.client-picker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.8em;
+
+  label {
+    font-weight: bold;
+    color: #3e4684;
+  }
+
+  select {
+    max-width: 200px;
+    padding: 0.6em 0.9em;
+    border: 1px solid #c7cbe8;
+    border-radius: 8px;
+    font-size: 0.95em;
+    font-family: inherit;
+    color: #4d4d4d;
+    background: white;
+    cursor: pointer;
+    outline: none;
+
+    &:focus {
+      border-color: #3e4684;
+    }
+  }
+}
+
+.order-block {
+  width: 95%;
+  max-width: 900px;
+
+  h3 {
+    color: #3e4684;
+    font-weight: bold;
+    text-align: center;
+  }
+}
+
 .no-orders-message {
   margin-top: 1rem;
-  color: #cc0000;
+  color: #c23535;
   font-weight: bold;
   font-size: 1.5rem;
 }

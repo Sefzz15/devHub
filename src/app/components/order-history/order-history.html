@@ -2,14 +2,16 @@
 
   <h1>{{ 'orderHistory.title' | translate }}</h1>
 
-  <label for="clientSelect">{{ 'orderHistory.chooseClient' | translate }}</label>
+  <div class="client-picker">
+    <label for="clientSelect">{{ 'orderHistory.chooseClient' | translate }}</label>
 
-  <select id="clientSelect" (change)="selectClient($event)">
-    <option value="" disabled selected>{{ 'orderHistory.selectClient' | translate }}</option>
-    @for (name of clientNames(); track name) {
-      <option [value]="name">{{ name }}</option>
-    }
-  </select>
+    <select id="clientSelect" (change)="selectClient($event)">
+      <option value="" disabled selected>{{ 'orderHistory.selectClient' | translate }}</option>
+      @for (name of clientNames(); track name) {
+        <option [value]="name">{{ name }}</option>
+      }
+    </select>
+  </div>
 
   @for (order of groupedOrderDetails(); track order) {
     <div class="order-block">

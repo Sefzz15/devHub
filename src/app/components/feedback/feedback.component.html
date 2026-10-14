@@ -1,20 +1,11 @@
 <nav class="container">
   <section>
 
-    @switch (stepperOrientation | async) {
-    @case ('horizontal') {
-    <div>{{ 'feedback.stepperHorizontal' | translate }}</div>
-    }
-    @case ('vertical') {
-    <div>{{ 'feedback.stepperVertical' | translate }}</div>
-    }
-    }
-
     <mat-stepper class="example-stepper" [orientation]="(stepperOrientation | async)!">
 
       <mat-step [stepControl]="nameFormGroup" [label]="'feedback.fillName' | translate">
         <form [formGroup]="nameFormGroup">
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>{{ 'feedback.name' | translate }}</mat-label>
             <input matInput [placeholder]="'feedback.namePlaceholder' | translate" formControlName="firstCtrl" required>
           </mat-form-field>
@@ -26,7 +17,7 @@
 
       <mat-step [stepControl]="addressFormGroup" [label]="'feedback.fillAddress' | translate">
         <form [formGroup]="addressFormGroup">
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>{{ 'feedback.address' | translate }}</mat-label>
             <input matInput formControlName="secondCtrl" [placeholder]="'feedback.addressPlaceholder' | translate" required>
           </mat-form-field>
@@ -39,7 +30,7 @@
 
       <mat-step [stepControl]="phoneFormGroup" [label]="'feedback.fillPhone' | translate">
         <form [formGroup]="phoneFormGroup">
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>{{ 'feedback.phone' | translate }}</mat-label>
             <input matInput formControlName="thirdCtrl" [placeholder]="'feedback.phonePlaceholder' | translate" required>
           </mat-form-field>
@@ -52,7 +43,7 @@
 
       <mat-step [stepControl]="messageFormGroup" [label]="'feedback.fillMessage' | translate">
         <form [formGroup]="messageFormGroup">
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>{{ 'feedback.message' | translate }}</mat-label>
             <input matInput formControlName="fourthCtrl"
               [placeholder]="'feedback.messagePlaceholder' | translate" required>

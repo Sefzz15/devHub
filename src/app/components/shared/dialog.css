@@ -1,6 +1,4 @@
-/* Shared chrome for the app's dialogs (confirm, change-password).
-   Pulled in via styleUrls by each standalone dialog component, so the palette
-   and button rules live in one place. Component-specific tweaks stay inline. */
+/* Shared chrome for the app's dialogs. */
 
 :host {
   display: block;

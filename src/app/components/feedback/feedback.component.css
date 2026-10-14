@@ -1,8 +1,20 @@
 section {
   width: 70%;
-  margin: 5px 0;
-  padding: 5px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #fff;
+  max-width: 900px;
+  padding: 2em;
+  background: white;
+  box-shadow: 0 0 2em #e6e9f9;
+  border-radius: 15px;
+  box-sizing: border-box;
+}
+
+mat-form-field {
+  width: 100%;
+  max-width: 420px;
+}
+
+.mat-mdc-form-field + div {
+  margin-top: 0.5em;
+  display: flex;
+  gap: 0.75em;
 }
