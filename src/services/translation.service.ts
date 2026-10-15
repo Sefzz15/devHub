@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Lang, TRANSLATIONS } from '../i18n/translations';
+import { Lang, TRANSLATIONS } from '../translations/translations';
 
 /**
  * App-wide i18n. Holds the active language as a signal so the UI re-renders on
