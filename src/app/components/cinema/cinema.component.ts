@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { DatePipe, NgOptimizedImage } from '@angular/common';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { Component, OnInit, inject } from '@angular/core';
 import { IFilm } from '../../../interfaces/IFilm';
 import { FILMS, SCRAPED_AT } from './films.data';
 import { TranslationService } from '../../../services/translation.service';
@@ -22,7 +25,8 @@ interface CinemaAgenda {
 }
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [FormsModule, NgOptimizedImage, DatePipe, TranslatePipe],
   selector: 'app-cinema',
   templateUrl: './cinema.component.html',
   styleUrls: ['../admin/admin.component.css', './cinema.component.css'],
@@ -45,7 +49,7 @@ export class CinemaComponent implements OnInit {
 
   readonly today = this.toIso(new Date());
 
-  constructor(private _i18n: TranslationService) {}
+    private readonly _translation = inject(TranslationService);
 
   ngOnInit(): void {
     this.selectedCity = this.initialCity();
@@ -108,7 +112,7 @@ export class CinemaComponent implements OnInit {
   /** Localised city name for the picker (data stores the Greek name). */
   cityLabel(city: string): string {
     const key = city === 'Αθήνα' ? 'cinema.athens' : city === 'Θεσσαλονίκη' ? 'cinema.thessaloniki' : '';
-    return key ? this._i18n.translate(key) : city;
+    return key ? this._translation.translate(key) : city;
   }
 
   /** Keep the day/cinema filters valid after switching city. */
@@ -129,10 +133,10 @@ export class CinemaComponent implements OnInit {
 
   /** Friendly label for a date chip / option: "Today", "Tomorrow" or "Sat 7 Jun". */
   dateLabel(iso: string): string {
-    if (iso === this.today) return this._i18n.translate('cinema.today');
-    if (iso === this.tomorrow) return this._i18n.translate('cinema.tomorrow');
+    if (iso === this.today) return this._translation.translate('cinema.today');
+    if (iso === this.tomorrow) return this._translation.translate('cinema.tomorrow');
     const [y, m, d] = iso.split('-').map(Number);
-    const locale = this._i18n.lang() === 'el' ? 'el-GR' : 'en-GB';
+    const locale = this._translation.lang() === 'el' ? 'el-GR' : 'en-GB';
     return new Date(y, m - 1, d).toLocaleDateString(locale, {
       weekday: 'short',
       day: 'numeric',
@@ -209,7 +213,7 @@ export class CinemaComponent implements OnInit {
     this.selectedDate = '';
   }
 
-  /** Colour-codes the rating badge: green good, amber middling, red poor. */
+  /** Color-codes the rating badge: green good, amber middling, red poor. */
   ratingClass(rating?: number): string {
     if (rating === undefined) return '';
     if (rating >= 7) return 'rating-good';

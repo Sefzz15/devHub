@@ -1,6 +1,8 @@
-import { Component, Inject, OnInit, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { switchMap } from 'rxjs/operators';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../../services/user.service';
 import { ProductService } from '../../../services/product.service';
 import { OrderService } from '../../../services/order.service';
@@ -13,7 +15,8 @@ export interface EntityFormData {
 }
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [MatDialogModule, FormsModule, TranslatePipe],
   selector: 'app-entity-form',
   templateUrl: './entity-form.component.html',
   styleUrls: ['./entity-form.component.css']
@@ -27,15 +30,13 @@ export class EntityFormComponent implements OnInit {
   readonly errors = signal<{ [key: string]: string }>({});
   readonly errorMessage = signal('');
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: EntityFormData,
-    private _dialogRef: MatDialogRef<EntityFormComponent, boolean>,
-    private _userService: UserService,
-    private _productService: ProductService,
-    private _orderService: OrderService,
-    private _i18n: TranslationService,
-    private _notification: NotificationService
-  ) { }
+  public readonly data = inject<EntityFormData>(MAT_DIALOG_DATA);
+  private readonly _dialogRef = inject<MatDialogRef<EntityFormComponent, boolean>>(MatDialogRef);
+  private readonly _userService = inject(UserService);
+  private readonly _productService = inject(ProductService);
+  private readonly _orderService = inject(OrderService);
+  private readonly _translation = inject(TranslationService);
+  private readonly _notification = inject(NotificationService);
 
   /** Translation key for the current entity, derived from its config title. */
   private _entityKey(): string {
@@ -49,7 +50,7 @@ export class EntityFormComponent implements OnInit {
 
   /** Localised entity name, e.g. "User" / "Χρήστης". */
   entityLabel(): string {
-    return this._i18n.translate(this._entityKey());
+    return this._translation.translate(this._entityKey());
   }
 
   visibleFields(): any[] {
@@ -61,7 +62,7 @@ export class EntityFormComponent implements OnInit {
 
   /** Localised "Create User" / "Update Product" form heading. */
   headerText(): string {
-    return this._i18n.translate(
+    return this._translation.translate(
       this.mode() === 'create' ? 'entityForm.create' : 'entityForm.update',
       { entity: this.entityLabel() },
     );
@@ -71,14 +72,14 @@ export class EntityFormComponent implements OnInit {
     const typeParam = this.data?.type;
 
     if (!typeParam) {
-      this.errorMessage.set(this._i18n.translate('entityForm.invalidType'));
+      this.errorMessage.set(this._translation.translate('entityForm.invalidType'));
       return;
     }
 
     this.config.set(this.getConfig(typeParam));
 
     if (!this.config()) {
-      this.errorMessage.set(this._i18n.translate('entityForm.unknownType', { type: typeParam }));
+      this.errorMessage.set(this._translation.translate('entityForm.unknownType', { type: typeParam }));
       return;
     }
 
@@ -88,7 +89,7 @@ export class EntityFormComponent implements OnInit {
       if (!isNaN(id) && id > 0) {
         this.config().get(id).subscribe({
           next: (data: any) => (this.entity = data),
-          error: () => this.errorMessage.set(this._i18n.translate('entityForm.fetchFailed', { entity: this.entityLabel() }))
+          error: () => this.errorMessage.set(this._translation.translate('entityForm.fetchFailed', { entity: this.entityLabel() }))
         });
       }
     }
@@ -119,8 +120,8 @@ export class EntityFormComponent implements OnInit {
         extraValidate: (entity: any) => {
           const errors: { [key: string]: string } = {};
           const required = (key: string) =>
-            this._i18n.translate('entityForm.required', {
-              field: this._i18n.translate('field.' + key),
+            this._translation.translate('entityForm.required', {
+              field: this._translation.translate('field.' + key),
             });
           if (entity.newPassword && !entity.currentPassword) errors['currentPassword'] = required('currentPassword');
           if (entity.currentPassword && !entity.newPassword) errors['newPassword'] = required('newPassword');
@@ -158,7 +159,7 @@ export class EntityFormComponent implements OnInit {
   onSubmit(): void {
     const config = this.config();
     if (!config) {
-      this.errorMessage.set(this._i18n.translate('entityForm.invalidConfig'));
+      this.errorMessage.set(this._translation.translate('entityForm.invalidConfig'));
       return;
     }
 
@@ -182,24 +183,22 @@ export class EntityFormComponent implements OnInit {
 
     action$.subscribe({
       next: () => this.handleSuccess(
-        this._i18n.translate(this.mode() === 'create' ? 'entityForm.createdSuccess' : 'entityForm.updatedSuccess'),
+        this._translation.translate(this.mode() === 'create' ? 'entityForm.createdSuccess' : 'entityForm.updatedSuccess'),
       ),
       error: (err: any) => this.errorMessage.set(
-        this._i18n.translate(err?.status === 401 ? 'entityForm.wrongPassword' : 'entityForm.saveFailed'),
+        this._translation.translate(err?.status === 401 ? 'entityForm.wrongPassword' : 'entityForm.saveFailed'),
       )
     });
   }
 
 
   validate(): boolean {
-    let isValid = true;
     const errors: { [key: string]: string } = {};
     for (const field of this.visibleFields()) {
       if (field.required && !this.entity[field.key]) {
-        errors[field.key] = this._i18n.translate('entityForm.required', {
-          field: this._i18n.translate('field.' + field.key),
+        errors[field.key] = this._translation.translate('entityForm.required', {
+          field: this._translation.translate('field.' + field.key),
         });
-        isValid = false;
       }
     }
     Object.assign(errors, this.config().extraValidate?.(this.entity) ?? {});

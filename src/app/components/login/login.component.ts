@@ -1,4 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { Component, signal, inject } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { SessionService } from '../../../services/session.service';
@@ -7,7 +9,8 @@ import { EntityFormService } from '../../../services/entity-form.service';
 
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [FormsModule, TranslatePipe],
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
@@ -19,13 +22,11 @@ export class LoginComponent {
   readonly passwordError = signal('');
   readonly generalError = signal('');
 
-  constructor(
-    private _router: Router,
-    private _authService: AuthService,
-    private _sessionService: SessionService,
-    private _i18n: TranslationService,
-    private _entityForm: EntityFormService,
-  ) { }
+  private readonly _router = inject(Router);
+  private readonly _authService = inject(AuthService);
+  private readonly _sessionService = inject(SessionService);
+  private readonly _translation = inject(TranslationService);
+  private readonly _entityForm = inject(EntityFormService);
 
   /** Sign-up: the same form the admin page uses, opened over the login screen. */
   openRegister(): void {
@@ -40,11 +41,11 @@ export class LoginComponent {
 
     // Check if username and password are provided
     if (!this.username()) {
-      this.usernameError.set(this._i18n.translate('login.errUsername'));
+      this.usernameError.set(this._translation.translate('login.errUsername'));
     }
 
     if (!this.password()) {
-      this.passwordError.set(this._i18n.translate('login.errPassword'));
+      this.passwordError.set(this._translation.translate('login.errPassword'));
       return;
     }
 

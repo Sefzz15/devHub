@@ -1,24 +1,17 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-// import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from '../services/auth.guard';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-
 import { AdminComponent } from './components/admin/admin.component';
-
-
 import { ShopComponent } from './components/shop/shop.component';
 import { OrderHistoryComponent } from './components/order-history/order-history';
-
 import { ChatComponent } from './components/chat/chat.component';
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { SpotifyComponent } from './components/spotify/spotify.component';
 import { RubiksCubeComponent } from './components/rubiks-cube/rubiks-cube.component';
 import { CinemaComponent } from './components/cinema/cinema.component';
+import { Routes } from '@angular/router';
 
-
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   // { path: 'navbar', component: NavbarComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
@@ -34,10 +27,3 @@ const routes: Routes = [
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
   { path: 'cinema', component: CinemaComponent, canActivate: [AuthGuard] },
 ];
-
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }

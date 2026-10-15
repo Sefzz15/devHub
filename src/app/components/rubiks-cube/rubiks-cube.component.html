@@ -3,13 +3,15 @@
 
   <div class="rubiks-ui">
     <div class="rubiks-actions">
-      <button type="button" (click)="scramble()" [disabled]="solving">{{ 'rubiks.scramble' | translate }}</button>
-      <button type="button" (click)="solve()" [disabled]="solving">
-        {{ solving ? ('rubiks.solving' | translate) : ('rubiks.solve' | translate) }}
+      <button type="button" (click)="scramble()" [disabled]="solving()">{{ 'rubiks.scramble' | translate }}</button>
+      <button type="button" (click)="solve()" [disabled]="solving()">
+        {{ solving() ? ('rubiks.solving' | translate) : ('rubiks.solve' | translate) }}
       </button>
-      <button type="button" (click)="reset()" [disabled]="solving">{{ 'rubiks.reset' | translate }}</button>
+      <button type="button" (click)="reset()" [disabled]="solving()">{{ 'rubiks.reset' | translate }}</button>
     </div>
-    <div class="rubiks-help rubiks-solution" *ngIf="solveInfo">{{ solveInfo }}</div>
+    @if (solveInfo()) {
+      <div class="rubiks-help rubiks-solution">{{ solveInfo() }}</div>
+    }
     <div class="rubiks-help">
       <strong>{{ 'rubiks.controls' | translate }}</strong>
       <ul>

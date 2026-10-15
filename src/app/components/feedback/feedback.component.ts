@@ -1,3 +1,10 @@
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { AsyncPipe } from '@angular/common';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { BreakpointObserver } from '@angular/cdk/layout';
@@ -13,7 +20,8 @@ import { IFeedbackValuesResponse } from '../../../interfaces/IFeedback';
 
 @Component({
   selector: 'stepper-responsive-example',
-  standalone: false,
+  standalone: true,
+  imports: [ReactiveFormsModule, MatButtonModule, MatStepperModule, MatFormFieldModule, MatInputModule, AsyncPipe, TranslatePipe],
 
   templateUrl: './feedback.component.html',
   styleUrls: [
@@ -42,14 +50,14 @@ export class FeedbackComponent implements OnInit {
   });
   stepperOrientation!: Observable<StepperOrientation>;
 
-  constructor(
-    private _sessionService: SessionService,
-    private _feedbackService: FeedbackService,
-    private _confirmation: ConfirmationService,
-    private _notification: NotificationService,
-    private _i18n: TranslationService,
-    private breakpointObserver: BreakpointObserver
-  ) {
+  private readonly _sessionService = inject(SessionService);
+  private readonly _feedbackService = inject(FeedbackService);
+  private readonly _confirmation = inject(ConfirmationService);
+  private readonly _notification = inject(NotificationService);
+  private readonly _translation = inject(TranslationService);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+
+  constructor() {
     this.stepperOrientation = this.breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
@@ -72,7 +80,7 @@ export class FeedbackComponent implements OnInit {
 
       this._feedbackService.createFeedback(payload).subscribe({
         next: () => this.getFeedbacks(),
-        error: () => this.errorMessage.set(this._i18n.translate('feedback.submitFailed')),
+        error: () => this.errorMessage.set(this._translation.translate('feedback.submitFailed')),
       });
     }
   }
@@ -89,19 +97,19 @@ export class FeedbackComponent implements OnInit {
   deleteFeedback(id: number): void {
     this._confirmation
       .confirm({
-        title: this._i18n.translate('feedback.deleteTitle'),
-        message: this._i18n.translate('feedback.deleteMsg'),
-        confirmText: this._i18n.translate('common.delete'),
-        cancelText: this._i18n.translate('common.cancel'),
+        title: this._translation.translate('feedback.deleteTitle'),
+        message: this._translation.translate('feedback.deleteMsg'),
+        confirmText: this._translation.translate('common.delete'),
+        cancelText: this._translation.translate('common.cancel'),
       })
       .subscribe(confirmed => {
         if (!confirmed) return;
         this._feedbackService.deleteFeedback(id).subscribe({
           next: () => {
-            this._notification.success(this._i18n.translate('feedback.deleted'));
+            this._notification.success(this._translation.translate('feedback.deleted'));
             this.getFeedbacks();
           },
-          error: () => this._notification.error(this._i18n.translate('feedback.deleteFailed')),
+          error: () => this._notification.error(this._translation.translate('feedback.deleteFailed')),
         });
       });
   }

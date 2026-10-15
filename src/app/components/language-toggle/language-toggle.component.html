@@ -2,10 +2,10 @@
   type="button"
   class="lang-toggle"
   (click)="toggle()"
-  [title]="i18n.lang() === 'en' ? (i18n.translate('nav.switchToGreek')) : (i18n.translate('nav.switchToEnglish'))"
-  [attr.aria-label]="i18n.lang() === 'en' ? (i18n.translate('nav.switchToGreek')) : (i18n.translate('nav.switchToEnglish'))">
+  [title]="translation.lang() === 'en' ? (translation.translate('nav.switchToGreek')) : (translation.translate('nav.switchToEnglish'))"
+  [attr.aria-label]="translation.lang() === 'en' ? (translation.translate('nav.switchToGreek')) : (translation.translate('nav.switchToEnglish'))">
 
-  @if (i18n.lang() === 'el') {
+  @if (translation.lang() === 'el') {
     <!-- Greek flag (active = Greek) -->
     <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>

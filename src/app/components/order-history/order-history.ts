@@ -1,45 +1,38 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { IUserValuesResponse } from '../../../interfaces/IUser';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { Component, OnInit, signal, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
 import { SessionService } from '../../../services/session.service';
 import { UserService } from '../../../services/user.service';
 import { OrderDetailService } from '../../../services/orderDetail.service';
 import { IGroupedOrder, IOrderDetailsValuesFormatted } from '../../../interfaces/IOrderDetail';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [TranslatePipe],
   selector: 'app-order-history',
   templateUrl: './order-history.html',
   styleUrls: ['../admin/admin.component.css', './order-history.css'],
 })
 export class OrderHistoryComponent implements OnInit {
   readonly userID = signal<number | undefined>(undefined);
-  readonly clientNames = signal<string[]>([]);
   readonly groupedOrderDetails = signal<IGroupedOrder[]>([]);
   readonly noOrders = signal(false);
 
 
-  constructor(
-    private _sessionService: SessionService,
-    private _userService: UserService,
-    private _orderDetailService: OrderDetailService
-  ) { }
+  private readonly _sessionService = inject(SessionService);
+  private readonly _userService = inject(UserService);
+  private readonly _orderDetailService = inject(OrderDetailService);
+
+  readonly clientNames = toSignal(
+    this._userService.getUsers().pipe(map(users => users.map(u => u.uname))),
+    { initialValue: [] as string[] },
+  );
 
   ngOnInit(): void {
     this.userID.set(this._sessionService.userID);
-    this.getUsers();
   }
 
-  getUsers(): void {
-    this._userService.getUsers().subscribe({
-      next: (data: IUserValuesResponse[]) => {
-        this.clientNames.set(data.map(i => i.uname));
-        console.log('Fetched users:', this.clientNames());
-      },
-      error: (error: any) => {
-        console.error('Error fetching users:', error);
-      }
-    });
-  }
 
   selectClient(event: Event): void {
     const selectedClientName = (event.target as HTMLSelectElement).value;

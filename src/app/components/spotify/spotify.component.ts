@@ -1,15 +1,18 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { DecimalPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { ISpotifyValuesResponse, ITopGenreDto } from '../../../interfaces/ISpotify';
-import { SessionService } from '../../../services/session.service';
 import { SpotifyService } from '../../../services/spotify.service';
-import { HttpClient } from '@angular/common/http';
 import { Column } from '../../../interfaces/ISpotify';
 import { ISpotifyFilters, ITopArtistDto, ITopTrackDto } from '../../../interfaces/ISpotify';
 import { ApexChart, ApexLegend, ApexResponsive, ApexTooltip, } from "ng-apexcharts";
 
 @Component({
   selector: 'app-spotify',
-  standalone: false,
+  standalone: true,
+  imports: [NgApexchartsModule, FormsModule, DecimalPipe, TranslatePipe],
 
   templateUrl: './spotify.component.html',
   styleUrls: ['./spotify.component.css', '../admin/admin.component.css']
@@ -59,11 +62,7 @@ export class SpotifyComponent implements OnInit {
   currentSortDirection: 'asc' | 'desc' = 'asc';
 
 
-  constructor(
-    private _sessionService: SessionService,
-    private _spotifyService: SpotifyService,
-    private _http: HttpClient,
-  ) { }
+  private readonly _spotifyService = inject(SpotifyService);
 
   ngOnInit(): void {
     this.years.set(this.buildYears(2016));

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { Component, inject } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { NotificationService } from '../../../services/notification.service';
 import { ConfirmationService } from '../../../services/confirmation.service';
@@ -7,21 +8,18 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
-  standalone: false,
+  standalone: true,
+  imports: [TranslatePipe],
 
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css'
 })
 export class FooterComponent {
-  constructor(
-    private _authService: AuthService,
-    private _router: Router,
-    private _notification: NotificationService,
-    private _confirmation: ConfirmationService,
-    private _i18n: TranslationService
-  ) {
-
-  }
+  private readonly _authService = inject(AuthService);
+  private readonly _router = inject(Router);
+  private readonly _notification = inject(NotificationService);
+  private readonly _confirmation = inject(ConfirmationService);
+  private readonly _translation = inject(TranslationService);
 
   /** Reactive auth state read straight from the AuthService signal. */
   get isAuthenticated(): boolean {
@@ -31,10 +29,10 @@ export class FooterComponent {
   LogOut(): void {
     this._confirmation
       .confirm({
-        title: this._i18n.translate('footer.logoutTitle'),
-        message: this._i18n.translate('footer.logoutConfirm'),
-        confirmText: this._i18n.translate('footer.logoutTitle'),
-        cancelText: this._i18n.translate('common.cancel'),
+        title: this._translation.translate('footer.logoutTitle'),
+        message: this._translation.translate('footer.logoutConfirm'),
+        confirmText: this._translation.translate('footer.logoutTitle'),
+        cancelText: this._translation.translate('common.cancel'),
         confirmColor: 'primary',
       })
       .subscribe(confirmed => {
@@ -50,13 +48,13 @@ export class FooterComponent {
     try {
       const ok = await this._router.navigate(['/login']);
       if (ok) {
-        this._notification.success(this._i18n.translate('footer.loggedOut'));
+        this._notification.success(this._translation.translate('footer.loggedOut'));
       } else {
-        this._notification.error(this._i18n.translate('footer.redirectFailed'));
+        this._notification.error(this._translation.translate('footer.redirectFailed'));
       }
     } catch (err) {
       console.error('Navigation error:', err);
-      this._notification.error(this._i18n.translate('footer.redirectError'));
+      this._notification.error(this._translation.translate('footer.redirectError'));
     }
   }
 }

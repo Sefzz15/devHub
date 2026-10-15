@@ -1,4 +1,7 @@
-import {Component, OnInit, signal} from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
+import {Component, OnInit, signal, inject } from '@angular/core';
 import { SessionService } from '../../../services/session.service';
 
 /** A navigable feature shown as a card on the dashboard. */
@@ -12,7 +15,8 @@ interface DashboardFeature {
 
 @Component({
   selector: 'app-dashboard',
-  standalone: false,
+  standalone: true,
+  imports: [MatIconModule, RouterLink, TranslatePipe],
 
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
@@ -33,9 +37,7 @@ export class DashboardComponent implements OnInit {
     { icon: 'rate_review',          route: '/feedback',      color: '#d6336c', titleKey: 'dashboard.feedbackTitle', bodyKey: 'dashboard.feedbackBody' },
   ];
 
-  constructor(
-    private _sessionService: SessionService,
-  ) { }
+  private readonly _sessionService = inject(SessionService);
 
   ngOnInit(): void {
     this.username.set(this._sessionService.username);

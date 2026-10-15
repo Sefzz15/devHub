@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TranslationService } from '../../../services/translation.service';
 
 /**
@@ -7,15 +7,15 @@ import { TranslationService } from '../../../services/translation.service';
  * to the other one.
  */
 @Component({
-  standalone: false,
+  standalone: true,
   selector: 'app-language-toggle',
   templateUrl: './language-toggle.component.html',
   styleUrls: ['./language-toggle.component.css'],
 })
 export class LanguageToggleComponent {
-  constructor(public i18n: TranslationService) {}
+  public readonly translation = inject(TranslationService);
 
   toggle(): void {
-    this.i18n.toggle();
+    this.translation.toggle();
   }
 }

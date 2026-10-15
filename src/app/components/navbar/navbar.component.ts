@@ -1,10 +1,14 @@
-import {Component} from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { LanguageToggleComponent } from '../language-toggle/language-toggle.component';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
+import {Component, inject } from '@angular/core';
 import {AuthService} from '../../../services/auth.service';
 import {NotificationService} from '../../../services/notification.service';
 import {TranslationService} from '../../../services/translation.service';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [RouterLink, TranslatePipe, LanguageToggleComponent],
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
@@ -12,13 +16,9 @@ import {TranslationService} from '../../../services/translation.service';
 export class NavbarComponent {
   menuOpen = false;
 
-  constructor(
-    private _authService: AuthService,
-    private _notification: NotificationService,
-    private _i18n: TranslationService
-  ) {
-
-  }
+  private readonly _authService = inject(AuthService);
+  private readonly _notification = inject(NotificationService);
+  private readonly _translation = inject(TranslationService);
 
   /** Reactive auth state read straight from the AuthService signal. */
   get isAuthenticated(): boolean {
@@ -36,7 +36,7 @@ export class NavbarComponent {
   onLinkClick(event: MouseEvent): void {
     event.preventDefault();
     if (!this.isAuthenticated) {
-      this._notification.warn(this._i18n.translate('nav.signInFirst'));
+      this._notification.warn(this._translation.translate('nav.signInFirst'));
       return;
     }
     this.closeMenu();

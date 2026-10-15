@@ -1,3 +1,4 @@
+import { TranslatePipe } from '../../../pipes/translate.pipe';
 import {
   AfterViewInit,
   Component,
@@ -6,6 +7,8 @@ import {
   NgZone,
   OnDestroy,
   ViewChild,
+  signal,
+  inject,
 } from '@angular/core';
 import * as THREE from 'three';
 import {TrackballControls} from 'three/examples/jsm/controls/TrackballControls.js';
@@ -58,7 +61,8 @@ interface DragState {
 
 @Component({
   selector: 'app-rubiks-cube',
-  standalone: false,
+  standalone: true,
+  imports: [TranslatePipe],
   templateUrl: './rubiks-cube.component.html',
   styleUrls: ['../admin/admin.component.css', './rubiks-cube.component.css'],
 })
@@ -109,17 +113,17 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
   /** Web worker running the Kociemba two-phase solver off the UI thread. */
   private solver?: Worker;
   /** True while the worker is computing a solution (drives button state). */
-  solving = false;
+  readonly solving = signal(false);
   /** Last solve result shown in the UI (move count + algorithm). */
-  solveInfo = '';
+  readonly solveInfo = signal('');
 
   // bound listeners (kept for removal)
   private readonly onPointerDown = (e: PointerEvent) => this.handlePointerDown(e);
   private readonly onPointerMove = (e: PointerEvent) => this.handlePointerMove(e);
   private readonly onPointerUp = () => this.handlePointerUp();
 
-  constructor(private zone: NgZone, private state: RubiksStateService) {
-  }
+  private readonly zone = inject(NgZone);
+  private readonly state = inject(RubiksStateService);
 
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
@@ -217,7 +221,7 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
           ];
           const cubie = new THREE.Mesh(geo, mats);
           cubie.position.set(gx * this.spacing, gy * this.spacing, gz * this.spacing);
-          // Remember the solved home so a restored snapshot can match colours.
+          // Remember the solved home so a restored snapshot can match colors.
           cubie.userData['home'] = `${gx},${gy},${gz}`;
           this.cubeGroup.add(cubie);
           this.cubies.push(cubie);
@@ -242,7 +246,7 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
   // ---------------------------------------------------------------- persistence
 
   /**
-   * Serialise the live cube + camera into a plain snapshot. World transforms are
+   * Serialize the live cube + camera into a plain snapshot. World transforms are
    * read so it stays correct even if a slice is mid-turn (parented to a pivot).
    */
   private captureState(): CubeSnapshot {
@@ -266,7 +270,7 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
         up: [this.camera.up.x, this.camera.up.y, this.camera.up.z],
         target: [target.x, target.y, target.z],
       },
-      solveInfo: this.solveInfo,
+      solveInfo: this.solveInfo(),
     };
   }
 
@@ -288,7 +292,7 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
     this.camera.up.fromArray(snapshot.camera.up);
     this.controls.target.fromArray(snapshot.camera.target);
     this.controls.update();
-    this.solveInfo = snapshot.solveInfo;
+    this.solveInfo.set(snapshot.solveInfo);
   }
 
   // ---------------------------------------------------------------- loop
@@ -461,28 +465,28 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
       this.disposeCube();
       this.buildCube();
     });
-    this.solveInfo = '';
+    this.solveInfo.set('');
   }
 
   /** Read the current state and ask the worker for a near-optimal solution. */
   solve(): void {
     // Need a settled cube: no animation, queued moves or live drag in flight.
-    if (this.solving || !this.solver || this.active || this.queue.length || this.drag) {
+    if (this.solving() || !this.solver || this.active || this.queue.length || this.drag) {
       return;
     }
     const facelets = this.readFacelets();
     // Fast path: an already-solved cube needs no worker round-trip.
     if (this.isUniform(facelets)) {
-      this.solveInfo = 'Already solved';
+      this.solveInfo.set('Already solved');
       return;
     }
-    this.solving = true;
-    this.solveInfo = '';
+    this.solving.set(true);
+    this.solveInfo.set('');
     const message: SolveRequest = {facelets};
     this.solver.postMessage(message);
   }
 
-  /** True when every face shows a single colour (i.e. the cube is solved). */
+  /** True when every face shows a single color (i.e. the cube is solved). */
   private isUniform(facelets: string): boolean {
     for (let f = 0; f < 6; f++) {
       const block = facelets.slice(f * 9, f * 9 + 9);
@@ -494,15 +498,15 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
   /** Worker callback: turn the algorithm into queued moves and play it back. */
   private onSolved(data: SolveResponse): void {
     this.zone.run(() => {
-      this.solving = false;
+      this.solving.set(false);
       if (data.error) {
-        this.solveInfo = 'Solve failed';
+        this.solveInfo.set('Solve failed');
         console.error('Rubik solver error:', data.error);
         return;
       }
       const algo = (data.solution ?? '').trim();
       const moves = this.parseSolution(algo);
-      this.solveInfo = moves.length ? `${moves.length} moves: ${algo}` : 'Already solved';
+      this.solveInfo.set(moves.length ? `${moves.length} moves: ${algo}` : 'Already solved');
       for (const move of moves) this.enqueue(move);
     });
   }
@@ -616,10 +620,10 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
   // ---------------------------------------------------------------- solver i/o
 
   /**
-   * Serialise the cube into Kociemba's 54-char facelet string: faces in
+   * Serialize the cube into Kociemba's 54-char facelet string: faces in
    * U R F D L B order, each read in standard reading order (left→right,
    * top→bottom when looking at that face). Each sticker becomes its face
-   * letter, derived from its colour. Our solved scheme is
+   * letter, derived from its color. Our solved scheme is
    * green=U(+y) red=R(+x) yellow=F(+z) blue=D(-y) orange=L(-x) white=B(-z).
    */
   private readFacelets(): string {
@@ -660,7 +664,7 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
     return str;
   }
 
-  /** Colour (hex) of the sticker on `cubie` currently facing world normal `n`. */
+  /** Color (hex) of the sticker on `cubie` currently facing world normal `n`. */
   private outwardColor(cubie: THREE.Mesh, n: THREE.Vector3): number {
     const q = cubie.getWorldQuaternion(new THREE.Quaternion());
     // BoxGeometry material order: +x, -x, +y, -y, +z, -z.
@@ -677,7 +681,7 @@ export class RubiksCubeComponent implements AfterViewInit, OnDestroy {
     return this.colors.inner;
   }
 
-  /** Nearest face letter for a colour, robust to colour-space round-tripping. */
+  /** Nearest face letter for a color, robust to color-space round-tripping. */
   private nearestFace(hex: number, palette: {hex: number; face: string}[]): string {
     const r = (hex >> 16) & 255, g = (hex >> 8) & 255, b = hex & 255;
     let best = palette[0];

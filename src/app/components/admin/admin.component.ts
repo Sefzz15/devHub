@@ -1,4 +1,5 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { ProductService } from '../../../services/product.service';
 import { OrderService } from '../../../services/order.service';
@@ -14,7 +15,8 @@ import { IOrder, IOrderValuesResponse } from '../../../interfaces/IOrder';
 import { IOrderDetailsValues } from '../../../interfaces/IOrderDetail';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [TranslatePipe],
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
@@ -28,17 +30,15 @@ export class AdminComponent implements OnInit {
   readonly orderDetails = signal<IOrderDetailsValues[]>([]);
 
 
-  constructor(
-    private _sessionService: SessionService,
-    private _userService: UserService,
-    private _productService: ProductService,
-    private _orderService: OrderService,
-    private _orderDetailService: OrderDetailService,
-    private _confirmation: ConfirmationService,
-    private _entityForm: EntityFormService,
-    private _notification: NotificationService,
-    private _i18n: TranslationService
-  ) { }
+  private readonly _sessionService = inject(SessionService);
+  private readonly _userService = inject(UserService);
+  private readonly _productService = inject(ProductService);
+  private readonly _orderService = inject(OrderService);
+  private readonly _orderDetailService = inject(OrderDetailService);
+  private readonly _confirmation = inject(ConfirmationService);
+  private readonly _entityForm = inject(EntityFormService);
+  private readonly _notification = inject(NotificationService);
+  private readonly _translation = inject(TranslationService);
 
   ngOnInit(): void {
     this.userID.set(this._sessionService.userID);
@@ -70,22 +70,22 @@ export class AdminComponent implements OnInit {
   deleteUser(id: number): void {
     this._confirmation
       .confirmWithPassword({
-        title: this._i18n.translate('admin.deleteUserTitle'),
-        message: this._i18n.translate('admin.deleteUserMsg'),
-        passwordLabel: this._i18n.translate('admin.deleteUserPassword'),
-        confirmText: this._i18n.translate('common.delete'),
-        cancelText: this._i18n.translate('common.cancel'),
+        title: this._translation.translate('admin.deleteUserTitle'),
+        message: this._translation.translate('admin.deleteUserMsg'),
+        passwordLabel: this._translation.translate('admin.deleteUserPassword'),
+        confirmText: this._translation.translate('common.delete'),
+        cancelText: this._translation.translate('common.cancel'),
       })
       .subscribe(password => {
         if (!password) return;
         this._userService.deleteUser(id, password).subscribe({
           next: () => {
-            this._notification.success(this._i18n.translate('admin.userDeleted'));
+            this._notification.success(this._translation.translate('admin.userDeleted'));
             this.getUsers();  // Refresh the user list
           },
           error: (err: any) =>
             this._notification.error(
-              this._i18n.translate(
+              this._translation.translate(
                 err?.status === 401 ? 'admin.userDeleteWrongPassword' : 'admin.userDeleteFailed',
               ),
             ),
@@ -97,19 +97,19 @@ export class AdminComponent implements OnInit {
   deleteProduct(id: number): void {
     this._confirmation
       .confirm({
-        title: this._i18n.translate('admin.deleteProductTitle'),
-        message: this._i18n.translate('admin.deleteProductMsg'),
-        confirmText: this._i18n.translate('common.delete'),
-        cancelText: this._i18n.translate('common.cancel'),
+        title: this._translation.translate('admin.deleteProductTitle'),
+        message: this._translation.translate('admin.deleteProductMsg'),
+        confirmText: this._translation.translate('common.delete'),
+        cancelText: this._translation.translate('common.cancel'),
       })
       .subscribe(confirmed => {
         if (!confirmed) return;
         this._productService.deleteProduct(id).subscribe({
           next: () => {
-            this._notification.success(this._i18n.translate('admin.productDeleted'));
+            this._notification.success(this._translation.translate('admin.productDeleted'));
             this.getProducts();  // Refresh the product list
           },
-          error: () => this._notification.error(this._i18n.translate('admin.productDeleteFailed')),
+          error: () => this._notification.error(this._translation.translate('admin.productDeleteFailed')),
         });
       });
   }
@@ -118,19 +118,19 @@ export class AdminComponent implements OnInit {
   deleteOrder(id: number): void {
     this._confirmation
       .confirm({
-        title: this._i18n.translate('admin.deleteOrderTitle'),
-        message: this._i18n.translate('admin.deleteOrderMsg'),
-        confirmText: this._i18n.translate('common.delete'),
-        cancelText: this._i18n.translate('common.cancel'),
+        title: this._translation.translate('admin.deleteOrderTitle'),
+        message: this._translation.translate('admin.deleteOrderMsg'),
+        confirmText: this._translation.translate('common.delete'),
+        cancelText: this._translation.translate('common.cancel'),
       })
       .subscribe(confirmed => {
         if (!confirmed) return;
         this._orderService.deleteOrder(id).subscribe({
           next: () => {
-            this._notification.success(this._i18n.translate('admin.orderDeleted'));
+            this._notification.success(this._translation.translate('admin.orderDeleted'));
             this.getOrders();  // Refresh the orders list
           },
-          error: () => this._notification.error(this._i18n.translate('admin.orderDeleteFailed')),
+          error: () => this._notification.error(this._translation.translate('admin.orderDeleteFailed')),
         });
       });
   }

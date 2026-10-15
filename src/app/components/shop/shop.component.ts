@@ -1,4 +1,7 @@
-import {Component, OnInit, signal} from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
+import {Component, OnInit, signal, inject } from '@angular/core';
 import { SessionService } from '../../../services/session.service';
 import { ProductService } from '../../../services/product.service';
 import { NotificationService } from '../../../services/notification.service';
@@ -8,7 +11,8 @@ import { IProductValuesResponse } from '../../../interfaces/IProduct';
 
 @Component({
   selector: 'app-shop',
-  standalone: false,
+  standalone: true,
+  imports: [FormsModule, RouterLink, TranslatePipe],
 
   templateUrl: './shop.component.html',
   styleUrls: [
@@ -20,13 +24,11 @@ export class ShopComponent implements OnInit{
   readonly username = signal('');
   uid: number = 0;
 
-  constructor(
-    private _sessionService: SessionService,
-    private _productService: ProductService,
-    private _http: HttpClient,
-    private _notification: NotificationService,
-    private _i18n: TranslationService
-  ) { }
+  private readonly _sessionService = inject(SessionService);
+  private readonly _productService = inject(ProductService);
+  private readonly _http = inject(HttpClient);
+  private readonly _notification = inject(NotificationService);
+  private readonly _translation = inject(TranslationService);
 
   ngOnInit() {
     this.username.set(this._sessionService.username);
@@ -108,7 +110,7 @@ export class ShopComponent implements OnInit{
     this._http.post('/api/orders/create', payload).subscribe({
       next: (response: any) => {
         console.log('Order created successfully:', response);
-        this._notification.success(this._i18n.translate('shop.orderPlaced'));
+        this._notification.success(this._translation.translate('shop.orderPlaced'));
         this.productQuantities.clear();
         this.getProducts();
       },
@@ -118,7 +120,7 @@ export class ShopComponent implements OnInit{
         const message =
           typeof error.error === 'string'
             ? error.error
-            : error.error?.message || this._i18n.translate('shop.unexpectedError');
+            : error.error?.message || this._translation.translate('shop.unexpectedError');
 
         this._notification.error(message);
       }

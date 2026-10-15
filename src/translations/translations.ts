@@ -222,8 +222,6 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'rubiks.reverseTurn': 'reverse turn',
 
     // ---- feedback ----
-    'feedback.stepperHorizontal': 'Make your screen smaller to see a vertical stepper',
-    'feedback.stepperVertical': 'Make your screen larger to see a horizontal stepper',
     'feedback.fillName': 'Fill out name',
     'feedback.name': 'Name',
     'feedback.namePlaceholder': 'Last name, First name',
@@ -498,8 +496,6 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'rubiks.reverseTurn': 'αντίστροφη περιστροφή',
 
     // ---- feedback ----
-    'feedback.stepperHorizontal': 'Σμικρύνετε την οθόνη σας για να δείτε κάθετα βήματα',
-    'feedback.stepperVertical': 'Μεγεθύνετε την οθόνη σας για να δείτε οριζόντια βήματα',
     'feedback.fillName': 'Συμπληρώστε το όνομα',
     'feedback.name': 'Όνομα',
     'feedback.namePlaceholder': 'Επώνυμο, Όνομα',

@@ -1,4 +1,4 @@
-﻿import { Component, Inject } from '@angular/core';
+﻿import { Component, Inject, inject } from '@angular/core';
 import {
   MatDialogModule,
   MatDialogRef,
@@ -70,10 +70,8 @@ export interface ConfirmDialogData {
 export class ConfirmDialogComponent {
   password = '';
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData,
-    private _dialogRef: MatDialogRef<ConfirmDialogComponent, boolean | string>,
-  ) {}
+  public readonly data = inject<ConfirmDialogData>(MAT_DIALOG_DATA);
+  private readonly _dialogRef = inject<MatDialogRef<ConfirmDialogComponent, boolean | string>>(MatDialogRef);
 
   get canConfirm(): boolean {
     return !this.data.requirePassword || !!this.password;

@@ -1,4 +1,6 @@
-import {Component, OnInit, OnDestroy, ViewChild, ElementRef, signal} from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
+import {Component, OnInit, OnDestroy, ViewChild, ElementRef, signal, inject } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import {SessionService} from '../../../services/session.service';
 import {AuthService} from '../../../services/auth.service';
@@ -7,7 +9,8 @@ import {TranslationService} from '../../../services/translation.service';
 import {Router} from '@angular/router';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [FormsModule, TranslatePipe],
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
@@ -29,14 +32,11 @@ export class ChatComponent implements OnInit, OnDestroy {
   readonly newGroup = signal('');
 
 
-  constructor(
-    private _sessionService: SessionService,
-    private _authService: AuthService,
-    private _router: Router,
-    private _notification: NotificationService,
-    private _i18n: TranslationService
-  ) {
-  }
+  private readonly _sessionService = inject(SessionService);
+  private readonly _authService = inject(AuthService);
+  private readonly _router = inject(Router);
+  private readonly _notification = inject(NotificationService);
+  private readonly _translation = inject(TranslationService);
 
   ngOnInit() {
     this.username = this._sessionService.username;
@@ -71,16 +71,16 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     // Keep the user informed when the chat server connection drops or recovers
     this._connection.onreconnecting(() => {
-      this._notification.warn(this._i18n.translate('chat.lostConnection'));
+      this._notification.warn(this._translation.translate('chat.lostConnection'));
     });
 
     this._connection.onreconnected(() => {
-      this._notification.success(this._i18n.translate('chat.reconnected'));
+      this._notification.success(this._translation.translate('chat.reconnected'));
     });
 
     this._connection.onclose(() => {
       if (!this._intentionalDisconnect) {
-        this._notification.error(this._i18n.translate('chat.disconnected'));
+        this._notification.error(this._translation.translate('chat.disconnected'));
       }
     });
 
@@ -104,7 +104,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       })
       .catch(err => {
         console.error('SignalR Connection Error: ', err);
-        this._notification.error(this._i18n.translate('chat.unreachable'));
+        this._notification.error(this._translation.translate('chat.unreachable'));
       });
 
     // Receive messages — only for the channel we're currently viewing ("" = general).
@@ -188,7 +188,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     })
       .catch(err => {
         console.error('Error while sending message: ', err);
-        this._notification.error(this._i18n.translate('chat.messageNotSent'));
+        this._notification.error(this._translation.translate('chat.messageNotSent'));
       });
   }
 
@@ -248,7 +248,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   startInactivityTimer() {
     this.inactivityTimeout = setTimeout(() => {
-      this._notification.warn(this._i18n.translate('chat.loggedOutInactivity'));
+      this._notification.warn(this._translation.translate('chat.loggedOutInactivity'));
       this._authService.logout();
       this._router.navigate(['/'])
         .catch(err => console.error('Navigation error: ', err));

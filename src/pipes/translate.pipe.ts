@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
 import { TranslationService } from '../services/translation.service';
 
 /**
@@ -6,11 +6,11 @@ import { TranslationService } from '../services/translation.service';
  * Impure so it re-evaluates when the language signal flips; pass an object for
  * `{placeholder}` substitution, e.g. `'cinema.showing' | translate: { count }`.
  */
-@Pipe({ name: 'translate', standalone: false, pure: false })
+@Pipe({ name: 'translate', standalone: true, pure: false })
 export class TranslatePipe implements PipeTransform {
-  constructor(private _i18n: TranslationService) {}
+  private readonly _translation = inject(TranslationService);
 
   transform(key: string, params?: Record<string, string | number>): string {
-    return this._i18n.translate(key, params);
+    return this._translation.translate(key, params);
   }
 }
