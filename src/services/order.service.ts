@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IOrder, IOrderValuesResponse } from '../interfaces/IOrder';
@@ -10,9 +10,7 @@ export class OrderService {
 
   private _url = '/api/orders';
 
-  constructor(
-    private _http: HttpClient
-  ) { }
+  private readonly _http = inject(HttpClient);
 
   // Get all orders
   getOrders(): Observable<IOrderValuesResponse[]> {
@@ -34,7 +32,7 @@ export class OrderService {
     return this._http.put<IOrder>(`${this._url}/${id}`, order);
   }
 
-  // Delete a order
+  // Delete an order
   deleteOrder(id: number): Observable<any> {
     return this._http.delete<any>(`${this._url}/${id}`);
   }

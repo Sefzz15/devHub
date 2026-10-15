@@ -1,38 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'; // + HttpParams
 import { Observable } from 'rxjs';
-import {
-    ISpotifyPaginated,
-    ISpotifyValuesResponse,
-    ISpotifyFilters,
-    ITopTrackDto,
-    ITopArtistDto,
-    ITopGenreDto
-} from '../interfaces/ISpotify';
+import { ISpotifyPaginated, ISpotifyFilters, ITopTrackDto, ITopArtistDto, ITopGenreDto } from '../interfaces/ISpotify';
 
 @Injectable({ providedIn: 'root' })
 export class SpotifyService {
     private _url = '/api/spotify';
 
-    constructor(private _http: HttpClient) { }
-
-    getAllSpotify(): Observable<ISpotifyValuesResponse[]> {
-        return this._http.get<ISpotifyValuesResponse[]>(`${this._url}`);
-    }
-
-    getSpotify(id: number): Observable<ISpotifyValuesResponse> {
-        return this._http.get<ISpotifyValuesResponse>(`${this._url}/${id}`);
-    }
-
-    createSpotify(spotify: ISpotifyPaginated): Observable<ISpotifyPaginated> {
-        return this._http.post<ISpotifyPaginated>(`${this._url}`, spotify);
-    }
-    updateSpotify(id: number, spotify: ISpotifyPaginated): Observable<ISpotifyPaginated> {
-        return this._http.put<ISpotifyPaginated>(`${this._url}/${id}`, spotify);
-    }
-    deleteSpotify(id: number): Observable<any> {
-        return this._http.delete<any>(`${this._url}/${id}`);
-    }
+    private readonly _http = inject(HttpClient);
 
     // ---- paging with filters/sort ----
     getPage(

@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+﻿import { Injectable, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import {
@@ -12,7 +12,7 @@ import {
  */
 @Injectable({ providedIn: 'root' })
 export class ConfirmationService {
-  constructor(private _dialog: MatDialog) {}
+  private readonly _dialog = inject(MatDialog);
 
   confirmWithPassword(data: ConfirmDialogData): Observable<string | false> {
     return this._dialog

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IUser, IUserValuesResponse } from '../interfaces/IUser';
@@ -10,9 +10,7 @@ export class UserService {
 
   private _url = '/api/users';
 
-  constructor(
-    private _http: HttpClient
-  ) { }
+  private readonly _http = inject(HttpClient);
 
   // Get all users
   getUsers(): Observable<IUserValuesResponse[]> {

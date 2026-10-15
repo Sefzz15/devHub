@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IFeedback, IFeedbackValuesResponse } from '../interfaces/IFeedback';
@@ -10,29 +10,16 @@ export class FeedbackService {
 
   private _url = '/api/feedback';
 
-  constructor(
-    private _http: HttpClient
-  ) { }
+  private readonly _http = inject(HttpClient);
 
   // Get all feedbacks
   getFeedbacks(): Observable<IFeedbackValuesResponse[]> {
     return this._http.get<IFeedbackValuesResponse[]>(`${this._url}`);
   }
 
-  // Get a specific feedback by ID
-  getFeedback(id: number): Observable<IFeedback> {
-    return this._http.get<IFeedback>(`${this._url}/${id}`);
-  }
-
-
   // Create a new feedback
   createFeedback(feedback: IFeedback): Observable<IFeedback> {
     return this._http.post<IFeedback>(`${this._url}`, feedback);
-  }
-
-  // Update an existing feedback
-  updateFeedback(id: number, feedback: IFeedback): Observable<IFeedback> {
-    return this._http.put<IFeedback>(`${this._url}/${id}`, feedback);
   }
 
   // Delete a feedback

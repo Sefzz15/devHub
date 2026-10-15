@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IProduct, IProductValuesResponse } from '../interfaces/IProduct';
@@ -10,9 +10,7 @@ export class ProductService {
 
   private _url = '/api/products';
 
-  constructor(
-    private _http: HttpClient
-  ) { }
+  private readonly _http = inject(HttpClient);
 
   // Get all products
   getProducts(): Observable<IProductValuesResponse[]> {

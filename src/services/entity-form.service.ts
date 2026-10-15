@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import {
@@ -9,7 +9,7 @@ import {
 /** Emits `true` when something was saved, `undefined` when canceled. */
 @Injectable({ providedIn: 'root' })
 export class EntityFormService {
-  constructor(private _dialog: MatDialog) {}
+  private readonly _dialog = inject(MatDialog);
 
   open(type: EntityFormData['type'], id?: number): Observable<boolean | undefined> {
     return this._dialog

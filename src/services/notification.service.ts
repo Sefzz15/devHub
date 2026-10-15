@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+﻿import { Injectable, inject } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 export type NotificationType = 'success' | 'error' | 'info' | 'warn';
@@ -6,12 +6,12 @@ export type NotificationType = 'success' | 'error' | 'info' | 'warn';
 /**
  * App-wide toast notifications, replacing blocking window.alert() calls.
  * Wraps Angular Material's MatSnackBar so every message looks and behaves
- * consistently. Colour is applied via the `notification--<type>` panel class
+ * consistently. Color is applied via the `notification--<type>` panel class
  * (see global styles in styles.css).
  */
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
-  constructor(private _snackBar: MatSnackBar) {}
+  private readonly _snackBar = inject(MatSnackBar);
 
   /** Confirmation of a completed action (short-lived). */
   success(message: string, durationMs = 3000): void {

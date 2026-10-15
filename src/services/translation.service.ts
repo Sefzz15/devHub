@@ -11,10 +11,10 @@ export class TranslationService {
   private static readonly STORAGE_KEY = 'devhub.lang';
 
   private readonly _lang = signal<Lang>(this._readStoredLang());
-  /** Reactive current language. Read as a signal: `i18n.lang()`. */
+  /** Reactive current language. Read as a signal: `translation.lang()`. */
   readonly lang = this._lang.asReadonly();
 
-  setLang(lang: Lang): void {
+  private setLang(lang: Lang): void {
     this._lang.set(lang);
     this._persistLang(lang);
   }
@@ -32,7 +32,7 @@ export class TranslationService {
     const lang = this._lang();
     const text = TRANSLATIONS[lang]?.[key] ?? TRANSLATIONS.en[key] ?? key;
     if (!params) return text;
-    return text.replace(/\{(\w+)\}/g, (_match, name) =>
+    return text.replace(/\{(\w+)}/g, (_match, name) =>
       params[name] != null ? String(params[name]) : `{${name}}`,
     );
   }

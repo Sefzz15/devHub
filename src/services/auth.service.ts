@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -21,10 +21,10 @@ export class AuthService {
 
   public generalError: string = '';
 
-  constructor(
-    private _http: HttpClient,
-    private _sessionService: SessionService
-  ) {
+  private readonly _http = inject(HttpClient);
+  private readonly _sessionService = inject(SessionService);
+
+  constructor() {
     // Rehydrate auth state from storage so a page refresh keeps the user logged in.
     const stored = this._readStoredToken();
     if (stored) {
